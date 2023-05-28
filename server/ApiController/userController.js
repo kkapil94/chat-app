@@ -1,15 +1,11 @@
 import User from "../model/userModel.js"
 import bcrypt from "bcrypt"
 import Token from "../utils/webtoken.js";
-
+import cloudinary from "cloudinary"
+import { getDataUri } from "../utils/dataUri.js";
 // register user
 
 export const register = async (req,res,next)=>{
-    const options = {
-        use_filename: true,
-        unique_filename: false,
-        overwrite: true,
-      };
     const {name,email,password} = req.body;
     if(!name || !email || !password){
         res.status(400);
@@ -20,12 +16,14 @@ export const register = async (req,res,next)=>{
         res.status(400)
         return next(new Error("user alreday exist with this email"))
     }
+    
     const hashedPass = await bcrypt.hash(password,10)
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    const newUser =await User.create({name,email,password:hashedPass,avatar:result.public_id});
+    const file =  req.file
+    const fileUri = getDataUri(file)
+    const result = await cloudinary.v2.uploader.upload(fileUri.content);
+    const newUser =await User.create({name,email,password:hashedPass,avatar:result.secure_url});
 
     const token = Token(newUser)
-    console.log(newUser,token);
     res.header("auth-token", token).status(200).json({
         success:true,
         msg:"user registered successfully",

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-import axios from "axios"
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios"
 export default function Login() {
+  const navigate = useNavigate()
   const [logData,setLogData] = useState({
     email:"",
     password:""
@@ -11,11 +12,16 @@ export default function Login() {
   const handleChange = (e)=>{
     setLogData({...logData,[e.target.id]:e.target.value})
   }
+  const notify = (msg)=>{toast(msg)}
   const handleSubmit =async (e)=>{
     e.preventDefault();
     try{
-      const data =await axios.post("/api/v1/auth/login",logData)
-      console.log(data);
+      const {data} =await axios.post("/api/v1/auth/login",logData)
+      if(data.success) {
+        localStorage.setItem("user",JSON.stringify(data))
+        notify("Login successfully");
+        navigate("/")
+      }
     }catch(err){console.log(err);}
   }
   return (
@@ -37,6 +43,7 @@ export default function Login() {
                     <input
                     id="email"
                       type="text"
+                      required
                       value={logData.username}
                       onChange={handleChange}
                       className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
@@ -49,6 +56,7 @@ export default function Login() {
                     <input
                       type="password"
                       id="password"
+                      required
                       value={logData.password}
                       onChange={handleChange}
                       className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
@@ -64,6 +72,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   );
 }

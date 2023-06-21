@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SignUp() {
   const formRef = useRef(null);
+  const navigate = useNavigate()
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -27,9 +28,9 @@ export default function SignUp() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(data);
       if (data.success) {
         notify("Registered successfully");
+        navigate("/")
       }
     } catch (err) {
       const error = err.response.data;

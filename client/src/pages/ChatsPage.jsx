@@ -3,25 +3,24 @@ import Chats from "./chatPage/Chats";
 import ChatsSection from "./chatPage/ChatsSection";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Login from "./Login";
-import { getChats } from "../actions/chatsActions";
+import { clearErrors, getChats } from "../actions/chatsActions";
 
 export default function ChatsPage(){
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const {chats,loading,error }= useSelector((state) => state.chats);
-    console.log("iam ",chats,loading,error);
+    const navigate = useNavigate();
+    const {error,chats}= useSelector((state) => state.chats);
+    console.log(error);
     useEffect(() => {
         dispatch(getChats());
-        if(chats&&!chats.length){
-            navigate("/login")
+        if(error&&error.response.statusText=="Unauthorized"){
+            navigate("/login");
         }
-    }, [dispatch]);
+    }, [dispatch,error]);
     return(<>
         {<div>
             <div className="flex min-h-screen max-w-screen">
-               <Chats chats={chats}/>
-               <ChatsSection/>
+               <Chats chats={chats}/> 
+               <ChatsSection/> 
             </div>
         </div>}
     </>)

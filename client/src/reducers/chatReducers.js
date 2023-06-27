@@ -19,7 +19,6 @@ export const chatReducers = (state={chats:[]},action) => {
             }
         case "CLEAR_ERROR":
             return {
-                ...state,
                 error:null
             }
         default:

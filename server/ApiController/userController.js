@@ -62,7 +62,7 @@ export const login = async (req,res,next)=>{
 
 // current user
 
-export const allUsers = async(req,res)=>{
+export const searchUser = async(req,res)=>{
     const keyword = req.query.search?
     {
         $or:[
@@ -73,3 +73,12 @@ export const allUsers = async(req,res)=>{
     const users =await User.find(keyword).find({_id:{$ne:req.user._id}})
     res.status(200).json({success:true,users})
 }
+
+//get all user 
+
+export const getAllUsers = async(req,res)=>{
+    const users = await User.find();
+    res.status(200).json({
+        success:true,users
+    })
+} 

@@ -3,8 +3,11 @@ import { Link,useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
+import { useDispatch } from "react-redux";
+import { clearErrors } from "../actions/chatsActions";
 export default function Login() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [logData,setLogData] = useState({
     email:"",
     password:""
@@ -16,6 +19,7 @@ export default function Login() {
   const handleSubmit =async (e)=>{
     e.preventDefault();
     try{
+      dispatch(clearErrors())
       const {data} =await axios.post("/api/v1/auth/login",logData)
       if(data.success) {
         localStorage.setItem("user",JSON.stringify(data))

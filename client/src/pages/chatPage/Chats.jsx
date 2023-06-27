@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getChats } from "../../actions/chatsActions";
 import { useSelector, useDispatch } from "react-redux";
 import Session from "../../components/Session";
 import { useNavigate } from "react-router-dom";
+import Chats2 from "./Chats2";
 
 export default function Chats({chats}) {
-  console.log("ok",chats);
+  const [newChat,setNewChat] = useState(true);
+  const toggleChat = ()=>{
+    setNewChat(false)
+  }
   return (
     <>
-      {<div id="chats" className="bg-[#27374D] w-[30%]">
+      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%]">
         <div className="h-[3.8rem] bg-[#9DB2BF] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
@@ -19,10 +23,10 @@ export default function Chats({chats}) {
           </div>
           <div id="menu" className="flex w-1/2 justify-end space-x-5 mr-5">
             <div>
-              <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 " />
+              <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>
             <div>
-              <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 " />
+              <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" />
             </div>
           </div>
         </div>
@@ -39,7 +43,7 @@ export default function Chats({chats}) {
           ))
           }
         </div>
-      </div>}
+      </div>):<Chats2 toggleChat={()=>toggleChat()}/>}
     </>
   );
 }

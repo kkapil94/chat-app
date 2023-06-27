@@ -9,8 +9,14 @@ import { isValidated } from "./middleware/isValidated.js"
 import {v2 as cloudinary} from "cloudinary"
 import { isAdmin } from "./middleware/isGroupAdmin.js"
 import cors from "cors"
-
 const app = express()
+import http from "http"
+const server = http.createServer(app);
+import {Server} from "socket.io"
+
+const io = new Server(server);
+
+
 dotenv.config()
 cloudinary.config({ 
   cloud_name: "dbssa7j9g", 
@@ -28,6 +34,6 @@ app.use(isValidated)
 app.use(isAdmin)
 app.use(errorHandler)
 
-app.listen(4000,()=>{
+server.listen(4000,()=>{
     console.log("server connected to PORT 4000")
 })

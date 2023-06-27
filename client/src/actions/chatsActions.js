@@ -2,8 +2,9 @@ import axios from "axios"
 
 
 export const getChats = ()=>async (dispatch)=>{
+    const token= JSON.parse(localStorage.getItem("user")).token
+    console.log(token);
     try {
-        const {token} = JSON.parse(localStorage.getItem("user"))
         dispatch({type:"ALL_CHATS_REQUEST"})
         const {data} = await axios.get("/api/v1/chat",{headers :{
             Authorization:`Bearer ${token}`
@@ -17,6 +18,6 @@ export const getChats = ()=>async (dispatch)=>{
     }
 }
 
-export const clearErrors = (dispatch)=>{
-    dispatch({type:"CLEAR_ERRORS"})
+export const clearErrors = ()=>(dispatch)=>{
+    dispatch({type:"CLEAR_ERROR"})
 }

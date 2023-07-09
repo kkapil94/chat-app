@@ -3,7 +3,6 @@ import axios from "axios"
 
 export const getChats = ()=>async (dispatch)=>{
     const token= JSON.parse(localStorage.getItem("user")).token
-    console.log(token);
     try {
         dispatch({type:"ALL_CHATS_REQUEST"})
         const {data} = await axios.get("/api/v1/chat",{headers :{

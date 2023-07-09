@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 import Chats2 from "./Chats2";
 
 export default function Chats({chats}) {
-  const [newChat,setNewChat] = useState(true);
+  const [newChat,setNewChat] = useState(false);
   const toggleChat = ()=>{
     setNewChat(false)
   }
   return (
     <>
-      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%]">
+      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
         <div className="h-[3.8rem] bg-[#9DB2BF] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
@@ -30,7 +30,7 @@ export default function Chats({chats}) {
             </div>
           </div>
         </div>
-        <div>
+        <div className="h-[inherit] overflow-auto">
           {chats&&chats.map((chat)=>(
             <div className="flex items-center justify-start max-w-full h-[4rem]" key={chat._id}>
             <div>

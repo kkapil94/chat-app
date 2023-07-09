@@ -3,8 +3,10 @@ import { chatReducers } from "./reducers/chatReducers"
 
 import thunk from "redux-thunk"
 import {composeWithDevTools} from "redux-devtools-extension"
+import { usersReducer } from "./reducers/usersReducers"
 const reducer = combineReducers({
-   chats:chatReducers
+   chats:chatReducers,
+   users:usersReducer
 })
 const initialState = {}
 const middleware = [thunk]

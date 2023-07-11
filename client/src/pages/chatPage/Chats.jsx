@@ -1,11 +1,11 @@
-import React, {useState } from "react";
+import React, {useRef, useState, useEffect } from "react";
 import Chats2 from "./Chats2";
 import {useNavigate} from "react-router-dom"
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
   const navigate = useNavigate()
-  const [menu,setMenu] = useState("hidden")
+  const [menu,setMenu] = useState(false)
   const toggleChat = ()=>{
     setNewChat(false)
   }
@@ -13,14 +13,20 @@ export default function Chats({chats}) {
     localStorage.removeItem("user");
     navigate("/login")
   }
-  
-  const onClickMenu = ()=>{
-    if(menu === "hidden" ){
-      setMenu("absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4 ")
-    }else{
-      setMenu("hidden")
+  const menuRef = useRef();
+  const func = (e)=>{
+    if(!menuRef.current.contains(e.target)){
+      setMenu(false);
     }
   }
+  useEffect(() => {
+    document.addEventListener("mousedown",func)
+    return () => {
+      document.removeEventListener("mousedown",func)
+    }
+  })
+  
+
   return (
     <>
       {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
@@ -36,10 +42,10 @@ export default function Chats({chats}) {
             <div>
               <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>
-            <div>
-              <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={onClickMenu}/>
+            <div ref={menuRef}>
+              <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setMenu(!menu)}/>
             </div>
-            <div className={menu} >
+            <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10">New Group</li>
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={logout}>LogOut</li>

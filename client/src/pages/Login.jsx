@@ -32,8 +32,8 @@ export default function Login() {
     <>
       <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
         <div className="flex h-4/5 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
-          <div className="w-1/2">
-            <img src="/img/hero.svg" />
+          <div className="w-1/2 h-full flex items-center">
+            <img src="/img/hero.svg" className="max-w-full h-4/5 object-cover"/>
           </div>
           <div className="w-1/2 backdrop:blur-3xl flex flex-col justify-center space-y-8 h-full pl-12">
             <h1 className="text-4xl text-white">Welcome!</h1>

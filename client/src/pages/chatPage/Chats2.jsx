@@ -42,8 +42,8 @@ export default function Chats2({toggleChat}) {
         </div>
         <div>
           {users&&users.map((user)=>(
-            <div>
-            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={user._id}>
+            <div key={user._id}>
+            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
             <div>
               <img src={user.avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>

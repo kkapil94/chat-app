@@ -7,6 +7,9 @@ export default function NewGroup({toggleGroup}) {
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
   const [groupMembers,setGroupMembers] = useState([])
+  const removeGroupMembers = (member)=>{
+    setGroupMembers(groupMembers.filter(memb => memb!==member))
+  }
   useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search])
@@ -25,20 +28,25 @@ export default function NewGroup({toggleGroup}) {
             </div>
         </div>
         <div className='ml-10'>
-            {groupMembers.length&&groupMembers.map((mem)=>(
-            <div className='inline-flex items-center mr-4'>
+            {groupMembers.length?groupMembers.map((mem)=>(
+            <div className='inline-flex items-center mr-4' key={mem._id}>
                 <div>
-                    <img src={mem.avatar} className='h-6 w-6 object-contain mr-2 rounded-full' />
+                    <img src={mem.avatar} className='h-7 w-7 object-contain mr-2 rounded-full' />
                 </div>
                 <div className='mr-2'>
                     <span>{mem.name}</span>
                 </div>
                 <div>
-                    <img src="./img/close.png" className='h-4 w-4' />
+                    <img src="./img/close.png" className='h-4 w-4 cursor-pointer' onClick={()=>removeGroupMembers(mem)} />
                 </div>
             </div>
-            ))}
+            ))
+            :""}
+            
         </div>
+        {groupMembers.length?<div className='w-full'>
+            <div className='h-[1px] bg-slate-600 mx-9 mb-4'></div>
+          </div>:""}
         {users.length?<div className='h-[inherit] overflow-auto'>
         <div>
           {users&&users.map((user)=>(

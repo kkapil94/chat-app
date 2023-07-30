@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
 
-export default function NewGroup({toggleGroup}) {
+export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const dispatch = useDispatch();
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
   const [groupMembers,setGroupMembers] = useState([])
   const removeGroupMembers = (member)=>{
     setGroupMembers(groupMembers.filter(memb => memb!==member))
+  }
+  const back = ()=>{
+    if(directNewGroup){
+      toggleGroup()
+      toggleChat()
+    }
+    else{
+      toggleGroup()
+    }
   }
   useEffect(()=>{
     dispatch(searchUser(search));
@@ -19,7 +28,7 @@ export default function NewGroup({toggleGroup}) {
         {<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#9DB2BF]'>
-                <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={()=>toggleGroup()}/></button>
+                <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={back}/></button>
                 <h1 className='ml-4 font-semibold text-lg mb-2'>Add group participants</h1>
             </div>
             <div className='w-full flex justify-center bg-[#27374D]'>

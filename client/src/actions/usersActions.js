@@ -22,5 +22,6 @@ export const searchUser = (keyword)=>async(dispatch)=>{
 }
 
 export const clearErrors = ()=>async(dispatch)=>{
-    dispatch({tyoe:"CLEAR_ERROR"})
+    dispatch({type:"CLEAR_ERROR"})
 }
+

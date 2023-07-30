@@ -9,11 +9,10 @@ import { isValidated } from "./middleware/isValidated.js"
 import {v2 as cloudinary} from "cloudinary"
 import { isAdmin } from "./middleware/isGroupAdmin.js"
 import cors from "cors"
-const app = express()
 import http from "http"
-const server = http.createServer(app);
 import {Server} from "socket.io"
-
+const app = express()
+const server = http.createServer(app);
 const io = new Server(server);
 
 
@@ -33,6 +32,10 @@ app.use(singleUpload)
 app.use(isValidated)
 app.use(isAdmin)
 app.use(errorHandler)
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 
 server.listen(4000,()=>{
     console.log("server connected to PORT 4000")

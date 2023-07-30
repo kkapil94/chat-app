@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
 import NewGroup from '../create group/NewGroup';
 
-export default function Chats2({toggleChat}) {
+export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
@@ -59,7 +59,7 @@ export default function Chats2({toggleChat}) {
           }
         </div>
         </div>:<span className='text-center block mt-8'>No results found for '{search}'</span>}
-      </div>:<NewGroup toggleGroup={()=>toggleGroup()} />}
+      </div>:<NewGroup toggleGroup={()=>toggleGroup()} toggleChat={toggleChat} directNewGroup={directNewGroup}/>}
     </>
   )
 }

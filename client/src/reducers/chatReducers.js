@@ -1,6 +1,9 @@
+let initialState = {
+    chats:[],
+    selectedChat:null
+}
 
-
-export const chatReducers = (state={chats:[]},action) => {
+export const chatReducers = (state=initialState,action) => {
     switch(action.type){
         case "ALL_CHATS_REQUEST":
             return {
@@ -21,7 +24,13 @@ export const chatReducers = (state={chats:[]},action) => {
             return {
                 error:null
             }
+        case "SELECT_CHAT":
+            return {
+                ...state,
+                selectedChat:action.payload
+            }
         default:
             return state
     }
 }
+

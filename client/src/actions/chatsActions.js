@@ -20,3 +20,7 @@ export const getChats = ()=>async (dispatch)=>{
 export const clearErrors = ()=>(dispatch)=>{
     dispatch({type:"CLEAR_ERROR"})
 }
+
+export const selectChat = (chat)=>async(dispatch)=>{
+    dispatch({type:"SELECT_CHAT",payload:chat})
+}

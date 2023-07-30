@@ -1,17 +1,27 @@
 import React, {useRef, useState, useEffect } from "react";
 import Chats2 from "./Chats2";
 import {useNavigate} from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { selectChat } from "../../actions/chatsActions";
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [menu,setMenu] = useState(false)
+  const [toggleGroup,setToggleGroup]=useState(false)
   const toggleChat = ()=>{
     setNewChat(false)
+    setToggleGroup(false)
   }
   const logout = ()=>{
     localStorage.removeItem("user");
     navigate("/login")
+  }
+  const newGroup =  ()=>{
+    setMenu(false)
+    setNewChat(true)
+    setToggleGroup(true);
   }
   const menuRef = useRef();
   const func = (e)=>{
@@ -39,15 +49,15 @@ export default function Chats({chats}) {
             />
           </div>
           <div className="flex w-1/2 justify-end space-x-5 mr-5">
-            <div>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center active:bg-[#979ba3]">
               <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>
-            <div ref={menuRef}>
+            <div ref={menuRef} className={menu?"bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center":"rounded-full w-10 h-10 flex items-center justify-center"}>
               <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setMenu(!menu)}/>
             </div>
             <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10">New Group</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={newGroup}>New Group</li>
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={logout}>LogOut</li>
               </ul>
             </div>
@@ -55,7 +65,7 @@ export default function Chats({chats}) {
         </div>
         <div className="h-[inherit] overflow-auto">
           {chats&&chats.map((chat)=>(
-            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id}>
+            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat))}>
             <div>
               <img src={chat.users[1].avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
@@ -66,7 +76,7 @@ export default function Chats({chats}) {
           ))
           }
         </div>
-      </div>):<Chats2 toggleChat={()=>toggleChat()}/>}
+      </div>):<Chats2 toggleChat={()=>toggleChat()} directNewGroup={toggleGroup}/>}
     </>
   );
 }

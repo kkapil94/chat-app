@@ -39,7 +39,7 @@ export default function Chats({chats}) {
 
   return (
     <>
-      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
+      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%] h-screen border-r-[1px] border-solid border-gray-500 ">
         <div className="h-[3.8rem] bg-[#9DB2BF] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
@@ -48,7 +48,7 @@ export default function Chats({chats}) {
               className="h-4/5 w-10 rounded-full ml-4"
             />
           </div>
-          <div className="flex w-1/2 justify-end space-x-5 mr-5">
+          <div className="flex w-1/2 justify-end space-x-3 mr-5">
             <div className="w-10 h-10 rounded-full flex items-center justify-center active:bg-[#979ba3]">
               <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>

@@ -19,6 +19,18 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
       toggleGroup()
     }
   }
+
+  const createGroup = async()=>{
+    const data = axios.post("/api/v1/chat/group",{
+      headers:{
+        'content-type': 'application/json'
+      },
+      data:{
+        groupMembers
+      }
+    })
+    console.log(data);
+  }
   useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search])

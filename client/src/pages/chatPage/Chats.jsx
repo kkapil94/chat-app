@@ -63,7 +63,7 @@ export default function Chats({chats}) {
             </div>
           </div>
         </div>
-        <div className="h-[inherit] overflow-auto">
+        <div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat))}>
             <div>

@@ -20,7 +20,7 @@ export default function ChatsPage() {
     <>
       {
         <div>
-          <div className="flex h-screen max-w-screen overflow-hidden">
+          <div className="flex min-h-screen max-w-screen overflow-hidden">
             <Chats chats={chats} />
             <ChatsSection />
           </div>

@@ -28,7 +28,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
                 <input type="text" placeholder='Search Contacts' value={search} onChange={(e)=>setSearch(e.target.value)} className='w-11/12 my-2 rounded-md pl-12 h-8 outline-none'/>
             </div>
         </div>
-        {users.length?<div className='h-[inherit] overflow-auto'>
+        {users.length?<div className='h-[calc(100vh-10rem)] overflow-auto'>
         <div className='flex items-center w-full h-16 p-3 hover:bg-slate-600 cursor-pointer' onClick={()=>setNewGroup(1)}>
           <div className='border-solid border-[1px] rounded-full mr-2 p-2'>
             <img src="./img/groups.png" alt="" className='h-8 w-8'/>

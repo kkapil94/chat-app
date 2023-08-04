@@ -37,7 +37,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
 
   return (
     <>
-        {<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
+        {<div id="chats" className="bg-[#27374D] w-[30%] h-screen flex flex-col">
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#9DB2BF]'>
                 <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={back}/></button>
@@ -48,7 +48,8 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
                 <input type="text" placeholder='Search Contacts' value={search} onChange={(e)=>setSearch(e.target.value)} className='w-11/12 my-2 rounded-md pl-12 h-8 outline-none'/>
             </div>
         </div>
-        <div className='ml-10'>
+        <div>
+        <div className='ml-10 max-h-44 overflow-auto'>
             {groupMembers.length?groupMembers.map((mem)=>(
             <div className='inline-flex items-center mr-4' key={mem._id}>
                 <div>
@@ -65,10 +66,11 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
             :""}
             
         </div>
+        </div>
         {groupMembers.length?<div className='w-full'>
             <div className='h-[1px] bg-slate-600 mx-9 mb-4'></div>
           </div>:""}
-        {users.length?<div className='h-[inherit] overflow-auto'>
+        {users.length?<div className={'overflow-auto '}>
         <div>
           {users&&users.map((user)=>(
             <div onClick={()=>setGroupMembers([...groupMembers,user])}>
@@ -88,6 +90,13 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
           }
         </div>
         </div>:<span className='text-center block mt-8'>No results found for '{search}'</span>}
+      {groupMembers.length?<div className=' bg-[#9DB2BF]'>
+        <div className='h-24 w-full flex items-center justify-center '>
+          <span className='p-4 rounded-full bg-[#526d82] cursor-pointer'>
+            <img src="/img/next.png" alt=""  className='h-6'/>
+          </span>
+        </div>
+      </div>:""}
       </div>}
     </>
   )

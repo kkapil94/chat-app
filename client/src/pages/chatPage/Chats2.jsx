@@ -7,13 +7,13 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
-  const [newGroup,setNewGroup] = useState(false)
+  const [newGroup,setNewGroup] = useState(directNewGroup)
   const toggleGroup = ()=>{
     setNewGroup(0)
   }
   useEffect(()=>{
     dispatch(searchUser(search));
-  },[dispatch,search])
+  },[dispatch,search]) 
 
   return (
     <>

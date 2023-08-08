@@ -54,17 +54,17 @@ export const allChats = async (req, res, next) => {
 
 export const groupChat = async (req, res, next) => {
   let { users, name } = req.body;
+ 
   if (!users || !name) {
     res.status(401);
     return next(Error("all feilds are mandatory"));
   }
-  users = JSON.parse(users);
   users.push(req.user.id);
   if (users.length <= 2) {
     res.status(401);
     return next(Error("More than 2 users are required for the group chat"));
   }
-  console.log(users);
+
   const groupChat = await Chat.create({
     chatName:name,
     users,

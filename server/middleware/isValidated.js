@@ -10,7 +10,8 @@ export const isValidated = (req,res,next)=>{
     if(!token)
     {
         res.status(400)
-        return next(new Error("unauthorized access"))}
+        return next(new Error("unauthorized access"))
+    }
     const verified = jwt.verify(token,process.env.TOKEN_SECRET,(err,decoded)=>{
         if(err){
             res.status(401);

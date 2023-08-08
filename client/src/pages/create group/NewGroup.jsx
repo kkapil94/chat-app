@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
+import ConfirmGroup from './ConfirmGroup';
 
 export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const dispatch = useDispatch();
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
+  const [confirmGroup,setConfirmGroup] = useState(false)
   const [groupMembers,setGroupMembers] = useState([])
   const removeGroupMembers = (member)=>{
     setGroupMembers(groupMembers.filter(memb => memb!==member))
@@ -20,24 +22,17 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
     }
   }
 
-  const createGroup = async()=>{
-    const data = axios.post("/api/v1/chat/group",{
-      headers:{
-        'content-type': 'application/json'
-      },
-      data:{
-        groupMembers
-      }
-    })
-    console.log(data);
+  const handleConfirmGroup = ()=>{
+    setConfirmGroup(!confirmGroup);
   }
+
   useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search])
 
   return (
     <>
-        {<div id="chats" className="bg-[#27374D] w-[30%] h-screen flex flex-col">
+        {!confirmGroup? <div id="chats" className="bg-[#27374D] w-[30%] h-screen flex flex-col">
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#9DB2BF]'>
                 <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={back}/></button>
@@ -73,7 +68,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
         {users.length?<div className={'overflow-auto '}>
         <div>
           {users&&users.map((user)=>(
-            <div onClick={()=>setGroupMembers([...groupMembers,user])}>
+            <div onClick={()=>setGroupMembers([...groupMembers,user])} key={user._id}>
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={user._id}>
             <div>
               <img src={user.avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
@@ -92,12 +87,12 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
         </div>:<span className='text-center block mt-8'>No results found for '{search}'</span>}
       {groupMembers.length?<div className=' bg-[#9DB2BF]'>
         <div className='h-24 w-full flex items-center justify-center '>
-          <span className='p-4 rounded-full bg-[#526d82] cursor-pointer'>
+          <span className='p-4 rounded-full bg-[#526d82] cursor-pointer' onClick={handleConfirmGroup}>
             <img src="/img/next.png" alt=""  className='h-6'/>
           </span>
         </div>
       </div>:""}
-      </div>}
+      </div>:<ConfirmGroup handleConfirmGroup={handleConfirmGroup} groupMembers={groupMembers}/>}
     </>
   )
 }

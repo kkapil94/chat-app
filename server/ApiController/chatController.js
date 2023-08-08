@@ -1,5 +1,6 @@
 import Chat from "../model/chatModel.js";
 import User from "../model/userModel.js";
+import { getDataUri } from "../utils/dataUri.js";
 
 export const accesChat = async (req, res, next) => {
   const { userId } = req.body;
@@ -65,13 +66,17 @@ export const groupChat = async (req, res, next) => {
     return next(Error("More than 2 users are required for the group chat"));
   }
 
+  // const file = req.file;
+  // const fileUri = getDataUri(file);
+  // const result = await cloudinary.v2.uploader.upload(fileUri.content);
+
   const groupChat = await Chat.create({
     chatName:name,
     users,
     groupAdmin: req.user.id,
     isGroupChat: true,
+    // groupAvatar:result.secure_url
   });
-  console.log(groupChat._id);
   const fullGroupChat = await Chat.find({ _id: groupChat._id })
     .populate("users", "-password")
     .populate("groupAdmin", "-password");
@@ -116,7 +121,7 @@ export const addUser = async(req,res,next)=>{
     const {userId} = req.body
     if(!userId){
         res.status(400)
-        return next(new Error("Please select the user to add"))
+        return next(new Error("Please select the user to add")) 
     }
     let groupChat = await Chat.findById(id)
     const users = groupChat.users

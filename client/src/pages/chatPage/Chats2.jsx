@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
-import NewGroup from '../create group/NewGroup';
+import NewGroup from '../group/NewGroup';
 
 export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();

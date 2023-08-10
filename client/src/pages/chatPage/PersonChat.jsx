@@ -39,8 +39,8 @@ export default function PersonChat() {
               </div>
               <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
-                <li ref={menuRef} className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>setGroupInfo(true)}>Group Info</li>
-                <li ref={menuRef} className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10">Exit Group</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>setGroupInfo(true)}>Group Info</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10">Exit Group</li>
               </ul>
             </div>
           </div>

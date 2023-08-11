@@ -150,9 +150,10 @@ export const removeUser = async(req,res,next)=>{
         return next(new Error("Please enter the Group id"))
     }
     const {userId} = req.body
+    console.log(userId);
     if(!userId){
         res.status(400)
-        return next(new Error("Please select the user to add"))
+        return next(new Error("Please select the user to remove"))
     }
     const groupChat = await Chat.findById(id)
     const users = groupChat.users.filter((item)=>item.toString()!==userId)

@@ -12,8 +12,8 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const removeGroupMembers = (member)=>{
     setGroupMembers(groupMembers.filter(memb => memb!==member))
   }
-  const back = ()=>{
-    if(directNewGroup){
+  const back = (confirm)=>{
+    if(directNewGroup||confirm){
       toggleGroup()
       toggleChat()
     }
@@ -92,7 +92,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
           </span>
         </div>
       </div>:""}
-      </div>:<ConfirmGroup handleConfirmGroup={handleConfirmGroup} groupMembers={groupMembers}/>}
+      </div>:<ConfirmGroup handleConfirmGroup={handleConfirmGroup} groupMembers={groupMembers} back={back}/>}
     </>
   )
 }

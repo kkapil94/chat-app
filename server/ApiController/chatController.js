@@ -9,6 +9,7 @@ export const accesChat = async (req, res, next) => {
     return next(new Error("User is must"));
   }
   let isChat = await Chat.find({
+    isGroupChat:false,
     $and: [
       { users: { $elemMatch: { $eq: req.user.id } } },
       { users: { $elemMatch: { $eq: userId } } },
@@ -16,12 +17,10 @@ export const accesChat = async (req, res, next) => {
   })
     .populate("users", "-password")
     .populate("latestMessage");
-
-  isChat = User.populate(isChat, {
-    path: "lastMessage.sender",
-    select: "name pic email",
-  });
-
+    isChat =await User.populate(isChat, {
+      path: "lastMessage.sender",
+      select: "name avatar email",
+    });
   if (isChat.length > 0) {
     res.send(isChat[0]);
   } else {

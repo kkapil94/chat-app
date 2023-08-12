@@ -53,7 +53,7 @@ export default function PersonChat() {
         </div>}
         <div className='h-full'>
         {groupInfo&&<div className='h-full'>
-          <EditGroup selectedChat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
+          <EditGroup chat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
         </div>}
         </div>
       </div>

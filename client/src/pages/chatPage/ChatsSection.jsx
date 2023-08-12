@@ -1,5 +1,5 @@
 import React from "react";
-import PersonChat from "./PersonChat";
+import PersonChat from "./GroupChat";
 
 export default function ChatsSection() {
   return (

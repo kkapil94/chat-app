@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from "axios"
 import AddUserModal from './AddUserModal';
-
-export default function EditGroup({selectedChat,groupInfo}) {
+export default function EditGroup({chat,groupInfo}) {
+    const [selectedChat,setSelectedChat] = useState(chat)
     const [edit,setEdit] = useState(false);
     const [open,setOpen] = useState(false);
     const token = JSON.parse(localStorage.getItem("user")).token;
@@ -11,7 +11,8 @@ export default function EditGroup({selectedChat,groupInfo}) {
         avatar:selectedChat.groupAvatar
     })
 
-    //renme group
+
+    //rename group
     
     const editInfo = async(id)=>{
        try{ const data =await axios.put(`/api/v1/chat/group/rename/${id}`,{name:details.name},{
@@ -35,8 +36,7 @@ export default function EditGroup({selectedChat,groupInfo}) {
                 Authorization:`Bearer ${token}`
                 },
         })
-        console.log(data);
-    
+            setSelectedChat(chat)
     }catch(err){
             console.log(err);
         }
@@ -83,7 +83,7 @@ export default function EditGroup({selectedChat,groupInfo}) {
                         {selectedChat.users.length} members
                     </span>
                 </div>
-                <div className='flex items-center hover:bg-slate-600 cursor-pointer' onClick={()=>setOpen(1)}>
+                <div className='flex items-center hover:bg-slate-600 cursor-pointer' onClick={()=>setOpen(true)}>
                     <div className='rounded-full bg-gray-500 m-3 h-12 w-12 flex items-center justify-center'>
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className='h-8'>
@@ -116,7 +116,7 @@ export default function EditGroup({selectedChat,groupInfo}) {
                 ))}
             </div>
         </div>
-        <AddUserModal open={open} setOpen={()=>setOpen(!open)} chat={selectedChat}/>
+        <AddUserModal open={open} setOpen={()=>setOpen(!open)} selectedChat={selectedChat}/>
     </>
   )
 }

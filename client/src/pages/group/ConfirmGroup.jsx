@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom"
 import axios from 'axios';
 
 export default function ConfirmGroup({handleConfirmGroup,groupMembers}) {
     const [name,setName] = useState();
+    const navigate = useNavigate()
     const users = [];
     groupMembers.map((mem)=>(users.push(mem._id)))
-    console.log(users);
     const token = JSON.parse(localStorage.getItem("user")).token
     const createGroup = async()=>{
         const data =await axios.post("/api/v1/chat/group",{name,users},{
             headers:{
             Authorization:`Bearer ${token}`
-            },
+            }
     })
-        console.log(data);
-      }
+    navigate("/login")
+}
+
   return (<>
             <div id="chats" className="bg-[#27374D] w-[30%] h-screen">
                     <div className="sticky top-0 pb-4">

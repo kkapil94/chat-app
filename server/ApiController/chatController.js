@@ -118,21 +118,13 @@ export const addUser = async(req,res,next)=>{
         res.status(400)
         return next(new Error("Please enter the Group id"))
     }
-    const {userId} = req.body
-    if(!userId){
+    const {user} = req.body
+    if(!user.length){
         res.status(400)
         return next(new Error("Please select the user to add")) 
     }
     let groupChat = await Chat.findById(id)
-    const users = groupChat.users
-    for(var i=0;i<users.length;i++){
-        if(users[i]==userId){
-                    res.status(400)
-                    return next(new Error("User is already exist"))
-                    // break
-                }
-    }
-    groupChat.users = [...groupChat.users,userId]
+    groupChat.users = groupChat.users.concat(user)
     // groupChat = groupChat.populate("users")
     groupChat.save()
     .then(result=>{return result.populate("users","-password")})

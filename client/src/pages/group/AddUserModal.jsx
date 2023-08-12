@@ -4,24 +4,29 @@ import Modal from "@mui/material/Modal";
 
 import { useDispatch } from "react-redux";
 import { searchUser } from "../../actions/usersActions";
+import axios from "axios";
 
-export default function ({ open, setOpen, chat}) {
+export default function ({ open, setOpen, selectedChat}) {
   const dispatch = useDispatch();
+  const [chat,setChat] = useState(selectedChat)
+  const {users} = useSelector(state=>state.users)
   const [search, setSearch] = useState();
   const [add, setAdd] = useState([]);
-  const { allUsers } = useSelector((state) => state.users);
-  const users = allUsers.filter(user=>{
-    console.log(user,"iam");
-    chat.users.forEach(memb=>{
-        if(memb==user){
-            console.log(memb,user);
-            return false
-        }return true
-    })
-  })
+  // const [newMemb,setNewMemb]=useState(users.filter(user => !chat.users.map(memb=>memb._id).includes(user._id)))
   const removeAdd = (member) => {
     setAdd(add.filter((memb) => memb !== member));
   };
+
+  const addUser = async()=>{
+    const ids = add.map(add=>add._id)
+    const token = JSON.parse(localStorage.getItem("user")).token
+    const data = await axios.put(`/api/v1/chat/group/add/${chat._id}`,{user:ids},{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    })
+    setOpen()
+  }
   useEffect(() => {
     dispatch(searchUser(search));
   }, [dispatch, search]);
@@ -107,8 +112,8 @@ export default function ({ open, setOpen, chat}) {
           {users && users.length ? (
             <div className="overflow-auto">
               <div>
-                {users &&
-                  users.map((user) => (
+                {users && 
+                  users.filter(user => !chat.users.map(memb=>memb._id).includes(user._id)) .map((user) => (
                     <div key={user._id} onClick={() => setAdd([...add, user])}>
                       <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
                         <div>
@@ -136,8 +141,8 @@ export default function ({ open, setOpen, chat}) {
           )}
 
            {add.length? <div className="relative">
-                <span className="rounded-full flex items-center justify-center bg-slate-400 h-14 w-14 absolute bottom-14 right-12">
-                <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className="h-8 fill-[#06172f]">
+                <span className="rounded-full flex items-center justify-center bg-slate-400 h-14 w-14 absolute bottom-14 right-12 cursor-pointer" onClick={addUser}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className="h-8 fill-[#06172f]" > 
                     <path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/>
                 </svg>
                 </span>

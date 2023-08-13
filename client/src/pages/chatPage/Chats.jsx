@@ -63,19 +63,25 @@ export default function Chats({chats}) {
             </div>
           </div>
         </div>
-        <div className="h-[calc(100vh-3.8rem)] overflow-auto">
+       {chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
             <div>
               <img src={chat.groupAvatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
-            <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full text-white flex items-center">
+            <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full mr-2 text-white flex items-center">
               <span>{chat.chatName}</span>
             </div>
           </div>
           ))
           }
-        </div>
+        </div>:
+        <div className="h-[calc(100vh-3.8rem)] flex items-center justify-center">
+            <span className="text-[#e2e8f0] text-xl font-bold">Click 
+              '<svg xmlns="http://www.w3.org/2000/svg" className="h-5 inline fill-white" height="48" viewBox="0 -960 960 960" width="35"><path d="M306-523q17 0 28.5-11.5T346-563q0-17-11.5-28.5T306-603q-17 0-28.5 11.5T266-563q0 17 11.5 28.5T306-523Zm177 0q17 0 28.5-11.5T523-563q0-17-11.5-28.5T483-603q-17 0-28.5 11.5T443-563q0 17 11.5 28.5T483-523Zm170 0q17 0 28.5-11.5T693-563q0-17-11.5-28.5T653-603q-17 0-28.5 11.5T613-563q0 17 11.5 28.5T653-523ZM80-80v-740q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H240L80-80Zm134-220h606v-520H140v600l74-80Zm-74 0v-520 520Z"/></svg>'
+              to start a new chat!
+            </span>
+          </div>}
       </div>):<Chats2 toggleChat={()=>toggleChat()} directNewGroup={toggleGroup}/>}
     </>
   );

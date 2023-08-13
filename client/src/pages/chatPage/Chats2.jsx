@@ -38,7 +38,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
           </div>
         </div>
         <div className='w-full'>
-          <div className='h-[1px] bg-slate-600 ml-[4.5rem] mr-1'></div>
+          <div className='h-[1px] bg-slate-600 ml-[4.5rem] mr-2'></div>
         </div>
         <div>
           {users&&users.map((user)=>(

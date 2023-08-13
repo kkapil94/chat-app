@@ -24,6 +24,13 @@ export const clearErrors = ()=>(dispatch)=>{
 export const selectChat = (id)=>async(dispatch)=>{
     const token= JSON.parse(localStorage.getItem("user")).token
      try {
+        if (!id) {
+            dispatch({
+                type:"SELECT_CHAT",
+                payload:null
+            })
+            return
+        }
         dispatch({type:"CHAT_REQUEST"})
         const {data} = await axios.get(`/api/v1/chat/${id}`,{headers :{
             Authorization:`Bearer ${token}`

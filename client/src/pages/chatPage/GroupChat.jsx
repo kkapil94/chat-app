@@ -1,19 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import TypeSpace from './TypeSpace';
 import EditGroup from '../group/EditGroup';
+import { getChats, selectChat } from '../../actions/chatsActions';
+import axios from 'axios';
 
-export default function PersonChat() {
+export default function GroupChat() {
     const [menu,setMenu] = useState(false);
     const [groupInfo,setGroupInfo] = useState(false)
+    const dispatch = useDispatch()
     const menuRef = useRef();
+    const {token} = JSON.parse(localStorage.getItem("user"));
+    const userId = JSON.parse(localStorage.getItem("user")).user._id;
     const selectedChat = useSelector(state=>state.chats.selectedChat)
-    console.log(selectedChat);
     const func = (e)=>{
       if(!menuRef.current.contains(e.target)){
         setMenu(false);
       }
     }
+    const removeMember = async(groupId)=>{
+      try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId},{
+          headers:{
+              Authorization:`Bearer ${token}`
+              },
+      })
+      dispatch(getChats())
+      dispatch(selectChat())
+  }catch(err){
+          console.log(err);
+      }
+  }
     useEffect(() => {
       document.addEventListener("mousedown",func)
       return () => {
@@ -40,7 +56,7 @@ export default function PersonChat() {
               <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setGroupInfo(true);setMenu(0)}}>Group Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10">Exit Group</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id)}>Exit Group</li>
               </ul>
             </div>
           </div>

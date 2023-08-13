@@ -3,8 +3,8 @@ import User from "../model/userModel.js";
 import { getDataUri } from "../utils/dataUri.js";
 
 export const accesChat = async (req, res, next) => {
-  const { userId } = req.body;
-  if (!userId) {
+  const { user } = req.body;
+  if (!user) {
     res.status(401);
     return next(new Error("User is must"));
   }
@@ -12,7 +12,7 @@ export const accesChat = async (req, res, next) => {
     isGroupChat:false,
     $and: [
       { users: { $elemMatch: { $eq: req.user.id } } },
-      { users: { $elemMatch: { $eq: userId } } },
+      { users: { $elemMatch: { $eq: user._id } } },
     ],
   })
     .populate("users", "-password")
@@ -25,8 +25,8 @@ export const accesChat = async (req, res, next) => {
     res.send(isChat[0]);
   } else {
     var chatdata = {
-      chatName: "sender",
-      users: [req.user.id, userId],
+      chatName: user.name,
+      users: [req.user.id, user._id],
     };
     const newChat = await Chat.create(chatdata);
     const fullChat = await Chat.find(newChat._id).populate(

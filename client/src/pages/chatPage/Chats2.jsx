@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
 import NewGroup from '../group/NewGroup';
+import axios from 'axios';
+import { getChats } from '../../actions/chatsActions';
 
 export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
@@ -11,7 +13,17 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const toggleGroup = ()=>{
     setNewGroup(0)
   }
-  useEffect(()=>{
+  const singleChat = async(user)=>{
+    const {token} = JSON.parse(localStorage.getItem("user"))
+    const data = await axios.post('/api/v1/chat',{user},{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    toggleChat();
+    dispatch(getChats());
+  }
+    useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search]) 
 
@@ -42,7 +54,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
         </div>
         <div>
           {users&&users.map((user)=>(
-            <div key={user._id}>
+            <div key={user._id} onClick={()=>singleChat(user)}>
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
             <div>
               <img src={user.avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>

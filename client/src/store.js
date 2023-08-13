@@ -1,8 +1,7 @@
 import {combineReducers,applyMiddleware,legacy_createStore as createStore} from "redux"
-import { chatReducers } from "./reducers/chatReducers"
-
 import thunk from "redux-thunk"
 import {composeWithDevTools} from "redux-devtools-extension"
+import { chatReducers } from "./reducers/chatReducers"
 import { usersReducer } from "./reducers/usersReducers"
 const reducer = combineReducers({
    chats:chatReducers,

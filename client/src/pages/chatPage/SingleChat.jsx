@@ -1,35 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import TypeSpace from './TypeSpace';
 import EditGroup from '../group/EditGroup';
 import { getChats, selectChat } from '../../actions/chatsActions';
 import axios from 'axios';
 
-export default function GroupChat() {
+export default function SingleChat() {
     const [menu,setMenu] = useState(false);
-    const [groupInfo,setGroupInfo] = useState(false)
-    const dispatch = useDispatch()
+    const [chatInfo,setChatInfo] = useState(false)
+    const selectedChat = useSelector(state=>state.chats.selectedChat)
     const menuRef = useRef();
     const {token} = JSON.parse(localStorage.getItem("user"));
-    const userId = JSON.parse(localStorage.getItem("user")).user._id;
-    const selectedChat = useSelector(state=>state.chats.selectedChat)
     const func = (e)=>{
       if(!menuRef.current.contains(e.target)){
         setMenu(false);
       }
     }
-    const removeMember = async(groupId)=>{
-      try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId},{
-          headers:{
-              Authorization:`Bearer ${token}`
-              },
-      })
-      dispatch(getChats())
-      dispatch(selectChat())
-  }catch(err){
-          console.log(err);
-      }
-  }
     useEffect(() => {
       document.addEventListener("mousedown",func)
       return () => {
@@ -39,11 +25,11 @@ export default function GroupChat() {
   return (
     <>
     <div className='flex h-full'>
-      {selectedChat?<div className={!groupInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
+      {selectedChat?<div className={!chatInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
         <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#9DB2BF]'>
           <div className='flex ml-4 space-x-2'>
             <div>
-              <img src={!selectedChat.isGroupChat?selectedChat.avatar:selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>
+              <img src={selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>
             </div>
             <div className='flex items-center'>
               <span>{selectedChat.chatName}</span>
@@ -55,8 +41,8 @@ export default function GroupChat() {
               </div>
               <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setGroupInfo(true);setMenu(0)}}>Group Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id)}>Exit Group</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setChatInfo(true);setMenu(0)}}>Chat Info</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id)}>Delete Chat</li>
               </ul>
             </div>
           </div>
@@ -68,8 +54,8 @@ export default function GroupChat() {
         <span>Select a chat to start a new converstaion!</span>
         </div>}
         <div className='h-full'>
-        {groupInfo&&<div className='h-full'>
-          <EditGroup chat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
+        {chatInfo&&<div className='h-full'>
+          <EditGroup chat={selectedChat} chatInfo={()=>setChatInfo(!chatInfo)}/>
         </div>}
         </div>
       </div>

@@ -67,7 +67,7 @@ export default function Chats({chats}) {
           {chats&&chats.map((chat)=>(
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
             <div>
-              <img src={chat.groupAvatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
+              <img src={chat.chatAvatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
             <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full mr-2 text-white flex items-center">
               <span>{chat.chatName}</span>

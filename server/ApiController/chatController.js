@@ -27,6 +27,7 @@ export const accesChat = async (req, res, next) => {
     var chatdata = {
       chatName: user.name,
       users: [req.user.id, user._id],
+      chatAvatar:user.avatar
     };
     const newChat = await Chat.create(chatdata);
     const fullChat = await Chat.find(newChat._id).populate(

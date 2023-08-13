@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import axios from "axios"
 import AddUserModal from './AddUserModal';
+import { useSelector,useDispatch } from 'react-redux';
+import { selectChat } from '../../actions/chatsActions';
 export default function EditGroup({chat,groupInfo}) {
-    const [selectedChat,setSelectedChat] = useState(chat)
+    const {selectedChat} = useSelector(state=>state.chats)
+    const dispatch = useDispatch();
     const [edit,setEdit] = useState(false);
     const [open,setOpen] = useState(false);
     const token = JSON.parse(localStorage.getItem("user")).token;
@@ -20,8 +23,7 @@ export default function EditGroup({chat,groupInfo}) {
                 Authorization:`Bearer ${token}`
                 },
         })
-        console.log(data);
-    
+        dispatch(selectChat(selectedChat._id))
     }catch(err){
             console.log(err);
         }
@@ -36,7 +38,7 @@ export default function EditGroup({chat,groupInfo}) {
                 Authorization:`Bearer ${token}`
                 },
         })
-            setSelectedChat(chat)
+        dispatch(selectChat(selectedChat._id))
     }catch(err){
             console.log(err);
         }
@@ -45,7 +47,6 @@ export default function EditGroup({chat,groupInfo}) {
   return (
     <>
         <div className='w-[30vw] h-screen overflow-auto'>
-            <div className='bg-[#27374D] pb-4 mb-2'>
                 <div className='flex items-center pl-4 h-[3.8rem] bg-[#9DB2BF] sticky top-0'>
                     <div className='mr-2 cursor-pointer' onClick={()=>groupInfo()}>
                         <img src="/img/close.png" alt="" className='h-6'/>
@@ -54,6 +55,7 @@ export default function EditGroup({chat,groupInfo}) {
                         <span>Group Info</span>
                     </div>
                 </div>
+            <div className='bg-[#27374D] pb-4 mb-2'>
                 <div className='flex flex-col items-center pt-6'>
                     <div>
                         <div className='h-48 '>
@@ -63,7 +65,7 @@ export default function EditGroup({chat,groupInfo}) {
                     <div className='mt-4 text-center'>
                         <div className='flex items-center space-x-2 justify-center'>
                             {!edit?<span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>:
-                                <input type="text" value={details.name} className='text-3xl w-2/5 outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
+                                <input type="text" value={details.name} className='text-3xl w-3/5  outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2 mr-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
                             }
                             <span className='relative'>
                                 {!edit?<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" onClick={()=>setEdit(1)} className='h-6 w-auto fill-[#b1b3bb] cursor-pointer'>

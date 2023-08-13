@@ -40,14 +40,17 @@ export const accesChat = async (req, res, next) => {
 //get all chats
 
 export const allChats = async (req, res, next) => {
-  const allChats = await Chat.find({
+ try{ const allChats = await Chat.find({
     users: { $elemMatch: { $eq: req.user.id } },
   })
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
     .populate("latestMessage")
     .sort({ updatedAt: -1 });
-  res.send(allChats).status(200);
+  res.send(allChats).status(200);}
+  catch(err){
+    console.log(err);
+  }
 };
 
 //create group chat
@@ -135,7 +138,7 @@ export const addUser = async(req,res,next)=>{
 
 //remove user
 export const removeUser = async(req,res,next)=>{
-    const {id} = req.params
+    const {id} = req.params;
     if(!id){
         res.status(400)
         return next(new Error("Please enter the Group id"))
@@ -160,4 +163,19 @@ export const removeUser = async(req,res,next)=>{
       res.status(200).send(groupChat)
     })
     console.log(groupChat);
+}
+
+// getSingle chat
+
+export const singleChat = async(req,res,next)=>{
+  try{const {id} = req.params;
+  if (!id) {
+    return next(new Error("ID is must"));
+  }
+  const chat = await Chat.findById(id).populate("users","-password");
+
+  res.status(200).send(chat);}
+  catch(err){
+    console.log(err);
+  }
 }

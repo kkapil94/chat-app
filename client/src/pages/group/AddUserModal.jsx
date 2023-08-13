@@ -4,15 +4,15 @@ import Modal from "@mui/material/Modal";
 
 import { useDispatch } from "react-redux";
 import { searchUser } from "../../actions/usersActions";
+import { selectChat } from "../../actions/chatsActions";
 import axios from "axios";
 
-export default function ({ open, setOpen, selectedChat}) {
+export default function ({ open, setOpen}) {
   const dispatch = useDispatch();
-  const [chat,setChat] = useState(selectedChat)
   const {users} = useSelector(state=>state.users)
+  const {selectedChat} = useSelector(state=>state.chats)
   const [search, setSearch] = useState();
   const [add, setAdd] = useState([]);
-  // const [newMemb,setNewMemb]=useState(users.filter(user => !chat.users.map(memb=>memb._id).includes(user._id)))
   const removeAdd = (member) => {
     setAdd(add.filter((memb) => memb !== member));
   };
@@ -20,12 +20,14 @@ export default function ({ open, setOpen, selectedChat}) {
   const addUser = async()=>{
     const ids = add.map(add=>add._id)
     const token = JSON.parse(localStorage.getItem("user")).token
-    const data = await axios.put(`/api/v1/chat/group/add/${chat._id}`,{user:ids},{
+    const data = await axios.put(`/api/v1/chat/group/add/${selectedChat._id}`,{user:ids},{
         headers:{
             Authorization:`Bearer ${token}`
         }
     })
+    dispatch(selectChat(selectedChat._id))
     setOpen()
+    setAdd([]);
   }
   useEffect(() => {
     dispatch(searchUser(search));
@@ -113,7 +115,7 @@ export default function ({ open, setOpen, selectedChat}) {
             <div className="overflow-auto">
               <div>
                 {users && 
-                  users.filter(user => !chat.users.map(memb=>memb._id).includes(user._id)) .map((user) => (
+                  users.filter(user => !selectedChat.users.map(memb=>memb._id).includes(user._id)) .map((user) => (
                     <div key={user._id} onClick={() => setAdd([...add, user])}>
                       <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
                         <div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import {useNavigate} from "react-router-dom"
-import axios from 'axios';
+import { getChats } from "../../actions/chatsActions";
 
-export default function ConfirmGroup({handleConfirmGroup,groupMembers}) {
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+
+export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const [name,setName] = useState();
-    const navigate = useNavigate()
+    const dispatch = useDispatch();
     const users = [];
     groupMembers.map((mem)=>(users.push(mem._id)))
     const token = JSON.parse(localStorage.getItem("user")).token
@@ -14,7 +16,8 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers}) {
             Authorization:`Bearer ${token}`
             }
     })
-    navigate("/login")
+    back(true)
+    dispatch(getChats())
 }
 
   return (<>

@@ -21,6 +21,19 @@ export const clearErrors = ()=>(dispatch)=>{
     dispatch({type:"CLEAR_ERROR"})
 }
 
-export const selectChat = (chat)=>async(dispatch)=>{
-    dispatch({type:"SELECT_CHAT",payload:chat})
+export const selectChat = (id)=>async(dispatch)=>{
+    const token= JSON.parse(localStorage.getItem("user")).token
+     try {
+        dispatch({type:"CHAT_REQUEST"})
+        const {data} = await axios.get(`/api/v1/chat/${id}`,{headers :{
+            Authorization:`Bearer ${token}`
+        }});
+        dispatch({type:"SELECT_CHAT",payload:data})
+    } catch(error) {
+        console.log(error,"i am");
+        dispatch({
+            type:"CHAT_FAIL",
+            payload:error
+        })
+    }
 }

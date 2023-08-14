@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import TypeSpace from './TypeSpace';
 import ChatInfo from '../group/ChatInfo';
 import { getChats, selectChat } from '../../actions/chatsActions';
@@ -7,8 +7,10 @@ import axios from 'axios';
 
 export default function SingleChat() {
     const [menu,setMenu] = useState(false);
+    const dispatch = useDispatch()
     const [chatInfo,setChatInfo] = useState(false)
     const selectedChat = useSelector(state=>state.chats.selectedChat)
+    const userId = JSON.parse(localStorage.getItem("user")).user._id;
     const menuRef = useRef();
     const {token} = JSON.parse(localStorage.getItem("user"));
     const func = (e)=>{
@@ -16,6 +18,20 @@ export default function SingleChat() {
         setMenu(false);
       }
     }
+
+    const removeMember = async(groupId,membId)=>{
+      try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
+          headers:{
+              Authorization:`Bearer ${token}`
+              },
+      })
+      dispatch(getChats())
+      dispatch(selectChat())
+  }catch(err){
+          console.log(err);
+      }
+  }
+
     useEffect(() => {
       document.addEventListener("mousedown",func)
       return () => {
@@ -42,7 +58,7 @@ export default function SingleChat() {
               <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setChatInfo(true);setMenu(0)}}>Chat Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id)}>Delete Chat</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id,userId)}>Delete Chat</li>
               </ul>
             </div>
           </div>

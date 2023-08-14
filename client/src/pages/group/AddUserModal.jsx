@@ -111,11 +111,11 @@ export default function ({ open, setOpen}) {
             ""
           )}
 
-          {users && users.length ? (
+          {users && selectedChat && users.length ? (
             <div className="overflow-auto">
               <div>
                 {users && 
-                  users.filter(user => !selectedChat.users.map(memb=>memb._id).includes(user._id)) .map((user) => (
+                  users.filter(user => !selectedChat.users.map(memb=>memb._id).includes(user._id)).map((user) => (
                     <div key={user._id} onClick={() => setAdd([...add, user])}>
                       <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
                         <div>

@@ -9,7 +9,8 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     const [edit,setEdit] = useState(false);
     const [open,setOpen] = useState(false);
     const token = JSON.parse(localStorage.getItem("user")).token;
-    const [details,setDetails] = useState({
+    const userId = JSON.parse(localStorage.getItem("user")).user._id;
+    const [details,setDetails] = useState(selectedChat&&{
         name:selectedChat.chatName,
         avatar:selectedChat.chatAvatar
     })
@@ -34,13 +35,19 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     //remove group
 
     const removeMember = async(groupId,membId)=>{
+        console.log(groupId);
         try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
             headers:{
                 Authorization:`Bearer ${token}`
                 },
         })
-        dispatch(selectChat(selectedChat._id))
-        dispatch(getChats())
+        if (membId==userId) {
+            dispatch(getChats())
+            dispatch(selectChat())
+            chatInfo()
+        }else{
+            dispatch(selectChat(selectedChat._id))
+        }
     }catch(err){
             console.log(err);
         }
@@ -50,26 +57,40 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     <>
         <div className='w-[30vw] h-screen overflow-auto'>
                 <div className='flex items-center pl-4 h-[3.8rem] bg-[#9DB2BF] sticky top-0'>
-                    <div className='mr-2 cursor-pointer' onClick={()=>selectedChat.isGroupChat?groupInfo():chatInfo()}>
+                    <div className='mr-2 cursor-pointer' onClick={()=>selectedChat&&selectedChat.isGroupChat?groupInfo():chatInfo()}>
                         <img src="/img/close.png" alt="" className='h-6 '/>
                     </div>
                      <div>
-                        {selectedChat.isGroupChat?<span>Group Info</span>:<span>Chat Info</span>}
+                        {selectedChat&&selectedChat.isGroupChat?<span>Group Info</span>:<span>Chat Info</span>}
                     </div>
                 </div>
-            <div className='bg-[#27374D] pb-4 mb-2'>
+            <div className='bg-[#27374D] pb-4  h-[calc(100vh-3.8rem)] '>
                 <div className='flex flex-col items-center pt-6'>
                     <div>
                         <div>
-                            <img src={selectedChat.chatAvatar} alt="" className='h-48 w-48 rounded-full object-contain '/>   
+                            <img src={selectedChat&&selectedChat.chatAvatar} alt="" className='h-48 w-48 rounded-full object-contain '/>   
                         </div>
                     </div>
-                    {!selectedChat.isGroupChat&&<div>
-                        <span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>
+                    
+                    {selectedChat&&!selectedChat.isGroupChat&&
+                    <div className='flex flex-col items-center w-full'>
+                        <div >
+                            <span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>
+                        </div>
+                        <div className='w-full mt-14'>
+                            <div className='h-1 w-full bg-[#9DB2BF]'></div>
+                        </div>
+                        <div className='mt-16 w-full'>
+                            <div  className='flex justify-start space-x-4 w-full pl-6 h-16 items-center   hover:bg-slate-600 cursor-pointer' onClick={()=>removeMember(selectedChat._id,userId)}>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="25" fill='#f15c6d' viewBox="0 -960 960 960" width="48"><path d="M261-120q-24 0-42-18t-18-42v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm106-146h60v-399h-60v399Zm166 0h60v-399h-60v399Z"/></svg>
+                                </span>
+                                <span className='text-lg text-[#f15c6d]'>Delete Chat</span>
+                            </div>
+                        </div>
                     </div>
-
                     }
-                    {selectedChat.isGroupChat&&<div className='mt-4 text-center'>
+                    {selectedChat&&selectedChat.isGroupChat&&<div className='mt-4 text-center'>
                         <div className='flex items-center space-x-2 justify-center'>
                             {!edit?<span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>:
                                 <input type="text" value={details.name} className='text-3xl w-3/5  outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2 mr-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
@@ -85,8 +106,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                         <span className='text-[#eef4f9]'>Group · {selectedChat.users.length} participants</span>
                     </div>}
                 </div>
-            </div>
-            {selectedChat.isGroupChat&&<div className='bg-[#27374D]'>
+            {selectedChat&&selectedChat.isGroupChat&&<div className='bg-[#27374D]'>
                 <div >
                     <span className='text-lg pl-4 mt-4 inline-block text-[#b1b3bb]'>
                         {selectedChat.users.length} members
@@ -124,6 +144,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                 </div>
                 ))}
             </div>}
+            </div>
         </div>
         <AddUserModal open={open} setOpen={()=>setOpen(!open)} selectedChat={selectedChat}/>
     </>

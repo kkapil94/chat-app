@@ -1,5 +1,6 @@
 import Chat from "../model/chatModel.js";
 import User from "../model/userModel.js";
+import cloudinary from "cloudinary";
 import { getDataUri } from "../utils/dataUri.js";
 
 export const accesChat = async (req, res, next) => {
@@ -58,27 +59,27 @@ export const allChats = async (req, res, next) => {
 
 export const groupChat = async (req, res, next) => {
   let { users, name } = req.body;
- 
   if (!users || !name) {
     res.status(401);
     return next(Error("all feilds are mandatory"));
   }
-  users.push(req.user.id);
+  users = [req.user.id].concat(JSON.parse(users))
+
   if (users.length <= 2) {
     res.status(401);
     return next(Error("More than 2 users are required for the group chat"));
   }
 
-  // const file = req.file;
-  // const fileUri = getDataUri(file);
-  // const result = await cloudinary.v2.uploader.upload(fileUri.content);
+  const file = req.file;
+  const fileUri = getDataUri(file);
+  const result = await cloudinary.v2.uploader.upload(fileUri.content);
 
   const groupChat = await Chat.create({
     chatName:name,
     users,
     groupAdmin: req.user.id,
     isGroupChat: true,
-    // groupAvatar:result.secure_url
+    chatAvatar:result.secure_url
   });
   const fullGroupChat = await Chat.find({ _id: groupChat._id })
     .populate("users", "-password")
@@ -145,7 +146,6 @@ export const removeUser = async(req,res,next)=>{
         return next(new Error("Please enter the Group id"))
     }
     const {userId} = req.body
-    console.log(userId);
     if(!userId){
         res.status(400)
         return next(new Error("Please select the user to remove"))
@@ -163,7 +163,6 @@ export const removeUser = async(req,res,next)=>{
     .then(result=>{
       res.status(200).send(groupChat)
     })
-    console.log(groupChat);
 }
 
 // getSingle chat

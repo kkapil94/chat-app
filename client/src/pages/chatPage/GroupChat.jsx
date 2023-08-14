@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import TypeSpace from './TypeSpace';
-import EditGroup from '../group/EditGroup';
+import ChatInfo from '../group/ChatInfo';
 import { getChats, selectChat } from '../../actions/chatsActions';
 import axios from 'axios';
 
@@ -69,7 +69,7 @@ export default function GroupChat() {
         </div>}
         <div className='h-full'>
         {groupInfo&&<div className='h-full'>
-          <EditGroup chat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
+          <ChatInfo chat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
         </div>}
         </div>
       </div>

@@ -7,6 +7,7 @@ import { getDataUri } from "../utils/dataUri.js";
 
 export const register = async (req, res, next) => {
   const { name, email, password } = req.body;
+  console.log(req.body);
   if (!name || !email || !password) {
     res.status(400);
     return next(new Error("Please enter all the fields"));

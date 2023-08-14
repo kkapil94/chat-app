@@ -30,7 +30,7 @@ export default function SignUp() {
       });
       if (data.success) {
         notify("Registered successfully");
-        navigate("/")
+        navigate("/login")
       }
     } catch (err) {
       const error = err.response.data;

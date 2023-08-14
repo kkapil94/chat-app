@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import axios from "axios"
 import AddUserModal from './AddUserModal';
 import { useSelector,useDispatch } from 'react-redux';
-import { selectChat } from '../../actions/chatsActions';
-export default function EditGroup({chat,groupInfo}) {
+import { getChats, selectChat } from '../../actions/chatsActions';
+export default function ChatInfo({groupInfo,chatInfo}) {
     const {selectedChat} = useSelector(state=>state.chats)
     const dispatch = useDispatch();
     const [edit,setEdit] = useState(false);
@@ -11,7 +11,7 @@ export default function EditGroup({chat,groupInfo}) {
     const token = JSON.parse(localStorage.getItem("user")).token;
     const [details,setDetails] = useState({
         name:selectedChat.chatName,
-        avatar:selectedChat.groupAvatar
+        avatar:selectedChat.chatAvatar
     })
 
 
@@ -24,6 +24,7 @@ export default function EditGroup({chat,groupInfo}) {
                 },
         })
         dispatch(selectChat(selectedChat._id))
+        dispatch(getChats())
     }catch(err){
             console.log(err);
         }
@@ -39,6 +40,7 @@ export default function EditGroup({chat,groupInfo}) {
                 },
         })
         dispatch(selectChat(selectedChat._id))
+        dispatch(getChats())
     }catch(err){
             console.log(err);
         }
@@ -48,21 +50,26 @@ export default function EditGroup({chat,groupInfo}) {
     <>
         <div className='w-[30vw] h-screen overflow-auto'>
                 <div className='flex items-center pl-4 h-[3.8rem] bg-[#9DB2BF] sticky top-0'>
-                    <div className='mr-2 cursor-pointer' onClick={()=>groupInfo()}>
-                        <img src="/img/close.png" alt="" className='h-6'/>
+                    <div className='mr-2 cursor-pointer' onClick={()=>selectedChat.isGroupChat?groupInfo():chatInfo()}>
+                        <img src="/img/close.png" alt="" className='h-6 '/>
                     </div>
                      <div>
-                        <span>Group Info</span>
+                        {selectedChat.isGroupChat?<span>Group Info</span>:<span>Chat Info</span>}
                     </div>
                 </div>
             <div className='bg-[#27374D] pb-4 mb-2'>
                 <div className='flex flex-col items-center pt-6'>
                     <div>
-                        <div className='h-48 '>
-                            <img src={selectedChat.groupAvatar} alt="" className='h-full rounded-full'/>   
+                        <div>
+                            <img src={selectedChat.chatAvatar} alt="" className='h-48 w-48 rounded-full object-contain '/>   
                         </div>
                     </div>
-                    <div className='mt-4 text-center'>
+                    {!selectedChat.isGroupChat&&<div>
+                        <span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>
+                    </div>
+
+                    }
+                    {selectedChat.isGroupChat&&<div className='mt-4 text-center'>
                         <div className='flex items-center space-x-2 justify-center'>
                             {!edit?<span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>:
                                 <input type="text" value={details.name} className='text-3xl w-3/5  outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2 mr-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
@@ -76,10 +83,10 @@ export default function EditGroup({chat,groupInfo}) {
                             </span>
                         </div>
                         <span className='text-[#eef4f9]'>Group · {selectedChat.users.length} participants</span>
-                    </div>
+                    </div>}
                 </div>
             </div>
-            <div className='bg-[#27374D]'>
+            {selectedChat.isGroupChat&&<div className='bg-[#27374D]'>
                 <div >
                     <span className='text-lg pl-4 mt-4 inline-block text-[#b1b3bb]'>
                         {selectedChat.users.length} members
@@ -107,16 +114,16 @@ export default function EditGroup({chat,groupInfo}) {
                             <span>{memb.name}</span>
                         </div>
                     </div>
-                    <div className='group-hover:block hidden' onClick={()=>removeMember(selectedChat._id,memb._id)}>
+                    {memb._id!=selectedChat.groupAdmin&&<div className='group-hover:block hidden' onClick={()=>removeMember(selectedChat._id,memb._id)}>
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className='h-6 fill-white'>
                                 <path d="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"/>
                             </svg>
                         </span>
-                    </div>
+                    </div>}
                 </div>
                 ))}
-            </div>
+            </div>}
         </div>
         <AddUserModal open={open} setOpen={()=>setOpen(!open)} selectedChat={selectedChat}/>
     </>

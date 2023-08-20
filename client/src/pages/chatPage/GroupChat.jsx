@@ -4,11 +4,13 @@ import TypeSpace from './TypeSpace';
 import ChatInfo from '../group/ChatInfo';
 import { getChats, selectChat } from '../../actions/chatsActions';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function GroupChat() {
     const [menu,setMenu] = useState(false);
     const [groupInfo,setGroupInfo] = useState(false)
     const dispatch = useDispatch()
+    const notify = toast
     const menuRef = useRef();
     const {token} = JSON.parse(localStorage.getItem("user"));
     const userId = JSON.parse(localStorage.getItem("user")).user._id;
@@ -26,6 +28,9 @@ export default function GroupChat() {
       })
       dispatch(getChats())
       dispatch(selectChat())
+      if (data.status === 200) {
+        toast.success("Exited from group")
+      }
   }catch(err){
           console.log(err);
       }

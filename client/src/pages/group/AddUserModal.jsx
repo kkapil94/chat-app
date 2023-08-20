@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
-
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { searchUser } from "../../actions/usersActions";
 import { selectChat } from "../../actions/chatsActions";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ({ open, setOpen}) {
   const dispatch = useDispatch();
+  const notify = toast
   const {users} = useSelector(state=>state.users)
   const {selectedChat} = useSelector(state=>state.chats)
   const [search, setSearch] = useState();
@@ -16,7 +18,20 @@ export default function ({ open, setOpen}) {
   const removeAdd = (member) => {
     setAdd(add.filter((memb) => memb !== member));
   };
-
+  const handleSetAdd = (user)=>{
+    let present = 0
+    if (!add.length) {
+      console.log(1);
+      setAdd([...add,user])
+    }
+    add.length&&add.forEach(memb=>{
+      if(memb._id==user._id)
+      present = 1;
+    })
+    if (!present) {
+      setAdd([...add,user])
+    }
+  }
   const addUser = async()=>{
     const ids = add.map(add=>add._id)
     const token = JSON.parse(localStorage.getItem("user")).token
@@ -25,6 +40,9 @@ export default function ({ open, setOpen}) {
             Authorization:`Bearer ${token}`
         }
     })
+    if (data.status===200) {
+      notify.success("User added successfully")
+    }
     dispatch(selectChat(selectedChat._id))
     setOpen()
     setAdd([]);
@@ -116,7 +134,7 @@ export default function ({ open, setOpen}) {
               <div>
                 {users && 
                   users.filter(user => !selectedChat.users.map(memb=>memb._id).includes(user._id)).map((user) => (
-                    <div key={user._id} onClick={() => setAdd([...add, user])}>
+                    <div key={user._id} onClick={() => handleSetAdd(user)} >
                       <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
                         <div>
                           <img

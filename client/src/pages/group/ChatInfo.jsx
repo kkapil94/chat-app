@@ -3,9 +3,11 @@ import axios from "axios"
 import AddUserModal from './AddUserModal';
 import { useSelector,useDispatch } from 'react-redux';
 import { getChats, selectChat } from '../../actions/chatsActions';
+import { toast } from 'react-toastify';
 export default function ChatInfo({groupInfo,chatInfo}) {
     const {selectedChat} = useSelector(state=>state.chats)
     const dispatch = useDispatch();
+    const notify = toast
     const [edit,setEdit] = useState(false);
     const [open,setOpen] = useState(false);
     const token = JSON.parse(localStorage.getItem("user")).token;
@@ -26,6 +28,9 @@ export default function ChatInfo({groupInfo,chatInfo}) {
         })
         dispatch(selectChat(selectedChat._id))
         dispatch(getChats())
+        if (data.status === 200) {
+            notify.success("Name changed successfully")
+        }
     }catch(err){
             console.log(err);
         }
@@ -47,6 +52,9 @@ export default function ChatInfo({groupInfo,chatInfo}) {
             chatInfo()
         }else{
             dispatch(selectChat(selectedChat._id))
+        }
+        if (data.status === 200) {
+            notify.success("User removed successfully")
         }
     }catch(err){
             console.log(err);

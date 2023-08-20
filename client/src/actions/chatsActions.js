@@ -2,11 +2,11 @@ import axios from "axios"
 
 
 export const getChats = ()=>async (dispatch)=>{
-    const token= JSON.parse(localStorage.getItem("user")).token
+    const user= JSON.parse(localStorage.getItem("user"))
     try {
         dispatch({type:"ALL_CHATS_REQUEST"})
         const {data} = await axios.get("/api/v1/chat",{headers :{
-            Authorization:`Bearer ${token}`
+            Authorization:`Bearer ${user&&user.token}`
         }});
         dispatch({type:"ALL_CHATS_SUCCESS",payload:data})
     } catch(error) {

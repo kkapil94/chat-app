@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
 import { useDispatch } from "react-redux";
@@ -15,7 +15,7 @@ export default function Login() {
   const handleChange = (e)=>{
     setLogData({...logData,[e.target.id]:e.target.value})
   }
-  const notify = (msg)=>{toast(msg)}
+  const notify = toast
   const handleSubmit =async (e)=>{
     e.preventDefault();
     try{
@@ -23,7 +23,7 @@ export default function Login() {
       const {data} =await axios.post("/api/v1/auth/login",logData)
       if(data.success) {
         localStorage.setItem("user",JSON.stringify(data))
-        notify("Login successfully");
+        notify.success("Logged In successfully");
         navigate("/")
       }
     }catch(err){console.log(err);}
@@ -76,7 +76,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <ToastContainer/>
     </>
   );
 }

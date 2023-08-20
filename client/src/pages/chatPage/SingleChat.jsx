@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import TypeSpace from './TypeSpace';
 import ChatInfo from '../group/ChatInfo';
+import {toast} from 'react-toastify'
 import { getChats, selectChat } from '../../actions/chatsActions';
 import axios from 'axios';
 
@@ -10,9 +11,8 @@ export default function SingleChat() {
     const dispatch = useDispatch()
     const [chatInfo,setChatInfo] = useState(false)
     const selectedChat = useSelector(state=>state.chats.selectedChat)
-    const userId = JSON.parse(localStorage.getItem("user")).user._id;
+    const user = JSON.parse(localStorage.getItem("user"))
     const menuRef = useRef();
-    const {token} = JSON.parse(localStorage.getItem("user"));
     const func = (e)=>{
       if(!menuRef.current.contains(e.target)){
         setMenu(false);
@@ -20,13 +20,17 @@ export default function SingleChat() {
     }
 
     const removeMember = async(groupId,membId)=>{
+      setMenu(0)
       try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
           headers:{
-              Authorization:`Bearer ${token}`
+              Authorization:`Bearer ${user.token}`
               },
       })
       dispatch(getChats())
       dispatch(selectChat())
+      if (data.status === 200) {
+        toast.success("Chat deleted");
+      }
   }catch(err){
           console.log(err);
       }
@@ -58,7 +62,7 @@ export default function SingleChat() {
               <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
               <ul className="space-y-2">
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setChatInfo(true);setMenu(0)}}>Chat Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id,userId)}>Delete Chat</li>
+                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id,user.user._id)}>Delete Chat</li>
               </ul>
             </div>
           </div>

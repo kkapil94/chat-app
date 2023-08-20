@@ -22,6 +22,21 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
     }
   }
 
+  const handleSetGroupMemb = (user)=>{
+    let present = 0
+    if (!groupMembers.length) {
+      console.log(1);
+      setGroupMembers([...groupMembers,user])
+    }
+    groupMembers.length&&groupMembers.forEach(memb=>{
+      if(memb._id==user._id)
+      present = 1;
+    })
+    if (!present) {
+      setGroupMembers([...groupMembers,user])
+    }
+  }
+
   const handleConfirmGroup = ()=>{
     setConfirmGroup(!confirmGroup);
   }
@@ -68,7 +83,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
         {users.length?<div className={'overflow-auto '}>
         <div>
           {users&&users.map((user)=>(
-            <div onClick={()=>setGroupMembers([...groupMembers,user])} key={user._id}>
+            <div onClick={()=>handleSetGroupMemb(user)} key={user._id}>
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={user._id}>
             <div>
               <img src={user.avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>

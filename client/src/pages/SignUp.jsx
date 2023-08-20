@@ -1,21 +1,19 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 
 export default function SignUp() {
   const formRef = useRef(null);
   const navigate = useNavigate()
+  const notify = toast
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
     avatar: "",
   });
-  const notify = (alert) => {
-    toast(alert);
-  };
   const handleChange = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
   };
@@ -130,7 +128,6 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </>
   );
 }

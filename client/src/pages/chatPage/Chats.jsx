@@ -3,6 +3,7 @@ import Chats2 from "./Chats2";
 import {useNavigate} from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { selectChat } from "../../actions/chatsActions";
+import { toast } from "react-toastify";
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
@@ -17,6 +18,7 @@ export default function Chats({chats}) {
   const logout = ()=>{
     localStorage.removeItem("user");
     navigate("/login")
+    toast.success("Logged out successfully")
   }
   const newGroup =  ()=>{
     setMenu(false)

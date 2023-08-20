@@ -12,7 +12,7 @@ export default function ChatsPage() {
   console.log(error);
   useEffect(() => {
     dispatch(getChats());
-    if (error && error.response.statusText == "Unauthorized") {
+    if (error && error.response.statusText == "Unauthorized" || !localStorage.getItem("user")) {
       navigate("/login");
     }
   }, [dispatch, error]);

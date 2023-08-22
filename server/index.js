@@ -1,6 +1,7 @@
 import express from "express"
 import userRoute from "./routes/userRoute.js"
 import chatRoute from "./routes/chatRoute.js"
+import msgRoute from "./routes/msgRoute.js"
 import {connect}from "./utils/mongodb.js"
 import {errorHandler} from "./middleware/errorHandler.js"
 import singleUpload from "./middleware/multer.js"
@@ -13,7 +14,12 @@ import http from "http"
 import {Server} from "socket.io"
 const app = express()
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+  cors:{
+    origin:"http://127.0.0.1:5173",
+    credentials:true
+  },
+});
 
 
 dotenv.config()
@@ -28,13 +34,14 @@ app.use(cors())
 app.use(express.json())
 app.use("/api/v1/auth",userRoute)
 app.use("/api/v1/chat",chatRoute)
+app.use("/api/v1/msg",msgRoute)
 app.use(singleUpload)
 app.use(isValidated)
 app.use(isAdmin)
 app.use(errorHandler)
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log("connected",socket.id);
 });
 
 server.listen(4000,()=>{

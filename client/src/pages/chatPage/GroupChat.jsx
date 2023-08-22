@@ -70,7 +70,7 @@ export default function GroupChat() {
           <TypeSpace/>
         </div>
       </div>:<div className='h-full w-full flex items-center justify-center text-xl text-slate-200 font-bold'>
-        <span>Select a chat to start a new converstaion!</span>
+        <span>Select a chat to start a new conversation!</span>
         </div>}
         <div className='h-full'>
         {groupInfo&&<div className='h-full'>

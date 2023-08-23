@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
+  const userId = JSON.parse(localStorage.getItem("user")).user._id;
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [menu,setMenu] = useState(false)
@@ -24,6 +25,11 @@ export default function Chats({chats}) {
     setMenu(false)
     setNewChat(true)
     setToggleGroup(true);
+  }
+
+  const getChatName = (chat)=>{
+    const users = chat.users.filter(user=>user._id!=userId)
+    return users.length&&users[0].name
   }
   const menuRef = useRef();
   const func = (e)=>{
@@ -72,7 +78,7 @@ export default function Chats({chats}) {
               <img src={chat.chatAvatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
             <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full mr-2 text-white flex items-center">
-              <span>{chat.chatName}</span>
+              <span>{chat.isGroupChat?chat.chatName:getChatName(chat)}</span>
             </div>
           </div>
           ))

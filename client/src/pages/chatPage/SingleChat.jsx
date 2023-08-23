@@ -1,84 +1,206 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import TypeSpace from './TypeSpace';
-import ChatInfo from '../group/ChatInfo';
-import {toast} from 'react-toastify'
-import { getChats, selectChat } from '../../actions/chatsActions';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ChatInfo from "../group/ChatInfo";
+import { toast } from "react-toastify";
+import { getChats, selectChat } from "../../actions/chatsActions";
+import axios from "axios";
+import Message from "../messages/Message";
 
 export default function SingleChat() {
-    const [menu,setMenu] = useState(false);
-    const dispatch = useDispatch()
-    const [chatInfo,setChatInfo] = useState(false)
-    const selectedChat = useSelector(state=>state.chats.selectedChat)
-    const user = JSON.parse(localStorage.getItem("user"))
-    const menuRef = useRef();
-    const func = (e)=>{
-      if(!menuRef.current.contains(e.target)){
-        setMenu(false);
-      }
+  const [menu, setMenu] = useState(false);
+  const [content, setContent] = useState('');
+  const [msg,setMsg] = useState([])
+  const dispatch = useDispatch();
+  const [chatInfo, setChatInfo] = useState(false);
+  const selectedChat = useSelector((state) => state.chats.selectedChat);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const menuRef = useRef();
+  const func = (e) => {
+    if (!menuRef.current.contains(e.target)) {
+      setMenu(false);
     }
+  };
 
-    const removeMember = async(groupId,membId)=>{
-      setMenu(0)
-      try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
-          headers:{
-              Authorization:`Bearer ${user.token}`
-              },
+  const sendMsg = async () => {
+    try {
+      const { data } = await axios.post(
+        "api/v1/msg/send",
+        { content: content, chatId: selectedChat._id },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      if (data.success) {
+        setContent("");
+        fetchMsg()
+      }
+    } catch (err) {
+      return new Error(err.message);
+    }
+  };
+
+  const fetchMsg = async()=>{
+    try {
+      const {data} = await axios.get(`api/v1/msg/${selectedChat._id}`,{
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       })
-      dispatch(getChats())
-      dispatch(selectChat())
+      setMsg(data)
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // fetchMsg()
+
+  const getChatName = (chat)=>{
+    const users = chat.users.filter(memb=>memb._id!=user.user._id)
+    return users.length&&users[0].name
+  }
+
+  const removeMember = async (groupId, membId) => {
+    setMenu(0);
+    try {
+      const data = await axios.put(
+        `/api/v1/chat/group/remove/${groupId}`,
+        { userId: membId },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      dispatch(getChats());
+      dispatch(selectChat());
       if (data.status === 200) {
         toast.success("Chat deleted");
       }
-  }catch(err){
-          console.log(err);
-      }
-  }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    useEffect(() => {
-      document.addEventListener("mousedown",func)
-      return () => {
-        document.removeEventListener("mousedown",func)
-      }
-    })
+  useEffect(() => {
+    fetchMsg()
+    document.addEventListener("mousedown", func);
+    return () => {
+      document.removeEventListener("mousedown", func);
+    };
+  },[selectedChat]);
   return (
     <>
-    <div className='flex h-full'>
-      {selectedChat?<div className={!chatInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
-        <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#9DB2BF]'>
-          <div className='flex ml-4 space-x-2'>
-            <div>
-              <img src={selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>
-            </div>
-            <div className='flex items-center'>
-              <span>{selectedChat.chatName}</span>
-            </div>
-          </div>
-          <div className='relative'>
-              <div  className={menu?"bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center m-4":"rounded-full w-10 h-10 flex items-center justify-center m-4"}>
-                <img ref={menuRef} src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer " onClick={()=>setMenu(!menu)}/>
+      <div className="flex h-full">
+        {selectedChat ? (
+          <div
+            className={
+              !chatInfo
+                ? "h-full w-full"
+                : "h-full w-[40vw] border-solid border-r-[1px] border-gray-500"
+            }
+          >
+            <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#9DB2BF]">
+              <div className="flex ml-4 space-x-2">
+                <div>
+                  <img
+                    src={selectedChat.chatAvatar}
+                    alt=""
+                    className="h-10 w-10 rounded-full m-1 object-contain"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <span>{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
+                </div>
               </div>
-              <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
-              <ul className="space-y-2">
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setChatInfo(true);setMenu(0)}}>Chat Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>removeMember(selectedChat._id,user.user._id)}>Delete Chat</li>
-              </ul>
+              <div className="relative">
+                <div
+                  className={
+                    menu
+                      ? "bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center m-4"
+                      : "rounded-full w-10 h-10 flex items-center justify-center m-4"
+                  }
+                >
+                  <img
+                    ref={menuRef}
+                    src="/img/more.png"
+                    alt=""
+                    className="h-[1.5rem] w-6 cursor-pointer "
+                    onClick={() => setMenu(!menu)}
+                  />
+                </div>
+                <div
+                  ref={menuRef}
+                  className={
+                    menu
+                      ? "absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4"
+                      : "hidden"
+                  }
+                >
+                  <ul className="space-y-2">
+                    <li
+                      className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10"
+                      onClick={() => {
+                        setChatInfo(true);
+                        setMenu(0);
+                      }}
+                    >
+                      Chat Info
+                    </li>
+                    <li
+                      className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10"
+                      onClick={() =>
+                        removeMember(selectedChat._id, user.user._id)
+                      }
+                    >
+                      Delete Chat
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {msg&&
+            <div className="p-4 h-[calc(100vh-7.6rem)] ">
+              <Message messages={msg}/>
+            </div>}
+            <div className="sticky top-full w-full">
+              <div className="h-[3.8rem] bg-slate-600 w-full">
+                <div className="h-full w-full flex items-center justify-center space-x-10">
+                  <div className="h-full w-4/5 flex items-center">
+                    <input
+                      type="text"
+                      placeholder="Type a message"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      className="w-full rounded-md h-3/5 p-4 bg-[#526d82] outline-none text-[#ededed]"
+                    />
+                  </div>
+                  <div>
+                    <button onClick={sendMsg}>
+                      <img src="/img/send.png" alt="" className="h-8 " />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='sticky top-full w-full'>
-          <TypeSpace/>
-        </div>
-      </div>:<div className='h-full w-full flex items-center justify-center text-xl text-slate-200 font-bold'>
-        <span>Select a chat to start a new conversation!</span>
-        </div>}
-        <div className='h-full'>
-        {chatInfo&&<div className='h-full'>
-          <ChatInfo chat={selectedChat} chatInfo={()=>setChatInfo(!chatInfo)}/>
-        </div>}
+        ) : (
+          <div className="h-full w-full flex items-center justify-center text-xl text-slate-200 font-bold">
+            <span>Select a chat to start a new conversation!</span>
+          </div>
+        )}
+        <div className="h-full">
+          {chatInfo && (
+            <div className="h-full">
+              <ChatInfo
+                chat={selectedChat}
+                chatInfo={() => setChatInfo(!chatInfo)}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
-  )
+  );
 }

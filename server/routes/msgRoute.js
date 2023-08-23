@@ -4,7 +4,7 @@ import { isValidated } from "../middleware/isValidated.js";
 
 const route = Router();
 
-route.get("/",isValidated,getMsg);
+route.get("/:chatId",isValidated,getMsg);
 route.post("/send",isValidated,sendMsg);
 route.delete("/delete/:id",isValidated,deleteMsg);
 

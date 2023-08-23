@@ -26,7 +26,7 @@ export const accesChat = async (req, res, next) => {
     res.send(isChat[0]);
   } else {
     var chatdata = {
-      chatName: user.name,
+      chatName: "single chat",
       users: [req.user.id, user._id],
       chatAvatar:user.avatar
     };

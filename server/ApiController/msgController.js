@@ -5,7 +5,7 @@ import userModel from "../model/userModel.js";
 
 export const getMsg = async(req,res,next)=>{
     try{
-        const {chatId} = req.body
+        const {chatId} = req.params
         if(!chatId){
             return next(new Error("user is required"));
         }

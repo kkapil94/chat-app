@@ -27,7 +27,7 @@ export default function SignUp() {
         },
       });
       if (data.success) {
-        notify("Registered successfully");
+        notify.success("Registered successfully");
         navigate("/login")
       }
     } catch (err) {

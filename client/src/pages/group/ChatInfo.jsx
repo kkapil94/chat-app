@@ -37,6 +37,11 @@ export default function ChatInfo({groupInfo,chatInfo}) {
         setEdit(0);
     }
 
+    const getChatName = (chat)=>{
+        const users = chat.users.filter(user=>user._id!=userId)
+        return users.length&&users[0].name
+      }
+
     //remove group
 
     const removeMember = async(groupId,membId)=>{
@@ -83,7 +88,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                     {selectedChat&&!selectedChat.isGroupChat&&
                     <div className='flex flex-col items-center w-full'>
                         <div >
-                            <span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>
+                            <span className='text-3xl text-[#b1b3bb]'>{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
                         </div>
                         <div className='w-full mt-14'>
                             <div className='h-1 w-full bg-[#9DB2BF]'></div>

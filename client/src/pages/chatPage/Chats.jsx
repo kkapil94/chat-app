@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
+  const user = JSON.parse(localStorage.getItem("user")).user;
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [menu,setMenu] = useState(false)
@@ -31,6 +32,10 @@ export default function Chats({chats}) {
     const users = chat.users.filter(user=>user._id!=userId)
     return users.length&&users[0].name
   }
+  const getChatAvatar = (chat)=>{
+    const users = chat.users.filter(user=>user._id!=userId)
+    return users.length&&users[0].avatar
+  }
   const menuRef = useRef();
   const func = (e)=>{
     if(!menuRef.current.contains(e.target)){
@@ -51,7 +56,7 @@ export default function Chats({chats}) {
         <div className="h-[3.8rem] bg-[#9DB2BF] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
-              src="/img/avatar.png"
+              src={user.avatar}
               alt=""
               className="h-4/5 w-10 rounded-full ml-4"
             />
@@ -75,7 +80,7 @@ export default function Chats({chats}) {
           {chats&&chats.map((chat)=>(
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
             <div>
-              <img src={chat.chatAvatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
+              <img src={chat.isGroupChat?chat.chatAvatar:getChatAvatar(chat)} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
             <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full mr-2 text-white flex items-center">
               <span>{chat.isGroupChat?chat.chatName:getChatName(chat)}</span>

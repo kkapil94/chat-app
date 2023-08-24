@@ -41,6 +41,10 @@ export default function ChatInfo({groupInfo,chatInfo}) {
         const users = chat.users.filter(user=>user._id!=userId)
         return users.length&&users[0].name
       }
+    const getChatAvatar = (chat)=>{
+    const users = chat.users.filter(memb=>memb._id!=userId)
+    return users.length&&users[0].avatar
+    }
 
     //remove group
 
@@ -81,7 +85,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                 <div className='flex flex-col items-center pt-6'>
                     <div>
                         <div>
-                            <img src={selectedChat&&selectedChat.chatAvatar} alt="" className='h-48 w-48 rounded-full object-contain '/>   
+                            <img src={selectedChat.isGroupChat?selectedChat.chatName:getChatAvatar(selectedChat)} alt="" className='h-48 w-48 rounded-full object-contain '/>   
                         </div>
                     </div>
                     
@@ -108,13 +112,13 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                             {!edit?<span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>:
                                 <input type="text" value={details.name} className='text-3xl w-3/5  outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2 mr-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
                             }
-                            <span className='relative'>
+                            {userId==selectedChat.groupAdmin&&<span className='relative'>
                                 {!edit?<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" onClick={()=>setEdit(1)} className='h-6 w-auto fill-[#b1b3bb] cursor-pointer'>
                                         <path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/>
                                 </svg>:<svg xmlns="http://www.w3.org/2000/svg" height="48" onClick={()=>editInfo(selectedChat._id)} viewBox="0 -960 960 960" width="48" className='h-8 top-[-1rem] right-0 absolute w-auto fill-[#b1b3bb] cursor-pointer'>
                                     <path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/>
                                 </svg>}
-                            </span>
+                            </span>}
                         </div>
                         <span className='text-[#eef4f9]'>Group · {selectedChat.users.length} participants</span>
                     </div>}
@@ -147,7 +151,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                             <span>{memb.name}</span>
                         </div>
                     </div>
-                    {memb._id!=selectedChat.groupAdmin&&<div className='group-hover:block hidden' onClick={()=>removeMember(selectedChat._id,memb._id)}>
+                    {userId==selectedChat.groupAdmin&&memb._id!=selectedChat.groupAdmin&&<div className='group-hover:block hidden' onClick={()=>removeMember(selectedChat._id,memb._id)}>
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className='h-6 fill-white'>
                                 <path d="M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z"/>

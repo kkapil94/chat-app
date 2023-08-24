@@ -12,6 +12,7 @@ import { isAdmin } from "./middleware/isGroupAdmin.js"
 import cors from "cors"
 import http from "http"
 import {Server} from "socket.io"
+import { loadavg } from "os"
 const app = express()
 const server = http.createServer(app);
 const io = new Server(server,{
@@ -42,6 +43,19 @@ app.use(errorHandler)
 
 io.on('connection', (socket) => {
   console.log("connected",socket.id);
+  socket.on("create",(user)=>{
+    socket.join(user._id)
+    console.log(socket.rooms,"create");
+    socket.emit("connected")
+  })
+  socket.on("join-chat",(room)=>{
+    console.log(socket.rooms, "first ");
+    socket.join(room);
+    console.log(socket.rooms,"afet");
+  })
+  socket.on("send-msg",(data,room)=>{
+    socket.to(room).emit("receive-msg",data)
+  })
 });
 
 server.listen(4000,()=>{

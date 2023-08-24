@@ -5,13 +5,8 @@ import Login from "./pages/Login";
 import "./index.css";
 import SignUp from "./pages/SignUp";
 import ChatsPage from "./pages/ChatsPage";
-import { io } from "socket.io-client";
 
 export default function App() {
-  const socket = io("http://localhost:4000");
-  socket.on('connect',()=>{
-    console.log("Connected with",socket.id);
-  })
   return (
     <>
       <Router>

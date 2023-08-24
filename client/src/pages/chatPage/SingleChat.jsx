@@ -5,11 +5,14 @@ import { toast } from "react-toastify";
 import { getChats, selectChat } from "../../actions/chatsActions";
 import axios from "axios";
 import Message from "../messages/Message";
+import {socket} from '../../socket.js'
 
 export default function SingleChat() {
+  var ioChat
   const [menu, setMenu] = useState(false);
   const [content, setContent] = useState('');
   const [msg,setMsg] = useState([])
+  const [connected,setConnected] = useState(0)
   const dispatch = useDispatch();
   const [chatInfo, setChatInfo] = useState(false);
   const selectedChat = useSelector((state) => state.chats.selectedChat);
@@ -23,6 +26,10 @@ export default function SingleChat() {
 
   const sendMsg = async () => {
     try {
+      if (content.trim()=='') {
+        toast.info("Please type something to send")
+        return 
+      }
       const { data } = await axios.post(
         "api/v1/msg/send",
         { content: content, chatId: selectedChat._id },
@@ -35,6 +42,7 @@ export default function SingleChat() {
       if (data.success) {
         setContent("");
         fetchMsg()
+        socket.emit("send-msg",data.data,selectedChat._id);
       }
     } catch (err) {
       return new Error(err.message);
@@ -48,17 +56,20 @@ export default function SingleChat() {
           Authorization: `Bearer ${user.token}`,
         },
       })
-      setMsg(data)
-      console.log(data);
+      socket.emit('join-chat',selectedChat._id)
+      setMsg(data);
     } catch (error) {
-      console.log(error);
+      return  new Error(error.meassage)
     }
   }
-  // fetchMsg()
 
   const getChatName = (chat)=>{
     const users = chat.users.filter(memb=>memb._id!=user.user._id)
     return users.length&&users[0].name
+  }
+  const getChatAvatar = (chat)=>{
+    const users = chat.users.filter(memb=>memb._id!=user.user._id)
+    return users.length&&users[0].avatar
   }
 
   const removeMember = async (groupId, membId) => {
@@ -83,13 +94,36 @@ export default function SingleChat() {
     }
   };
 
-  useEffect(() => {
-    fetchMsg()
+  useEffect(()=>{
+    socket.emit('create',user.user);
+    socket.on("connected",()=>setConnected(1))
     document.addEventListener("mousedown", func);
     return () => {
-      document.removeEventListener("mousedown", func);
+    document.removeEventListener("mousedown", func);
     };
+ },[])
+
+
+  useEffect(() => {
+    fetchMsg()
+    ioChat = selectedChat
   },[selectedChat]);
+  
+  useEffect(() => {
+    socket.on("receive-msg", (reMsg) => {
+      console.log(ioChat, "nk");
+      if (!ioChat || reMsg.chat._id !== ioChat._id) {
+        return;
+      } else {
+        setMsg((prevMsg) => [...prevMsg, reMsg]);
+      }
+    });
+  });
+
+
+  
+
+
   return (
     <>
       <div className="flex h-full">
@@ -105,7 +139,7 @@ export default function SingleChat() {
               <div className="flex ml-4 space-x-2">
                 <div>
                   <img
-                    src={selectedChat.chatAvatar}
+                    src={getChatAvatar(selectedChat)}
                     alt=""
                     className="h-10 w-10 rounded-full m-1 object-contain"
                   />
@@ -161,7 +195,7 @@ export default function SingleChat() {
               </div>
             </div>
             {msg&&
-            <div className="p-4 h-[calc(100vh-7.6rem)] ">
+            <div className="h-[calc(100vh-7.6rem)] ">
               <Message messages={msg}/>
             </div>}
             <div className="sticky top-full w-full">
@@ -174,9 +208,14 @@ export default function SingleChat() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       className="w-full rounded-md h-3/5 p-4 bg-[#526d82] outline-none text-[#ededed]"
+                      onKeyDown={(e)=>{
+                        if (e.key=="Enter"&&content) {
+                          sendMsg()
+                        }
+                      }}
                     />
                   </div>
-                  <div>
+                  <div className="flex">
                     <button onClick={sendMsg}>
                       <img src="/img/send.png" alt="" className="h-8 " />
                     </button>

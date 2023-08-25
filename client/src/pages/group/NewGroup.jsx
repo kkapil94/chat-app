@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
 import ConfirmGroup from './ConfirmGroup';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const dispatch = useDispatch();
@@ -47,7 +48,8 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
 
   return (
     <>
-        {!confirmGroup? <div id="chats" className="bg-[#27374D] w-[30%] h-screen flex flex-col">
+      <AnimatePresence>
+        {!confirmGroup? <motion.div id="chats" className="bg-[#27374D] w-[30%] h-screen flex flex-col" initial={{x:"-100vw"}} animate={{x:0}} transition={{type:"tween",ease:"easeIn"}} exit={{position:"absolute",x:0}}>
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#9DB2BF]'>
                 <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={back}/></button>
@@ -107,7 +109,8 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
           </span>
         </div>
       </div>:""}
-      </div>:<ConfirmGroup handleConfirmGroup={handleConfirmGroup} groupMembers={groupMembers} back={back}/>}
+      </motion.div>:<ConfirmGroup handleConfirmGroup={handleConfirmGroup} groupMembers={groupMembers} back={back}/>}
+      </AnimatePresence>
     </>
   )
 }

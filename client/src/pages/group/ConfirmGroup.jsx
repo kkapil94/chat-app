@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const form  =  useRef(null);
@@ -50,7 +51,10 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
 }
 
   return (<>{loading&&<Loader/>}
-            <div id="chats" className="bg-[#27374D] w-[30%] h-screen">
+            <AnimatePresence>
+          
+            <motion.div id="chats" className="bg-[#27374D] w-[30%] h-screen" initial={{x:"-100vh"}} animate={{x:0}}
+            transition={{type:"tween",ease:"easeIn",duration:.1}}>
                     <div className="sticky top-0 pb-4">
                         <div className='flex items-end h-24 bg-[#9DB2BF]'>
                             <button onClick={()=>handleConfirmGroup()}><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2'/></button>
@@ -88,6 +92,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
                             </button>
                         </div>
                     </form>
-                </div>
+                </motion.div>
+                </AnimatePresence>
          </>
   )}

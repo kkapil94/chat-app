@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { selectChat } from "../../actions/chatsActions";
 import { toast } from "react-toastify";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
@@ -52,7 +53,8 @@ export default function Chats({chats}) {
 
   return (
     <>
-      {!newChat?(<div id="chats" className="bg-[#0f3a50] w-[30%] h-screen border-r-[1px] border-solid border-gray-500 ">
+    <AnimatePresence>
+      {!newChat?(<motion.div id="chats" key={"chat"} className="bg-[#0f3a50] w-[30%] h-screen border-r-[1px] border-solid border-gray-500" initial={{x:0}} exit={{x:0,position:"absolute"}} transition={{ease:"easeIn",type:"tween",duration:'.1'}}>
         <div className="h-[3.8rem] bg-[#355070] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
@@ -95,7 +97,8 @@ export default function Chats({chats}) {
               to start a new chat!
             </span>
           </div>}
-      </div>):<Chats2 toggleChat={()=>toggleChat()} directNewGroup={toggleGroup}/>}
+      </motion.div>):<Chats2 toggleChat={()=>toggleChat()} directNewGroup={toggleGroup}/>}
+      </AnimatePresence>
     </>
   );
 }

@@ -4,9 +4,11 @@ import { searchUser } from '../../actions/usersActions';
 import NewGroup from '../group/NewGroup';
 import axios from 'axios';
 import { getChats } from '../../actions/chatsActions';
+import {AnimatePresence, motion,usePresence} from "framer-motion"
 
 export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
+  // const [isPresent, safeToRemove] = usePresence()
   const [search,setSearch] = useState()
   const {users} = useSelector((state)=>state.users)
   const [newGroup,setNewGroup] = useState(directNewGroup)
@@ -23,13 +25,20 @@ export default function Chats2({toggleChat,directNewGroup}) {
     toggleChat();
     dispatch(getChats());
   }
+  const variants = {
+    iniMount:{x:"-100vw"},
+    iniUnmount:{x:0},
+    aniMount:{x:0},
+    aniUnmount:{}
+  }
     useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search]) 
 
   return (
     <>
-        {!newGroup?<div id="chats" className="bg-[#27374D] w-[30%] h-screen">
+      <AnimatePresence >
+        {!newGroup?<motion.div id="chats" key={"chats"} className="bg-[#27374D] w-[30%] h-screen" variants={variants} initial={{x:"-100vw"}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:.1}} exit={{position:"absolute",x:0,y:0}}>
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#9DB2BF]'>
                 <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={()=>toggleChat()}/></button>
@@ -71,7 +80,8 @@ export default function Chats2({toggleChat,directNewGroup}) {
           }
         </div>
         </div>:<span className='text-center block mt-8'>No results found for '{search}'</span>}
-      </div>:<NewGroup toggleGroup={()=>toggleGroup()} toggleChat={toggleChat} directNewGroup={directNewGroup}/>}
+      </motion.div>:<NewGroup toggleGroup={()=>toggleGroup()} toggleChat={toggleChat} directNewGroup={directNewGroup}/>}
+      </AnimatePresence>
     </>
   )
 }

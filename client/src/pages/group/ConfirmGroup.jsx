@@ -4,12 +4,14 @@ import { getChats } from "../../actions/chatsActions";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import Loader from '../../components/Loader';
 
 export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const form  =  useRef(null);
     const formData = new FormData();
     const notify = toast
     const [name,setName] = useState();
+    const [loading,setLoading] = useState(false)
     const [file,setFile] = useState();
     const [pre,setPre] = useState();
     const dispatch = useDispatch();
@@ -24,6 +26,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const createGroup = async(e)=>{
         e.preventDefault();
        try{
+        setLoading(true)
         formData.append("name",name)
         formData.append("file",file)
         formData.append("users",JSON.stringify(users))
@@ -34,16 +37,19 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
             }
         })
         if (data.status===200) {
+            setLoading(false)
             back(true)
             dispatch(getChats())
             notify.success("Group created")
         }}catch(err){
-            notify.error(err);
+            setLoading(false)
+            console.log(err.response.data.msg);
+            notify.error(err.response.data.msg);
         }
             
 }
 
-  return (<>
+  return (<>{loading&&<Loader/>}
             <div id="chats" className="bg-[#27374D] w-[30%] h-screen">
                     <div className="sticky top-0 pb-4">
                         <div className='flex items-end h-24 bg-[#9DB2BF]'>

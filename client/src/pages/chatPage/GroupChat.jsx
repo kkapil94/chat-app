@@ -123,7 +123,7 @@ export default function GroupChat() {
     <>
     <div className='flex h-full'>
       {selectedChat?<div className={!groupInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
-        <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#9DB2BF]'>
+        <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#355070]'>
           <div className='flex ml-4 space-x-2'>
             <div>
               <img src={!selectedChat.isGroupChat?selectedChat.avatar:selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>

@@ -5,9 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { clearErrors } from "../actions/chatsActions";
+import Loader from "../components/Loader";
 export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [loading,setLoading] = useState(false);
   const [logData,setLogData] = useState({
     email:"",
     password:""
@@ -20,16 +22,21 @@ export default function Login() {
     e.preventDefault();
     try{
       dispatch(clearErrors())
+      setLoading(true)
       const {data} =await axios.post("/api/v1/auth/login",logData)
       if(data.success) {
+        setLoading(false)
         localStorage.setItem("user",JSON.stringify(data))
         notify.success("Logged In successfully");
         navigate("/")
       }
-    }catch(err){console.log(err);}
+    }catch(err){
+      setLoading(false)
+      notify.error("Login failed!")
+      console.log(err);}
   }
   return (
-    <>
+    <>{loading&&<Loader/>}
       <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
         <div className="flex h-4/5 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
           <div className="w-1/2 h-full flex items-center">

@@ -2,11 +2,13 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 
 export default function SignUp() {
   const formRef = useRef(null);
   const navigate = useNavigate()
+  const [loading,setLoading] = useState(false);
   const notify = toast
   const [user, setUser] = useState({
     name: "",
@@ -19,6 +21,7 @@ export default function SignUp() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(formRef.current);
     try {
       const {data} = await axios.post("/api/v1/auth/register", formData, {
@@ -29,14 +32,16 @@ export default function SignUp() {
       if (data.success) {
         notify.success("Registered successfully");
         navigate("/login")
+        setLoading(false);
       }
     } catch (err) {
+      setLoading(false)
       const error = err.response.data;
-      notify(error.msg);
+      notify("registration failed");
     }
   };
   return (
-    <>
+    <>{loading&&<Loader/>}
       <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
         <div className="flex h-4/5 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
           <div className="w-1/2">

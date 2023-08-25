@@ -52,8 +52,8 @@ export default function Chats({chats}) {
 
   return (
     <>
-      {!newChat?(<div id="chats" className="bg-[#27374D] w-[30%] h-screen border-r-[1px] border-solid border-gray-500 ">
-        <div className="h-[3.8rem] bg-[#9DB2BF] flex items-center justify-between sticky top-0">
+      {!newChat?(<div id="chats" className="bg-[#0f3a50] w-[30%] h-screen border-r-[1px] border-solid border-gray-500 ">
+        <div className="h-[3.8rem] bg-[#355070] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
               src={user.avatar}

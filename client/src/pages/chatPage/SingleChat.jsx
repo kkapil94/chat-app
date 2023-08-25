@@ -162,7 +162,7 @@ export default function SingleChat() {
                 : "h-full w-[40vw] border-solid border-r-[1px] border-gray-500"
             }
           >
-            <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#9DB2BF]">
+            <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#355070]">
               <div className="flex ml-4 space-x-2">
                 <div>
                   <img

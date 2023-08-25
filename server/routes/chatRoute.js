@@ -13,5 +13,6 @@ route.post("/group",isValidated,singleUpload,groupChat)
 route.put("/group/rename/:id",isValidated,isAdmin,renameGroup)
 route.put("/group/add/:id",isValidated,isAdmin,addUser)
 route.put("/group/remove/:id",isValidated,isAdmin,removeUser)
+route.put("/group/exit/:id",isValidated,removeUser)
 
 export default route

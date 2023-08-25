@@ -15,6 +15,9 @@ export default function SingleChat() {
   const [connected,setConnected] = useState(0)
   const dispatch = useDispatch();
   const [chatInfo, setChatInfo] = useState(false);
+  const [typing,setTyping] = useState(false)
+  const [notTyping,setNotTyping] = useState(false)
+  // const [stopTyping,setStopTyping] = useState(false)
   const selectedChat = useSelector((state) => state.chats.selectedChat);
   const user = JSON.parse(localStorage.getItem("user"));
   const menuRef = useRef();
@@ -30,6 +33,7 @@ export default function SingleChat() {
         toast.info("Please type something to send")
         return 
       }
+      socket.emit('stop-typing',selectedChat._id)
       const { data } = await axios.post(
         "api/v1/msg/send",
         { content: content, chatId: selectedChat._id },
@@ -62,6 +66,27 @@ export default function SingleChat() {
       return  new Error(error.meassage)
     }
   }
+
+  const typingHandler = (e)=>{
+    setContent(e.target.value)
+    let timeTaken = 3000;
+    if (!typing) {
+      setTyping(1)
+      socket.emit("typing",selectedChat._id);
+    }
+    const lastTyping =new Date().getTime();
+    console.log(lastTyping,"wbd");
+      setTimeout(() => {
+        console.log(lastTyping,"iam");
+        const newTime = new Date().getTime()
+        const timeDiff = newTime-lastTyping
+        console.log(timeDiff,'diff');
+        if (timeDiff>=timeTaken&&typing) {
+          socket.emit('stop-typing',selectedChat._id)
+          setTyping(0)
+        }
+      }, timeTaken);
+    }
 
   const getChatName = (chat)=>{
     const users = chat.users.filter(memb=>memb._id!=user.user._id)
@@ -97,19 +122,21 @@ export default function SingleChat() {
   useEffect(()=>{
     socket.emit('create',user.user);
     socket.on("connected",()=>setConnected(1))
+    socket.on("typing",()=>setNotTyping(1))
     document.addEventListener("mousedown", func);
     return () => {
-    document.removeEventListener("mousedown", func);
+      document.removeEventListener("mousedown", func);
     };
- },[])
-
-
+  },[])
+  
+  
   useEffect(() => {
     fetchMsg()
     ioChat = selectedChat
   },[selectedChat]);
   
   useEffect(() => {
+    socket.on("stop-typing",()=>setNotTyping(0))
     socket.on("receive-msg", (reMsg) => {
       console.log(ioChat, "nk");
       if (!ioChat || reMsg.chat._id !== ioChat._id) {
@@ -198,6 +225,7 @@ export default function SingleChat() {
             <div className="h-[calc(100vh-7.6rem)] ">
               <Message messages={msg}/>
             </div>}
+            {notTyping&&"loading..."}
             <div className="sticky top-full w-full">
               <div className="h-[3.8rem] bg-slate-600 w-full">
                 <div className="h-full w-full flex items-center justify-center space-x-10">
@@ -206,12 +234,12 @@ export default function SingleChat() {
                       type="text"
                       placeholder="Type a message"
                       value={content}
-                      onChange={(e) => setContent(e.target.value)}
+                      onChange={typingHandler}
                       className="w-full rounded-md h-3/5 p-4 bg-[#526d82] outline-none text-[#ededed]"
                       onKeyDown={(e)=>{
                         if (e.key=="Enter"&&content) {
                           sendMsg()
-                        }
+                        };
                       }}
                     />
                   </div>

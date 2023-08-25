@@ -58,7 +58,7 @@ export default function Chats({chats}) {
             <img
               src={user.avatar}
               alt=""
-              className="h-4/5 w-10 rounded-full ml-4"
+              className="h-4/5 w-[2.8rem] rounded-full ml-4"
             />
           </div>
           <div className="flex w-1/2 justify-end space-x-3 mr-5">

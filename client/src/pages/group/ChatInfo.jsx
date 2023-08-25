@@ -85,7 +85,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                 <div className='flex flex-col items-center pt-6'>
                     <div>
                         <div>
-                            <img src={selectedChat.isGroupChat?selectedChat.chatName:getChatAvatar(selectedChat)} alt="" className='h-48 w-48 rounded-full object-contain '/>   
+                            <img src={selectedChat.isGroupChat?selectedChat.chatAvatar:getChatAvatar(selectedChat)} alt="" className='h-48 w-48 rounded-full object-contain '/>   
                         </div>
                     </div>
                     

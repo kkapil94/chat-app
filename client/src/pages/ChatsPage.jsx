@@ -9,16 +9,16 @@ export default function ChatsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error, chats } = useSelector((state) => state.chats);
-  console.log(error);
+  const user = localStorage.getItem("user")
   useEffect(() => {
-    dispatch(getChats());
-    if (error && error.response.statusText == "Unauthorized" || !localStorage.getItem("user")) {
+    if (error && error.response.statusText == "Unauthorized" || localStorage.getItem("user")==null) {
       navigate("/login");
     }
+    dispatch(getChats());
   }, [dispatch, error]);
   return (
     <>
-      {
+      {user&&
         <div>
           <div className="flex min-h-screen max-w-screen overflow-hidden">
             <Chats chats={chats} />

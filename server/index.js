@@ -56,6 +56,12 @@ io.on('connection', (socket) => {
   socket.on("send-msg",(data,room)=>{
     socket.to(room).emit("receive-msg",data)
   })
+  socket.on("typing",(room)=>{
+    socket.to(room).emit('typing')
+  })
+  socket.on("stop-typing",(room)=>{
+    socket.to(room).emit('stop-typing')
+  })
 });
 
 server.listen(4000,()=>{

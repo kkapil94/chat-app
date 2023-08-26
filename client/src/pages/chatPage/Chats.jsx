@@ -67,13 +67,13 @@ export default function Chats({chats}) {
             <div className="w-10 h-10 rounded-full flex items-center  justify-center active:bg-[#033748]">
               <img src="/img/chat.svg" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>
-            <div ref={menuRef} onClick={()=>setMenu(!menu)} className={menu?"bg-[#033748] rounded-full w-10 h-10 flex items-center justify-center":"rounded-full w-10 h-10 flex items-center justify-center"}>
+            <div onClick={()=>setMenu(!menu)} className={menu?"bg-[#033748] rounded-full w-10 h-10 flex items-center justify-center":"rounded-full w-10 h-10 flex items-center justify-center"}>
               <img src="/img/more.svg" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setMenu(!menu)}/>
             </div>
-            <div ref={menuRef} className={menu?"absolute bg-[#033748] text-slate-100 right-8 top-14 min-h-20 w-[12rem] py-4 rounded-lg":"hidden" } >
+            <div ref={menuRef} className={menu?"absolute bg-[#033748] text-slate-300 right-8 top-14 min-h-20 w-[12rem] py-4 rounded-lg":"hidden" } >
               <ul className="space-y-2">
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={newGroup}>New Group</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={logout}>LogOut</li>
+                <li className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10" onClick={newGroup}>New Group</li>
+                <li className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10" onClick={logout}>LogOut</li>
               </ul>
             </div>
           </div>

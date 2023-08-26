@@ -172,20 +172,20 @@ export default function SingleChat() {
                   />
                 </div>
                 <div className="flex items-center">
-                  <span>{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
+                  <span className="text-slate-300">{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
                 </div>
               </div>
               <div className="relative">
                 <div
                   className={
                     menu
-                      ? "bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center m-4"
+                      ? "bg-[#033748] rounded-full w-10 h-10 flex items-center justify-center m-4"
                       : "rounded-full w-10 h-10 flex items-center justify-center m-4"
                   }
                 >
                   <img
                     ref={menuRef}
-                    src="/img/more.png"
+                    src="/img/more.svg"
                     alt=""
                     className="h-[1.5rem] w-6 cursor-pointer "
                     onClick={() => setMenu(!menu)}
@@ -195,13 +195,13 @@ export default function SingleChat() {
                   ref={menuRef}
                   className={
                     menu
-                      ? "absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4"
+                      ? "absolute bg-[#033748] text-slate-300 right-8 top-16 min-h-20 w-[12rem] py-4 rounded-lg"
                       : "hidden"
                   }
                 >
                   <ul className="space-y-2">
                     <li
-                      className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10"
+                      className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10"
                       onClick={() => {
                         setChatInfo(true);
                         setMenu(0);
@@ -210,7 +210,7 @@ export default function SingleChat() {
                       Chat Info
                     </li>
                     <li
-                      className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10"
+                      className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10"
                       onClick={() =>
                         removeMember(selectedChat._id, user.user._id)
                       }
@@ -227,7 +227,7 @@ export default function SingleChat() {
             </div>}
             {notTyping&&"loading..."}
             <div className="sticky top-full w-full">
-              <div className="h-[3.8rem] bg-slate-600 w-full">
+              <div className="h-[3.8rem] bg-[#355070] w-full">
                 <div className="h-full w-full flex items-center justify-center space-x-10">
                   <div className="h-full w-4/5 flex items-center">
                     <input

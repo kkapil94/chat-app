@@ -77,10 +77,10 @@ export default function ChatInfo({groupInfo,chatInfo}) {
         <motion.div className='w-[30vw] h-screen overflow-auto' key={"chatInfo"} initial={{x:"100vh"}} animate={{x:0}} transition={{type:"tween",duration:.2}} exit={{x:"0",position:"absolute"}}>
              <div className='flex items-center pl-4 h-[3.8rem] bg-[#355070] sticky top-0'>
                     <div className='mr-2 cursor-pointer' onClick={()=>selectedChat&&selectedChat.isGroupChat?groupInfo():chatInfo()}>
-                        <img src="/img/close.png" alt="" className='h-6 '/>
+                        <img src="/img/close.svg" alt="" className='h-6 '/>
                     </div>
                      <div>
-                        {selectedChat&&selectedChat.isGroupChat?<span>Group Info</span>:<span>Chat Info</span>}
+                        {selectedChat&&selectedChat.isGroupChat?<span className='text-slate-300'>Group Info</span>:<span className='text-slate-300'>Chat Info</span>}
                     </div>
                 </div>
             <div className='bg-[#0f3a50] pb-4  h-[calc(100vh-3.8rem)] '>
@@ -109,7 +109,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                         </div>
                     </div>
                     }
-                    {selectedChat&&selectedChat.isGroupChat&&<div className='mt-4 text-center'>
+                    {selectedChat&&selectedChat.isGroupChat&&<div className='mt-4 text-center '>
                         <div className='flex items-center space-x-2 justify-center'>
                             {!edit?<span className='text-3xl text-[#b1b3bb]'>{selectedChat.chatName}</span>:
                                 <input type="text" value={details.name} className='text-3xl w-3/5  outline-none bg-transparent border-b-2 border-solid border-[#b1b3bb] text-[#b1b3bb] pb-2 mr-2' onChange={(e)=>{setDetails({...details,name:e.target.value})}} />
@@ -125,7 +125,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                         <span className='text-[#eef4f9]'>Group · {selectedChat.users.length} participants</span>
                     </div>}
                 </div>
-            {selectedChat&&selectedChat.isGroupChat&&<div className='bg-[#27374D]'>
+            {selectedChat&&selectedChat.isGroupChat&&<div className='bg-[#0f3a50]'>
                 <div >
                     <span className='text-lg pl-4 mt-4 inline-block text-[#b1b3bb]'>
                         {selectedChat.users.length} members

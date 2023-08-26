@@ -129,17 +129,17 @@ export default function GroupChat() {
               <img src={!selectedChat.isGroupChat?selectedChat.avatar:selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>
             </div>
             <div className='flex items-center'>
-              <span>{selectedChat.chatName}</span>
+              <span className='text-slate-300'>{selectedChat.chatName}</span>
             </div>
           </div>
           <div className='relative'>
-              <div  className={menu?"bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center m-4":"rounded-full w-10 h-10 flex items-center justify-center m-4"}>
-                <img ref={menuRef} src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer " onClick={()=>setMenu(!menu)}/>
+              <div  className={menu?"bg-[#033748] rounded-full w-10 h-10 flex items-center justify-center m-4":"rounded-full w-10 h-10 flex items-center justify-center m-4"}>
+                <img  src="/img/more.svg" alt="" className="h-[1.5rem] w-6 cursor-pointer " onClick={()=>setMenu(!menu)}/>
               </div>
-              <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
+              <div ref={menuRef} className={menu?"absolute bg-[#033748] text-slate-300 right-8 top-16 min-h-20 w-[12rem] py-4 rounded-lg":"hidden"} >
               <ul className="space-y-2">
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>{setGroupInfo(true);setMenu(0)}}>Group Info</li>
-                <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={()=>exitGroup(selectedChat._id)}>Exit Group</li>
+                <li className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10" onClick={()=>{setGroupInfo(true);setMenu(0)}}>Group Info</li>
+                <li className="cursor-pointer hover:bg-[#144360] pl-4 flex items-center h-10" onClick={()=>exitGroup(selectedChat._id)}>Exit Group</li>
               </ul>
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function GroupChat() {
               <Message messages={msg}/>
             </div>}
         <div className="sticky top-full w-full">
-              <div className="h-[3.8rem] bg-slate-600 w-full">
+              <div className="h-[3.8rem] bg-[#355070] w-full">
                 <div className="h-full w-full flex items-center justify-center space-x-10">
                   <div className="h-full w-4/5 flex items-center">
                     <input

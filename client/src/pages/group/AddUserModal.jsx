@@ -52,13 +52,13 @@ export default function ({ open, setOpen}) {
   }, [dispatch, search]);
   return (
     <>
-      <Modal
+      <Modal 
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="flex justify-center items-center"
       >
-        <div className="bg-[#27374D] w-4/12 max-h-[80vh] flex flex-col">
+        <div className="bg-[#0f3a50] w-4/12 max-h-[80vh] flex flex-col">
           <div className="flex items-center h-[3.8rem]">
             <span>
               <svg

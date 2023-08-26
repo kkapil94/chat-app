@@ -13,7 +13,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const {users} = useSelector((state)=>state.users)
   const [newGroup,setNewGroup] = useState(directNewGroup)
   const toggleGroup = ()=>{
-    setNewGroup(0)
+    setNewGroup(directNewGroup)
   }
   const singleChat = async(user)=>{
     const {token} = JSON.parse(localStorage.getItem("user"))
@@ -25,12 +25,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
     toggleChat();
     dispatch(getChats());
   }
-  const variants = {
-    iniMount:{x:"-100vw"},
-    iniUnmount:{x:0},
-    aniMount:{x:0},
-    aniUnmount:{}
-  }
+
     useEffect(()=>{
     dispatch(searchUser(search));
   },[dispatch,search]) 
@@ -38,24 +33,24 @@ export default function Chats2({toggleChat,directNewGroup}) {
   return (
     <>
       <AnimatePresence >
-        {!newGroup?<motion.div id="chats" key={"chats"} className="bg-[#27374D] w-[30%] h-screen" variants={variants} initial={{x:"-100vw"}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:.1}} exit={{position:"absolute",x:0,y:0}}>
+        {!newGroup?<motion.div id="chats" key={"chats"} className="bg-[#0f3a50] w-[30%] h-screen text-[#bac1c7]" initial={{x:'-100vw'}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:'.3'}} exit={{x:0,position:"absolute"}}>
         <div className="sticky top-0 pb-4">
-            <div className='flex items-end h-24 bg-[#9DB2BF]'>
-                <button><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={()=>toggleChat()}/></button>
-                <h1 className='ml-4 font-semibold text-lg mb-2'>New Chat</h1>
+            <div className='flex items-end h-24 bg-[#355070]'>
+                <button><img src="./img/back.svg" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={()=>toggleChat()}/></button>
+                <h1 className='ml-4 font-semibold text-lg mb-2 text-slate-100'>New Chat</h1>
             </div>
             <div className='w-full flex justify-center bg-[#27374D]'>
-                <button className='inline-block mb-4'><img src="./img/search.png" alt="" className='absolute h-4 w-4 ml-2'/></button>
+                <button className='inline-block mb-4'><img src="./img/search.svg" alt="" className='absolute h-4 w-4 ml-2'/></button>
                 <input type="text" placeholder='Search Contacts' value={search} onChange={(e)=>setSearch(e.target.value)} className='w-11/12 my-2 rounded-md pl-12 h-8 outline-none'/>
             </div>
         </div>
         {users.length?<div className='h-[calc(100vh-10rem)] overflow-auto'>
-        <div className='flex items-center w-full h-16 p-3 hover:bg-slate-600 cursor-pointer' onClick={()=>setNewGroup(1)}>
+        <div className='flex items-center w-full h-16 p-3 hover:bg-[#8d99ae40] cursor-pointer' onClick={()=>setNewGroup(1)}>
           <div className='border-solid border-[1px] rounded-full mr-2 p-2'>
-            <img src="./img/groups.png" alt="" className='h-8 w-8'/>
+            <img src="./img/groups.svg" alt="" className='h-8 w-8'/>
           </div>
           <div className='w-4/5'>
-            <span className='text-lg w-11/12 inline-block'>New Group</span>
+            <span className='text-lg w-11/12 inline-block text-[#bac1c7]'>New Group</span>
           </div>
         </div>
         <div className='w-full'>
@@ -64,7 +59,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
         <div>
           {users&&users.map((user)=>(
             <div key={user._id} onClick={()=>singleChat(user)}>
-            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer">
+            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] cursor-pointer">
             <div>
               <img src={user.avatar} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>

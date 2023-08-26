@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Message from "../messages/Message";
 import {socket} from '../../socket.js'
+import { motion } from 'framer-motion';
 
 export default function GroupChat() {
     var ioChat;
@@ -109,7 +110,6 @@ export default function GroupChat() {
   
   useEffect(() => {
     socket.on("receive-msg", (reMsg) => {
-      console.log(ioChat, "nk");
       if (!ioChat || reMsg.chat._id !== ioChat._id) {
         return;
       } else {
@@ -177,7 +177,7 @@ export default function GroupChat() {
         <span>Select a chat to start a new conversation!</span>
         </div>}
         <div className='h-full'>
-        {groupInfo&&<div className='h-full'>
+        {groupInfo &&<div className='h-full'> 
           <ChatInfo chat={selectedChat} groupInfo={()=>setGroupInfo(!groupInfo)}/>
         </div>}
         </div>

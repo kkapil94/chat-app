@@ -53,12 +53,12 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
   return (<>{loading&&<Loader/>}
             <AnimatePresence>
           
-            <motion.div id="chats" className="bg-[#27374D] w-[30%] h-screen" initial={{x:"-100vh"}} animate={{x:0}}
-            transition={{type:"tween",ease:"easeIn",duration:.1}}>
+            <motion.div id="chats" className="bg-[#0f3a50] w-[30%] h-screen" initial={{x:"-100vh"}} animate={{x:0}}
+            transition={{type:"tween",ease:"easeIn",duration:".3"}} exit={{x:0,position:"absolute"}}>
                     <div className="sticky top-0 pb-4">
-                        <div className='flex items-end h-24 bg-[#9DB2BF]'>
-                            <button onClick={()=>handleConfirmGroup()}><img src="./img/back.png" alt="" className='h-3/5 w-6 ml-4 mb-2'/></button>
-                            <h1 className='ml-4 font-semibold text-lg mb-2'>New Group</h1>
+                        <div className='flex items-end h-24 bg-[#0f3a50]'>
+                            <button onClick={()=>handleConfirmGroup()}><img src="./img/back.svg" alt="" className='h-3/5 w-6 ml-4 mb-2'/></button>
+                            <h1 className='ml-4 font-semibold text-slate-100 text-lg mb-2'>New Group</h1>
                         </div>
                     </div>
                     <form  onSubmit={createGroup} className='flex flex-col items-center h-[calc(100vh-6rem)] mt-12 space-y-12 w-full overflow-auto'>
@@ -86,9 +86,9 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
                             <input type="text" name='name' id='groupName' value={name} onChange={(e)=>setName(e.target.value)} required className='w-full outline-none h-8 bg-[#27374D] border-b-2 text-[#a2acb4]' placeholder='Enter Group name'/>
                         </div>
                     
-                        <div className=' bg-[#7f9ea3] p-2 w-12 h-12 rounded-full'>
+                        <div className=' bg-[#003049bd] p-2 w-12 h-12 rounded-full'>
                             <button type='submit' className='w-full h-full'>
-                                <img src="/img/tick.png" alt=""  className='h-8'/>
+                                <img src="/img/check.svg" alt=""  className='h-8'/>
                             </button>
                         </div>
                     </form>

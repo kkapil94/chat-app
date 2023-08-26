@@ -54,7 +54,7 @@ export default function Chats({chats}) {
   return (
     <>
     <AnimatePresence>
-      {!newChat?(<motion.div id="chats" key={"chat"} className="bg-[#0f3a50] w-[30%] h-screen border-r-[1px] border-solid border-gray-500" initial={{x:0}} exit={{x:0,position:"absolute"}} transition={{ease:"easeIn",type:"tween",duration:'.1'}}>
+      {!newChat?(<motion.div id="chats" key={"chat"} className="bg-[#0f3a50] w-[30%] h-screen border-r-[1px] border-solid border-gray-500" initial={{x:0}} exit={{x:0,position:"absolute"}} transition={{ease:"easeIn",type:"tween",duration:'.3'}}>
         <div className="h-[3.8rem] bg-[#355070] flex items-center justify-between sticky top-0">
           <div id="avatar">
             <img
@@ -64,13 +64,13 @@ export default function Chats({chats}) {
             />
           </div>
           <div className="flex w-1/2 justify-end space-x-3 mr-5">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center active:bg-[#979ba3]">
-              <img src="/img/chat.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
+            <div className="w-10 h-10 rounded-full flex items-center  justify-center active:bg-[#033748]">
+              <img src="/img/chat.svg" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setNewChat(true)}/>
             </div>
-            <div ref={menuRef} className={menu?"bg-[#979ba3] rounded-full w-10 h-10 flex items-center justify-center":"rounded-full w-10 h-10 flex items-center justify-center"}>
-              <img src="/img/more.png" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setMenu(!menu)}/>
+            <div ref={menuRef} onClick={()=>setMenu(!menu)} className={menu?"bg-[#033748] rounded-full w-10 h-10 flex items-center justify-center":"rounded-full w-10 h-10 flex items-center justify-center"}>
+              <img src="/img/more.svg" alt="" className="h-[1.5rem] w-6 cursor-pointer" onClick={()=>setMenu(!menu)}/>
             </div>
-            <div ref={menuRef} className={menu?"absolute bg-slate-500 right-8 top-14 min-h-20 w-[12rem] py-4":"hidden"} >
+            <div ref={menuRef} className={menu?"absolute bg-[#033748] text-slate-100 right-8 top-14 min-h-20 w-[12rem] py-4 rounded-lg":"hidden" } >
               <ul className="space-y-2">
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={newGroup}>New Group</li>
                 <li className="cursor-pointer hover:bg-slate-700 pl-4 flex items-center h-10" onClick={logout}>LogOut</li>
@@ -80,11 +80,11 @@ export default function Chats({chats}) {
         </div>
        {chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
-            <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-slate-600 cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
+            <div tabIndex={-1} className="flex items-center  justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] focus:bg-[#8d99ae40] cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
             <div>
               <img src={chat.isGroupChat?chat.chatAvatar:getChatAvatar(chat)} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>
-            <div className="border-solid border-b-[1px] border-stone-500 w-[83%] h-full mr-2 text-white flex items-center">
+            <div className="border-solid border-b-[1px] border-[#8d99ae40]  w-[83%] h-full mr-2 text-white flex items-center">
               <span>{chat.isGroupChat?chat.chatName:getChatName(chat)}</span>
             </div>
           </div>

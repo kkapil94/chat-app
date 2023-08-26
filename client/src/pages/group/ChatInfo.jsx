@@ -4,6 +4,7 @@ import AddUserModal from './AddUserModal';
 import { useSelector,useDispatch } from 'react-redux';
 import { getChats, selectChat } from '../../actions/chatsActions';
 import { toast } from 'react-toastify';
+import { AnimatePresence, motion } from 'framer-motion';
 export default function ChatInfo({groupInfo,chatInfo}) {
     const {selectedChat} = useSelector(state=>state.chats)
     const dispatch = useDispatch();
@@ -71,9 +72,10 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     }
 
   return (
-    <>
-        <div className='w-[30vw] h-screen overflow-auto'>
-                <div className='flex items-center pl-4 h-[3.8rem] bg-[#9DB2BF] sticky top-0'>
+    <><AnimatePresence>
+
+        <motion.div className='w-[30vw] h-screen overflow-auto' key={"chatInfo"} initial={{x:"100vh"}} animate={{x:0}} transition={{type:"tween",duration:.2}} exit={{x:"0",position:"absolute"}}>
+             <div className='flex items-center pl-4 h-[3.8rem] bg-[#355070] sticky top-0'>
                     <div className='mr-2 cursor-pointer' onClick={()=>selectedChat&&selectedChat.isGroupChat?groupInfo():chatInfo()}>
                         <img src="/img/close.png" alt="" className='h-6 '/>
                     </div>
@@ -81,7 +83,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                         {selectedChat&&selectedChat.isGroupChat?<span>Group Info</span>:<span>Chat Info</span>}
                     </div>
                 </div>
-            <div className='bg-[#27374D] pb-4  h-[calc(100vh-3.8rem)] '>
+            <div className='bg-[#0f3a50] pb-4  h-[calc(100vh-3.8rem)] '>
                 <div className='flex flex-col items-center pt-6'>
                     <div>
                         <div>
@@ -162,8 +164,11 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                 ))}
             </div>}
             </div>
-        </div>
+        </motion.div>
+        <div >
         <AddUserModal open={open} setOpen={()=>setOpen(!open)} selectedChat={selectedChat}/>
+        </div>
+                    </AnimatePresence>
     </>
   )
 }

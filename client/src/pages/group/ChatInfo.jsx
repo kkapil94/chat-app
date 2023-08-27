@@ -50,7 +50,6 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     //remove group
 
     const removeMember = async(groupId,membId)=>{
-        console.log(groupId);
         try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
             headers:{
                 Authorization:`Bearer ${token}`

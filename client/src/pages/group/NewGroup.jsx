@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { searchUser } from '../../actions/usersActions';
 import ConfirmGroup from './ConfirmGroup';
 import { AnimatePresence, motion } from 'framer-motion';
+import { json } from 'react-router-dom';
 
 export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
 
   const dispatch = useDispatch();
   const [search,setSearch] = useState()
+  const userId = JSON.parse(localStorage.getItem('user')).user._id
   const {selectedChat} = useSelector(state=>state.chats)
   const {users} = useSelector((state)=>state.users)
   const [confirmGroup,setConfirmGroup] = useState(false)
@@ -16,7 +18,6 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
     setGroupMembers(groupMembers.filter(memb => memb!==member))
   }
   const back = (confirm)=>{
-    console.log(confirm,"ok");
     if(directNewGroup||confirm){
       toggleGroup()
       toggleChat()
@@ -29,7 +30,6 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const handleSetGroupMemb = (user)=>{
     let present = 0
     if (!groupMembers.length) {
-      console.log(1);
       setGroupMembers([...groupMembers,user])
     }
     groupMembers.length&&groupMembers.forEach(memb=>{
@@ -59,7 +59,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
                 <h1 className='ml-4 font-semibold text-slate-100 text-lg mb-2'>Add group participants</h1>
             </div>
             <div className='w-full flex justify-center bg-[#27374D]'>
-                <button className='inline-block mb-4'><img src="./img/search.png" alt="" className='absolute h-4 w-4 ml-2'/></button>
+                <button className='inline-block mb-4'><img src="./img/search.svg" alt="" className='absolute h-4 w-4 ml-2'/></button>
                 <input type="text" placeholder='Search Contacts' value={search} onChange={(e)=>setSearch(e.target.value)} className='w-11/12 my-2 rounded-md pl-12 h-8 outline-none'/>
             </div>
         </div>
@@ -87,7 +87,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
           </div>:""}
         {users.length?<div className={'overflow-auto '}>
         <div>
-          {users&&users.map((user)=>(
+          {users&&users.filter(user=>userId!=user._id).map((user)=>(
             <div onClick={()=>handleSetGroupMemb(user)} key={user._id}>
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] cursor-pointer" key={user._id}>
             <div>

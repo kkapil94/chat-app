@@ -75,12 +75,9 @@ export default function SingleChat() {
       socket.emit("typing",selectedChat._id);
     }
     const lastTyping =new Date().getTime();
-    console.log(lastTyping,"wbd");
       setTimeout(() => {
-        console.log(lastTyping,"iam");
         const newTime = new Date().getTime()
         const timeDiff = newTime-lastTyping
-        console.log(timeDiff,'diff');
         if (timeDiff>=timeTaken&&typing) {
           socket.emit('stop-typing',selectedChat._id)
           setTyping(0)
@@ -138,7 +135,6 @@ export default function SingleChat() {
   useEffect(() => {
     socket.on("stop-typing",()=>setNotTyping(0))
     socket.on("receive-msg", (reMsg) => {
-      console.log(ioChat, "nk");
       if (!ioChat || reMsg.chat._id !== ioChat._id) {
         return;
       } else {

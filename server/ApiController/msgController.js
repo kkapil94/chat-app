@@ -52,14 +52,13 @@ export const sendMsg = async(req,res,next)=>{
     })
 
 }catch(err){
-    console.log(err);
+    return new Error(err)
 }
 }
 
 export const deleteMsg = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        console.log(req.params);
         if (!id) {
             return next(new Error("msg id is not available"));
         }

@@ -21,7 +21,6 @@ export default function ({ open, setOpen}) {
   const handleSetAdd = (user)=>{
     let present = 0
     if (!add.length) {
-      console.log(1);
       setAdd([...add,user])
     }
     add.length&&add.forEach(memb=>{

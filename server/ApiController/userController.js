@@ -6,8 +6,7 @@ import { getDataUri } from "../utils/dataUri.js";
 // register user
 
 export const register = async (req, res, next) => {
-  const { name, email, password } = req.body;
-  console.log(req.body);
+  try{const { name, email, password } = req.body;
   if (!name || !email || !password) {
     res.status(400);
     return next(new Error("Please enter all the fields"));
@@ -35,13 +34,15 @@ export const register = async (req, res, next) => {
     msg: "user registered successfully",
     newUser,
     token,
-  });
+  });}catch(err){
+    console.log(err);
+  }
 };
 
 //login
 
 export const login = async (req, res, next) => {
-  const { email, password } = req.body;
+  try{const { email, password } = req.body;
   if (!email || !password) {
     res.status(400);
     return next(new Error("Please enter all the fields"));
@@ -62,6 +63,8 @@ export const login = async (req, res, next) => {
     });
   } else {
     return next(new Error("Please enter the valid credentials"));
+  }}catch(err){
+    console.log(err);
   }
 };
 

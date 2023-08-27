@@ -10,6 +10,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
   // const [isPresent, safeToRemove] = usePresence()
   const [search,setSearch] = useState()
+  const userId = JSON.parse(localStorage.getItem('user')).user._id
   const {selectedChat} = useSelector(state=>state.chats)
   const {users} = useSelector((state)=>state.users)
   const [newGroup,setNewGroup] = useState(directNewGroup)
@@ -58,7 +59,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
           <div className='h-[1px] bg-slate-600 ml-[4.5rem] mr-2'></div>
         </div>
         <div>
-          {users&&users.map((user)=>(
+          {users&&users.filter(user=>userId!=user._id).map((user)=>(
             <div key={user._id} onClick={()=>singleChat(user)}>
             <div className="flex items-center justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] cursor-pointer">
             <div>

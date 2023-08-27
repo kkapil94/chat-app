@@ -18,7 +18,6 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const [pre,setPre] = useState();
     const dispatch = useDispatch();
     const users = [];
-    console.log(file,"you");
     groupMembers.map((mem)=>(users.push(mem._id)))
     const token = JSON.parse(localStorage.getItem("user")).token
     const handleSetFile = (e)=>{
@@ -45,7 +44,6 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
             notify.success("Group created")
         }}catch(err){
             setLoading(false)
-            console.log(err.response.data.msg);
             notify.error(err.response.data.msg);
         }
             

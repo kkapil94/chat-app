@@ -52,7 +52,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   return (
     <>
       <AnimatePresence>
-        {!confirmGroup? <motion.div id="chats" key={"NewGroup"} className={`bg-[#0f3a50] ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'} w-[30%] h-screen flex flex-col`} initial={{x:'-100vw'}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:".3"}} exit={{x:0,position:"absolute"}}>
+        {!confirmGroup? <motion.div id="chats" key={"NewGroup"} className={`bg-[#0f3a50] ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'} w-[30%] sm:max-xl:w-[40%] h-screen flex flex-col`} initial={{x:'-100vw'}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:".3"}} exit={{x:0,position:"absolute"}}>
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#355070]'>
                 <button  onClick={()=>back(false)}><img src="./img/back.svg" alt="" className='h-3/5 w-6 ml-4 mb-2'/></button>
@@ -70,11 +70,11 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
                 <div>
                     <img src={mem.avatar} className='h-7 w-7 xs:max-sm:h-10 xs:max-sm:w-10 object-contain mr-2 rounded-full' />
                 </div>
-                <div className='mr-2'>
+                <div className='mr-2 text-slate-300'>
                     <span>{mem.name}</span>
                 </div>
                 <div>
-                    <img src="./img/close.png" className='h-4 w-4 cursor-pointer' onClick={()=>removeGroupMembers(mem)} />
+                    <img src="./img/close.svg" className='h-4 w-4 cursor-pointer' onClick={()=>removeGroupMembers(mem)} />
                 </div>
             </div>
             ))

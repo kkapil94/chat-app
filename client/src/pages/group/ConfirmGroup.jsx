@@ -54,7 +54,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
   return (<>{loading&&<Loader/>}
             <AnimatePresence>
           
-            <motion.div id="chats" className={`bg-[#0f3a50] w-[30%] h-screen ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}`} initial={{x:"-100vh"}} animate={{x:0}}
+            <motion.div id="chats" className={`bg-[#0f3a50] w-[30%] sm:max-xl:w-[40%] h-screen ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}`} initial={{x:"-100vh"}} animate={{x:0}}
             transition={{type:"tween",ease:"easeIn",duration:".3"}} exit={{x:0,position:"absolute"}}>
                     <div className="sticky top-0 pb-4">
                         <div className='flex items-end h-24 bg-[#0f3a50]'>

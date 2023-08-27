@@ -8,7 +8,7 @@ export default function ChatsSection() {
   console.log(selectedChat);
   return (
     <>
-      <div id="chatSection" className={`${selectedChat?'xs:max-sm:w-full':'xs:max-sm:hidden'} bg-[#9aafb9]`}>
+      <div id="chatSection" className={`bg-[#526D82] w-[70%] ${selectedChat?'xs:max-sm:w-full sm:max-xl:w-[60%]':'xs:max-sm:hidden'}`}>
       {selectedChat&&selectedChat.isGroupChat?
         <GroupChat/>:
         <SingleChat/>

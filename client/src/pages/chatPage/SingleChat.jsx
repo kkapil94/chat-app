@@ -159,7 +159,7 @@ export default function SingleChat() {
             className={
               !chatInfo
                 ? "h-full w-full"
-                : "h-full w-[40vw] xs:max-sm:hidden border-solid border-r-[1px] border-gray-500"
+                : "h-full w-[40vw] xs:max-sm:hidden sm:max-xl:hidden border-solid border-r-[1px] border-gray-500"
             }
           >
             <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#355070]">
@@ -262,7 +262,7 @@ export default function SingleChat() {
         )}
         <div className="h-full">
           {chatInfo && (
-            <div className="h-full">
+            <div className="h-full ">
               <ChatInfo
                 chat={selectedChat}
                 chatInfo={() => setChatInfo(!chatInfo)}

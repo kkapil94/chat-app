@@ -58,7 +58,7 @@ export default function ({ open, setOpen}) {
         aria-describedby="modal-modal-description"
         className="flex justify-center items-center"
       >
-        <div className="bg-[#0f3a50] w-4/12 sm:max-2xl:max-h-[80vh] xs:max-sm:w-screen xs:max-sm:h-screen  flex flex-col">
+        <div className="bg-[#0f3a50] w-4/12 sm:max-lg:w-3/5 sm:max-2xl:max-h-[80vh] xs:max-sm:w-screen xs:max-sm:h-screen  flex flex-col">
           <div className="flex items-center h-[3.8rem]">
             <span>
               <svg
@@ -93,7 +93,7 @@ export default function ({ open, setOpen}) {
             </div>
           </div>
           <div>
-            <div className="sm:max-2xl:ml-10 max-h-44 xs:max-sm:h-15  xs:max-sm:w-screen  whitespace-nowrap xs:max-sm:px-2 overflow-auto mt-4">
+            <div className="sm:max-2xl:ml-10 max-h-44 xs:max-sm:h-15  xs:max-sm:w-screen  xs:max-sm:whitespace-nowrap xs:max-sm:px-2 overflow-auto mt-4">
               {add.length
                 ? add.map((mem) => (
                     <div
@@ -106,12 +106,12 @@ export default function ({ open, setOpen}) {
                           className="h-7 xs:max-sm:h-10 xs:max-sm:w-10 w-7 object-contain mr-2 rounded-full"
                         />
                       </div>
-                      <div className="mr-2">
+                      <div className="mr-2 text-slate-300">
                         <span>{mem.name}</span>
                       </div>
                       <div>
                         <img
-                          src="./img/close.png"
+                          src="./img/close.svg"
                           className="h-4 w-4 cursor-pointer"
                           onClick={() => removeAdd(mem)}
                         />

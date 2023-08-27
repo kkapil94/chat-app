@@ -58,7 +58,7 @@ export default function ({ open, setOpen}) {
         aria-describedby="modal-modal-description"
         className="flex justify-center items-center"
       >
-        <div className="bg-[#0f3a50] w-4/12 max-h-[80vh] flex flex-col">
+        <div className="bg-[#0f3a50] w-4/12 sm:max-2xl:max-h-[80vh] xs:max-sm:w-screen xs:max-sm:h-screen  flex flex-col">
           <div className="flex items-center h-[3.8rem]">
             <span>
               <svg
@@ -93,7 +93,7 @@ export default function ({ open, setOpen}) {
             </div>
           </div>
           <div>
-            <div className="ml-10 max-h-44 overflow-auto mt-4">
+            <div className="sm:max-2xl:ml-10 max-h-44 xs:max-sm:h-15  xs:max-sm:w-screen  whitespace-nowrap xs:max-sm:px-2 overflow-auto mt-4">
               {add.length
                 ? add.map((mem) => (
                     <div
@@ -103,7 +103,7 @@ export default function ({ open, setOpen}) {
                       <div>
                         <img
                           src={mem.avatar}
-                          className="h-7 w-7 object-contain mr-2 rounded-full"
+                          className="h-7 xs:max-sm:h-10 xs:max-sm:w-10 w-7 object-contain mr-2 rounded-full"
                         />
                       </div>
                       <div className="mr-2">
@@ -123,7 +123,7 @@ export default function ({ open, setOpen}) {
           </div>
           {add.length ? (
             <div className="w-full">
-              <div className="h-[1px] bg-slate-600 mx-9 mb-4"></div>
+              <div className="sm:max-2xl:h-[1px] bg-slate-600 mx-9 sm:max-2xl:mb-4"></div>
             </div>
           ) : (
             ""

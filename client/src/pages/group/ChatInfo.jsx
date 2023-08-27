@@ -74,7 +74,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
   return (
     <><AnimatePresence>
 
-        <motion.div className='w-[30vw] h-screen overflow-auto' key={"chatInfo"} initial={{x:"100vh"}} animate={{x:0}} transition={{type:"tween",duration:.2}} exit={{x:"0",position:"absolute"}}>
+        <motion.div className='xs:max-sm:w-screen w-[30vw] h-screen overflow-auto' key={"chatInfo"} initial={{x:"100vh"}} animate={{x:0}} transition={{type:"tween",duration:.2}} exit={{x:"0",position:"absolute"}}>
              <div className='flex items-center pl-4 h-[3.8rem] bg-[#355070] sticky top-0'>
                     <div className='mr-2 cursor-pointer' onClick={()=>selectedChat&&selectedChat.isGroupChat?groupInfo():chatInfo()}>
                         <img src="/img/close.svg" alt="" className='h-6 '/>

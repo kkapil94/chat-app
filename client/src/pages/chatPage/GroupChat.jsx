@@ -66,17 +66,6 @@ export default function GroupChat() {
       }
     }
 
-    const getChatName = (chat)=>{
-      const users = chat.users.filter(memb=>memb._id!=user.user._id)
-      return users.length&&users[0].name
-    }
-    const getChatAvatar = (chat)=>{
-      const users = chat.users.filter(memb=>memb._id!=user.user._id)
-      return users.length&&users[0].avatar
-    }
-  
-
-
     const exitGroup = async(groupId)=>{
       try{ const data =await axios.put(`/api/v1/chat/group/exit/${groupId}`,{userId},{
           headers:{
@@ -121,10 +110,13 @@ export default function GroupChat() {
     
   return (
     <>
-    <div className='flex h-full'>
-      {selectedChat?<motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}} className={!groupInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
+    <div className={`flex h-full`}>
+      {selectedChat?<motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}} className={!groupInfo?'h-full w-full':"h-full w-[40vw] xs:max-sm:hidden border-solid border-r-[1px] border-gray-500"}>
         <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#355070]'>
           <div className='flex ml-4 space-x-2'>
+            <div className='bg-[#355070] flex items-center sm:max-2xl:hidden'>
+                <button onClick={()=>{dispatch(selectChat())}}><img src="./img/back.svg" className='h-6' /></button>
+            </div>
             <div>
               <img src={!selectedChat.isGroupChat?selectedChat.avatar:selectedChat.chatAvatar} alt="" className='h-10 w-10 rounded-full m-1 object-contain'/>
             </div>

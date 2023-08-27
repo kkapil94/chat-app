@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { getChats } from "../../actions/chatsActions";
 
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -14,6 +14,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const [name,setName] = useState();
     const [loading,setLoading] = useState(false)
     const [file,setFile] = useState();
+    const {selectedChat} = useSelector(state=>state.chats)
     const [pre,setPre] = useState();
     const dispatch = useDispatch();
     const users = [];
@@ -53,7 +54,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
   return (<>{loading&&<Loader/>}
             <AnimatePresence>
           
-            <motion.div id="chats" className="bg-[#0f3a50] w-[30%] h-screen" initial={{x:"-100vh"}} animate={{x:0}}
+            <motion.div id="chats" className={`bg-[#0f3a50] w-[30%] h-screen ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}`} initial={{x:"-100vh"}} animate={{x:0}}
             transition={{type:"tween",ease:"easeIn",duration:".3"}} exit={{x:0,position:"absolute"}}>
                     <div className="sticky top-0 pb-4">
                         <div className='flex items-end h-24 bg-[#0f3a50]'>

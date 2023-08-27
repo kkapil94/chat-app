@@ -159,11 +159,14 @@ export default function SingleChat() {
             className={
               !chatInfo
                 ? "h-full w-full"
-                : "h-full w-[40vw] border-solid border-r-[1px] border-gray-500"
+                : "h-full w-[40vw] xs:max-sm:hidden border-solid border-r-[1px] border-gray-500"
             }
           >
             <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#355070]">
               <div className="flex ml-4 space-x-2">
+                <div className='bg-[#355070] flex items-center  sm:max-2xl:hidden'>
+                  <button onClick={()=>{dispatch(selectChat())}}><img src="./img/back.svg" className='h-6' /></button>
+                </div>
                 <div>
                   <img
                     src={getChatAvatar(selectedChat)}

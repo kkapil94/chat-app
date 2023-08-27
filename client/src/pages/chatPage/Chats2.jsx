@@ -10,6 +10,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
   // const [isPresent, safeToRemove] = usePresence()
   const [search,setSearch] = useState()
+  const {selectedChat} = useSelector(state=>state.chats)
   const {users} = useSelector((state)=>state.users)
   const [newGroup,setNewGroup] = useState(directNewGroup)
   const toggleGroup = ()=>{
@@ -33,7 +34,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   return (
     <>
       <AnimatePresence >
-        {!newGroup?<motion.div id="chats" key={"chats"} className="bg-[#0f3a50] w-[30%] h-screen text-[#bac1c7]" initial={{x:'-100vw'}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:'.3'}} exit={{x:0,position:"absolute"}}>
+        {!newGroup?<motion.div id="chats" key={"chats"} className={`bg-[#0f3a50] w-[30%] ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}  h-screen border-r-[1px] border-solid border-gray-500`} initial={{x:'-100vw'}} animate={{x:0}} transition={{type:"tween",ease:"easeIn",duration:'.3'}} exit={{x:0,position:"absolute"}}>
         <div className="sticky top-0 pb-4">
             <div className='flex items-end h-24 bg-[#355070]'>
                 <button><img src="./img/back.svg" alt="" className='h-3/5 w-6 ml-4 mb-2' onClick={()=>toggleChat()}/></button>

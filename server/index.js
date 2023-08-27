@@ -12,7 +12,6 @@ import { isAdmin } from "./middleware/isGroupAdmin.js"
 import cors from "cors"
 import http from "http"
 import {Server} from "socket.io"
-import { loadavg } from "os"
 const app = express()
 const server = http.createServer(app);
 const io = new Server(server,{
@@ -60,6 +59,6 @@ io.on('connection', (socket) => {
   })
 });
 
-server.listen(4000,()=>{
+server.listen(4000 || process.env.PORT,()=>{
     console.log("server connected to PORT 4000")
 })

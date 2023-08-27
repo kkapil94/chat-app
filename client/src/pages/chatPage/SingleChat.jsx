@@ -6,6 +6,7 @@ import { getChats, selectChat } from "../../actions/chatsActions";
 import axios from "axios";
 import Message from "../messages/Message";
 import {socket} from '../../socket.js'
+import {motion} from "framer-motion"
 
 export default function SingleChat() {
   var ioChat
@@ -17,7 +18,6 @@ export default function SingleChat() {
   const [chatInfo, setChatInfo] = useState(false);
   const [typing,setTyping] = useState(false)
   const [notTyping,setNotTyping] = useState(false)
-  // const [stopTyping,setStopTyping] = useState(false)
   const selectedChat = useSelector((state) => state.chats.selectedChat);
   const user = JSON.parse(localStorage.getItem("user"));
   const menuRef = useRef();
@@ -153,7 +153,7 @@ export default function SingleChat() {
 
   return (
     <>
-      <div className="flex h-full">
+      <motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}}  className="flex h-full">
         {selectedChat ? (
           <div
             className={
@@ -267,7 +267,7 @@ export default function SingleChat() {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

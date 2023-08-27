@@ -7,7 +7,7 @@ const Token = (user)=>{
             id:user._id
         }
     },process.env.TOKEN_SECRET,{
-        expiresIn:"30m"
+        expiresIn:"2h"
     })
     return token
 }

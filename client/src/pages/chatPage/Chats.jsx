@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chats({chats}) {
   const [newChat,setNewChat] = useState(false);
+  const [selected,setSelected] = useState(false)
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
   const user = JSON.parse(localStorage.getItem("user")).user;
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ export default function Chats({chats}) {
     setToggleGroup(false)
   }
   const logout = ()=>{
+    dispatch(selectChat())
     localStorage.removeItem("user");
     navigate("/login")
     toast.success("Logged out successfully")
@@ -80,7 +82,7 @@ export default function Chats({chats}) {
         </div>
        {chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
-            <div tabIndex={-1} className="flex items-center  justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] focus:bg-[#8d99ae40] cursor-pointer" key={chat._id} onClick={()=>dispatch(selectChat(chat._id))}>
+            <div  className={`flex items-center  justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] focus:bg-[#8d99ae40] cursor-pointer ${selected==chat._id&&"bg-[#8d99ae40]"}`} key={chat._id} onClick={()=>{setSelected(chat._id);dispatch(selectChat(chat._id))}}>
             <div>
               <img src={chat.isGroupChat?chat.chatAvatar:getChatAvatar(chat)} alt="" className="h-12 w-12 rounded-full m-3 object-contain"/>
             </div>

@@ -37,17 +37,17 @@ export default function Login() {
   }
   return (
     <>{loading&&<Loader/>}
-      <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
-        <div className="flex h-4/5 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
-          <div className="w-1/2 h-full flex items-center">
+      <div className="min-h-screen w-screen xs:max-sm:p-2 sm:max-md:p-8 flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91] ">
+        <div className="flex xs:max-md:flex-col min-h-[80vh] xs:max-sm:w-full xs:max-md:w-11/12 w-4/5 items-center justify-center border-2  border-gray-400 rounded-3xl">
+          <div className="w-1/2 xs:max-md:w-full xs:max-md:mb-8 h-full flex  items-center xs:max-md:mt-8">
             <img src="/img/hero.svg" className="max-w-full h-4/5 object-cover"/>
           </div>
-          <div className="w-1/2 backdrop:blur-3xl flex flex-col justify-center space-y-8 h-full pl-12">
-            <h1 className="text-4xl text-white">Welcome!</h1>
+          <div className="w-1/2 xs:max-md:w-full backdrop:blur-3xl flex flex-col justify-center space-y-8 h-full xs:max-lg:p-0 pl-12 xs:max-md:mb-8">
+            <h1 className="text-4xl text-white xs:max-md:text-center">Welcome!</h1>
             <div>
-              <form className="flex flex-col h-full space-y-9" onSubmit={handleSubmit}>
-                <div className="flex flex-col justify-around h-[10rem]">
-                  <div>
+              <form className="flex flex-col h-full xs:max-lg:w-full xs:max-md:items-center  space-y-9" onSubmit={handleSubmit}>
+                <div className="flex flex-col justify-around xs:max-md:items-center h-[10rem] w-full">
+                  <div className="xs:max-md:w-4/5">
                     <label htmlFor="email" className="text-md text-white block">
                       Username
                     </label>
@@ -57,10 +57,10 @@ export default function Login() {
                       required
                       value={logData.username}
                       onChange={handleChange}
-                      className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
+                      className="w-3/5 md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
-                  <div>
+                  <div className="xs:max-md:w-4/5">
                     <label htmlFor="password" className="text-md text-white block">
                       Password
                     </label>
@@ -70,13 +70,13 @@ export default function Login() {
                       required
                       value={logData.password}
                       onChange={handleChange}
-                      className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
+                      className="w-3/5 md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
                 </div >
-                <div>
-                <button type="submit" className="text-[#4aa0a1] h-8 bg-white w-3/5 rounded-2xl mb-1">SignIn</button>
-                <Link to ="/register" className="text-sm text-white ml-auto block w-4/5">Don't have an account?SignUp.</Link>
+                <div className="xs:max-md:w-4/5 ">
+                <button type="submit" className="text-[#4aa0a1] h-8 bg-white md:max-lg:w-4/5 xs:max-md:w-full w-3/5 rounded-2xl mb-1">SignIn</button>
+                <Link to ="/register" className="text-sm xs:max-md:text-xs text-white ml-auto block  md:w-4/5 xs:max-md:float-right">Don't have an account?SignUp.</Link>
                 </div>
               </form>
             </div>

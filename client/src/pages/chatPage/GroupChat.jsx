@@ -51,7 +51,7 @@ export default function GroupChat() {
         return new Error(err.message);
       }
     };
-  
+
     const fetchMsg = async()=>{
       try {
         const {data} = await axios.get(`api/v1/msg/${selectedChat._id}`,{
@@ -122,7 +122,7 @@ export default function GroupChat() {
   return (
     <>
     <div className='flex h-full'>
-      {selectedChat?<div className={!groupInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
+      {selectedChat?<motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}} className={!groupInfo?'h-full w-full':"h-full w-[40vw] border-solid border-r-[1px] border-gray-500"}>
         <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#355070]'>
           <div className='flex ml-4 space-x-2'>
             <div>
@@ -173,7 +173,7 @@ export default function GroupChat() {
                 </div>
               </div>
             </div>
-      </div>:<div className='h-full w-full flex items-center justify-center text-xl text-slate-200 font-bold'>
+      </motion.div>:<div className='h-full w-full flex items-center justify-center text-xl text-slate-200 font-bold'>
         <span>Select a chat to start a new conversation!</span>
         </div>}
         <div className='h-full'>

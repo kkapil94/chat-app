@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { clearErrors } from "../actions/chatsActions";
@@ -76,7 +75,7 @@ export default function Login() {
                 </div >
                 <div className="xs:max-md:w-4/5 ">
                 <button type="submit" className="text-[#4aa0a1] h-8 bg-white md:max-lg:w-4/5 xs:max-md:w-full w-3/5 rounded-2xl mb-1">SignIn</button>
-                <Link to ="/register" className="text-sm xs:max-md:text-xs text-white ml-auto block  md:w-4/5 xs:max-md:float-right">Don't have an account?SignUp.</Link>
+                <Link to ="/register" className="text-sm flex md:max-lg:w-4/5 justify-end w-3/5 xs:max-md:text-xs xs:max-md:w-full text-white">Don't have an account?SignUp.</Link>
                 </div>
               </form>
             </div>

@@ -42,21 +42,21 @@ export default function SignUp() {
   };
   return (
     <>{loading&&<Loader/>}
-      <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
-        <div className="flex h-4/5 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
-          <div className="w-1/2">
-            <img src="/img/hero.svg" />
+      <div className="min-h-screen w-screen xs:max-sm:p-2 sm:max-md:p-8 flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
+        <div className="flex xs:max-md:flex-col min-h-[80vh] xs:max-sm:w-full xs:max-md:w-11/12 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
+          <div className="w-1/2 xs:max-md:w-full xs:max-md:mb-8 h-full flex  items-center xs:max-md:mt-8">
+            <img src="/img/hero.svg" className="max-w-full h-4/5 object-cover"/>
           </div>
-          <div className="w-1/2 backdrop:blur-3xl flex flex-col justify-center space-y-10 h-full pl-12">
-            <h1 className="text-4xl text-white">Create Your Account</h1>
+          <div className="w-1/2 xs:max-md:w-full backdrop:blur-3xl flex flex-col justify-center space-y-10 h-full  xs:max-md:mb-8 xs:max-lg:p-0 pl-12">
+            <h1 className="text-4xl xs:max-md:text-2xl md:max-lg:text-3xl text-white xs:max-md:text-center mb-8 ">Create Your Account</h1>
             <div>
               <form
-                className="flex flex-col h-full space-y-12 "
+                className="flex flex-col h-full xs:max-lg:w-full xs:max-md:items-center space-y-14 xs:max-md:space-y-20"
                 onSubmit={handleSubmit}
                 ref={formRef}
               >
-                <div className="flex flex-col justify-around h-[13rem] space-y-1">
-                  <div>
+                <div className="flex flex-col justify-around xs:max-md:items-center h-[10rem] w-full xs:max-md:space-y-3">
+                  <div className="xs:max-md:w-4/5">
                     <label htmlFor="name" className="text-md text-white block">
                       Name
                     </label>
@@ -67,10 +67,10 @@ export default function SignUp() {
                       type="text"
                       onChange={handleChange}
                       required
-                      className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
+                      className="w-3/5  md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
-                  <div>
+                  <div className="xs:max-md:w-4/5">
                     <label htmlFor="email" className="text-md text-white block">
                       Email
                     </label>
@@ -81,10 +81,10 @@ export default function SignUp() {
                       type="email"
                       onChange={handleChange}
                       required
-                      className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
+                      className="w-3/5  md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
-                  <div>
+                  <div className="xs:max-md:w-4/5">
                     <label
                       htmlFor="password"
                       className="text-md text-white block"
@@ -98,10 +98,10 @@ export default function SignUp() {
                       id="password"
                       onChange={handleChange}
                       required
-                      className="w-3/5 rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
+                      className="w-3/5 md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
-                  <div>
+                  <div className="xs:max-md:w-4/5">
                     <label htmlFor="avatar" className="text-md text-white block">Avatar</label>
                     <input
                       name="file"
@@ -110,20 +110,20 @@ export default function SignUp() {
                       value={user.avatar}
                       onChange={handleChange}
                       required
-                      className="file:bg-transparent file:border-2 file:rounded-2xl file:border-white text-white file:text-white"
+                      className="file:bg-transparent w-3/5 md:max-lg:w-4/5 xs:max-md:w-full file:border-2 file:rounded-2xl file:border-white text-white file:text-white"
                       />
                   </div>
                 </div>
-                <div>
+                <div className="xs:max-md:w-4/5">
                   <button
                     type="submit"
-                    className="text-[#4aa0a1] h-8 bg-white w-3/5 rounded-2xl block mb-1"
+                    className="text-[#4aa0a1] h-8 bg-white md:max-lg:w-4/5 xs:max-md:w-full  w-3/5 rounded-2xl block mb-1"
                   >
                     SignUp
                   </button>
                   <Link
                     to="/login"
-                    className="text-sm text-white ml-auto block w-4/5"
+                    className="text-sm flex md:max-lg:w-4/5 justify-end w-3/5 xs:max-md:text-xs xs:max-md:w-full text-white"
                   >
                     Already have an account?SignIn.
                   </Link>

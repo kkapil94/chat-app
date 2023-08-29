@@ -60,5 +60,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen( process.env.PORT || 4000,()=>{
-    console.log("server connected to PORT 4000")
+    console.log("server connected to PORT:",process.env.PORT || 4000)
 })

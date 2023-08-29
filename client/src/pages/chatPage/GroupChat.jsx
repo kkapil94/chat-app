@@ -143,7 +143,7 @@ export default function GroupChat() {
             </div>}
         <div className="sticky top-full w-full">
               <div className="h-[3.8rem] bg-[#355070] w-full">
-                <div className="h-full w-full flex items-center justify-center space-x-10">
+                <div className="h-full w-full flex items-center justify-center space-x-10 xs:max-md:space-x-2">
                   <div className="h-full w-4/5 flex items-center">
                     <input
                       type="text"

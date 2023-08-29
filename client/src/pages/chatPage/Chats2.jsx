@@ -5,7 +5,7 @@ import NewGroup from '../group/NewGroup';
 import axios from 'axios';
 import { getChats } from '../../actions/chatsActions';
 import {AnimatePresence, motion,usePresence} from "framer-motion"
-
+const baseUrl = import.meta.env.VITE_BASE_URL
 export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
   // const [isPresent, safeToRemove] = usePresence()
@@ -19,7 +19,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   }
   const singleChat = async(user)=>{
     const {token} = JSON.parse(localStorage.getItem("user"))
-    const data = await axios.post('/api/v1/chat',{user},{
+    const data = await axios.post(`${baseUrl}/api/v1/chat`,{user},{
       headers:{
         Authorization:`Bearer ${token}`
       }

@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 
 export default function GroupChat() {
     var ioChat;
+    const baseUrl = import.meta.env.VITE_BASE_URL
     const [menu,setMenu] = useState(false);
     const [groupInfo,setGroupInfo] = useState(false)
     const [content, setContent] = useState('');
@@ -34,7 +35,7 @@ export default function GroupChat() {
           return 
         }
         const { data } = await axios.post(
-          "api/v1/msg/send",
+          `${baseUrl}/api/v1/msg/send`,
           { content: content, chatId: selectedChat._id },
           {
             headers: {
@@ -54,7 +55,7 @@ export default function GroupChat() {
 
     const fetchMsg = async()=>{
       try {
-        const {data} = await axios.get(`api/v1/msg/${selectedChat._id}`,{
+        const {data} = await axios.get(`${baseUrl}/api/v1/msg/${selectedChat._id}`,{
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -67,7 +68,7 @@ export default function GroupChat() {
     }
 
     const exitGroup = async(groupId)=>{
-      try{ const data =await axios.put(`/api/v1/chat/group/exit/${groupId}`,{userId},{
+      try{ const data =await axios.put(`${baseUrl}/api/v1/chat/group/exit/${groupId}`,{userId},{
           headers:{
               Authorization:`Bearer ${token}`
               },

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { AnimatePresence, motion } from 'framer-motion';
 export default function ChatInfo({groupInfo,chatInfo}) {
     const {selectedChat} = useSelector(state=>state.chats)
+    const baseUrl = import.meta.env.VITE_BASE_URL
     const dispatch = useDispatch();
     const notify = toast
     const [edit,setEdit] = useState(false);
@@ -22,7 +23,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     //rename group
     
     const editInfo = async(id)=>{
-       try{ const data =await axios.put(`/api/v1/chat/group/rename/${id}`,{name:details.name},{
+       try{ const data =await axios.put(`${baseUrl}/api/v1/chat/group/rename/${id}`,{name:details.name},{
             headers:{
                 Authorization:`Bearer ${token}`
                 },
@@ -50,7 +51,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
     //remove group
 
     const removeMember = async(groupId,membId)=>{
-        try{ const data =await axios.put(`/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
+        try{ const data =await axios.put(`${baseUrl}/api/v1/chat/group/remove/${groupId}`,{userId:membId},{
             headers:{
                 Authorization:`Bearer ${token}`
                 },

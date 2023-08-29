@@ -1,10 +1,10 @@
 import axios from "axios"
-
+const baseUrl = import.meta.env.VITE_BASE_URL
 export const searchUser = (keyword)=>async(dispatch)=>{
     try{
         dispatch({type:"ALL_USERS_REQUEST"})
         const {token} = JSON.parse(localStorage.getItem("user"))
-        const {data} = await axios.get(`/api/v1/auth/`,{
+        const {data} = await axios.get(`${baseUrl}/api/v1/auth/`,{
             headers:{
                 Authorization:`Bearer ${token}`
             },

@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
     const form  =  useRef(null);
+    const baseUrl = import.meta.env.VITE_BASE_URL
     const formData = new FormData();
     const notify = toast
     const [name,setName] = useState();
@@ -31,7 +32,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
         formData.append("name",name)
         formData.append("file",file)
         formData.append("users",JSON.stringify(users))
-        const data =await axios.post("/api/v1/chat/group",formData,{
+        const data =await axios.post(`${baseUrl}/api/v1/chat/group`,formData,{
             headers:{
             "Content-Type": "multipart/form-data",
             Authorization:`Bearer ${token}`,

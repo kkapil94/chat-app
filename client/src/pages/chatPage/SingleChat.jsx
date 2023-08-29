@@ -10,6 +10,7 @@ import {motion} from "framer-motion"
 
 export default function SingleChat() {
   var ioChat
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const [menu, setMenu] = useState(false);
   const [content, setContent] = useState('');
   const [msg,setMsg] = useState([])
@@ -35,7 +36,7 @@ export default function SingleChat() {
       }
       socket.emit('stop-typing',selectedChat._id)
       const { data } = await axios.post(
-        "api/v1/msg/send",
+        `${baseUrl}/api/v1/msg/send`,
         { content: content, chatId: selectedChat._id },
         {
           headers: {
@@ -55,7 +56,7 @@ export default function SingleChat() {
 
   const fetchMsg = async()=>{
     try {
-      const {data} = await axios.get(`api/v1/msg/${selectedChat._id}`,{
+      const {data} = await axios.get(`${baseUrl}/api/v1/msg/${selectedChat._id}`,{
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -98,7 +99,7 @@ export default function SingleChat() {
     setMenu(0);
     try {
       const data = await axios.put(
-        `/api/v1/chat/group/remove/${groupId}`,
+        `${baseUrl}/api/v1/chat/group/remove/${groupId}`,
         { userId: membId },
         {
           headers: {

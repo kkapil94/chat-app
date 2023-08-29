@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { clearErrors } from "../actions/chatsActions";
 import Loader from "../components/Loader";
 export default function Login() {
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [loading,setLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function Login() {
     try{
       dispatch(clearErrors())
       setLoading(true)
-      const {data} =await axios.post("/api/v1/auth/login",logData)
+      const {data} =await axios.post(`${baseUrl}/api/v1/auth/login`,logData)
       if(data.success) {
         setLoading(false)
         localStorage.setItem("user",JSON.stringify(data))

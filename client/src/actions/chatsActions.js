@@ -1,11 +1,10 @@
 import axios from "axios"
-
-
+const baseUrl = import.meta.env.VITE_BASE_URL
 export const getChats = ()=>async (dispatch)=>{
     const user= JSON.parse(localStorage.getItem("user"))
     try {
         dispatch({type:"ALL_CHATS_REQUEST"})
-        const {data} = await axios.get("/api/v1/chat",{headers :{
+        const {data} = await axios.get(`${baseUrl}/api/v1/chat`,{headers :{
             Authorization:`Bearer ${user&&user.token}`
         }});
         dispatch({type:"ALL_CHATS_SUCCESS",payload:data})
@@ -32,7 +31,7 @@ export const selectChat = (id)=>async(dispatch)=>{
             return
         }
         dispatch({type:"CHAT_REQUEST"})
-        const {data} = await axios.get(`/api/v1/chat/${id}`,{headers :{
+        const {data} = await axios.get(`${baseUrl}/api/v1/chat/${id}`,{headers :{
             Authorization:`Bearer ${token}`
         }});
         dispatch({type:"SELECT_CHAT",payload:data})

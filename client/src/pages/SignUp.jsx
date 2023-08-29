@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 
 
 export default function SignUp() {
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const formRef = useRef(null);
   const navigate = useNavigate()
   const [loading,setLoading] = useState(false);
@@ -24,7 +25,7 @@ export default function SignUp() {
     setLoading(true);
     const formData = new FormData(formRef.current);
     try {
-      const {data} = await axios.post("/api/v1/auth/register", formData, {
+      const {data} = await axios.post(`${baseUrl}/api/v1/auth/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

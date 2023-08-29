@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export default function ({ open, setOpen}) {
   const dispatch = useDispatch();
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const notify = toast
   const {users} = useSelector(state=>state.users)
   const {selectedChat} = useSelector(state=>state.chats)
@@ -34,7 +35,7 @@ export default function ({ open, setOpen}) {
   const addUser = async()=>{
     const ids = add.map(add=>add._id)
     const token = JSON.parse(localStorage.getItem("user")).token
-    const data = await axios.put(`/api/v1/chat/group/add/${selectedChat._id}`,{user:ids},{
+    const data = await axios.put(`${baseUrl}/api/v1/chat/group/add/${selectedChat._id}`,{user:ids},{
         headers:{
             Authorization:`Bearer ${token}`
         }

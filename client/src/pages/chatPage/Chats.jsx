@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectChat } from "../../actions/chatsActions";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
+import Loader from "../../components/Loader";
 
-export default function Chats({chats}) {
+export default function Chats({chats,loading}) {
   const [newChat,setNewChat] = useState(false);
   const [selected,setSelected] = useState(false)
   const {selectedChat} = useSelector(state=>state.chats)
@@ -57,6 +58,7 @@ export default function Chats({chats}) {
   return (
     <>
     <AnimatePresence>
+      {loading&&<Loader/>}
       {!newChat?(<motion.div id="chats" key={"chat"} className={`bg-[#0f3a50] sm:max-xl:w-[40%] w-[30%] ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}  h-screen border-r-[1px] border-solid border-gray-500`} initial={{x:0}} exit={{x:0,position:"absolute"}} transition={{ease:"easeIn",type:"tween",duration:'.3'}}>
         <div className="h-[3.8rem] bg-[#355070] flex items-center justify-between sticky top-0">
           <div id="avatar">

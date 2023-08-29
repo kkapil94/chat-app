@@ -8,13 +8,13 @@ export default function Loader() {
       <Oval
         height={80}
         width={80}
-        color="#4fa94d"
+        color="#1d3557"
         wrapperStyle={{}}
         wrapperClass=""
         visible={true}
         ariaLabel="oval-loading"
-        secondaryColor="#4fa94d"
-        strokeWidth={2}
+        secondaryColor="#1d3557"
+        strokeWidth={3}
         strokeWidthSecondary={2}
       />
     </div>

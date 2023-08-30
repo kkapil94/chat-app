@@ -22,3 +22,12 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+
+  :root {
+    --toastify-toast-width: 320px;
+    --toastify-toast-background: #fff;
+    --toastify-toast-min-height: 64px;
+    --toastify-toast-max-height: 800px;
+    --toastify-font-family: sans-serif;
+    --toastify-z-index: 9999;
+  }

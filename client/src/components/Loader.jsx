@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Loader() {
   return (
-    <div className="h-full w-full absolute top-0 flex justify-center items-center bg-black  bg-opacity-75 z-10">
+    <div className="min-h-screen w-full absolute top-0 bottom-0 flex justify-center items-center bg-black  bg-opacity-75 z-10">
       <Oval
         height={80}
         width={80}

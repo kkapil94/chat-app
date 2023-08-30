@@ -86,7 +86,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
                             <input type="text" name='name' id='groupName' value={name} onChange={(e)=>setName(e.target.value)} required className='w-full outline-none h-8 bg-[#27374D] border-b-2 text-[#a2acb4]' placeholder='Enter Group name'/>
                         </div>
                     
-                        <div className=' bg-[#003049bd] p-2 w-12 h-12 rounded-full'>
+                        <div className=' bg-[#003049bd] p-2 w-12 h-12 rounded-full absolute bottom-10 '>
                             <button type='submit' className='w-full h-full'>
                                 <img src="/img/check.svg" alt=""  className='h-8'/>
                             </button>

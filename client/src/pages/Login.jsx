@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import axios from "axios"
@@ -7,6 +7,7 @@ import { clearErrors } from "../actions/chatsActions";
 import Loader from "../components/Loader";
 export default function Login() {
   const baseUrl = import.meta.env.VITE_BASE_URL
+  const user = localStorage.getItem("user")
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [loading,setLoading] = useState(false);

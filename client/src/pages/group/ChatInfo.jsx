@@ -131,7 +131,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                         {selectedChat.users.length} members
                     </span>
                 </div>
-                <div className='flex items-center hover:bg-[#8d99ae40] cursor-pointer' onClick={()=>setOpen(true)}>
+               {userId==selectedChat.groupAdmin&& <div className='flex items-center hover:bg-[#8d99ae40] cursor-pointer' onClick={()=>setOpen(true)}>
                     <div className='rounded-full bg-gray-500 m-3 h-12 w-12 flex items-center justify-center'>
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" className='h-8 fill-slate-200'>
@@ -142,7 +142,7 @@ export default function ChatInfo({groupInfo,chatInfo}) {
                     <div className="h-full text-white flex items-center">
                        <span>Add User</span>
                     </div>
-                </div>
+                </div>}
                 {selectedChat.users.map((memb)=>(
                     <div key={memb._id} className='group flex justify-between items-center  hover:bg-[#8d99ae40] cursor-pointer'>
                       <div className="flex items-center justify-start max-w-full h-[4.5rem]" >

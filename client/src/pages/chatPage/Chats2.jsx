@@ -5,6 +5,7 @@ import NewGroup from '../group/NewGroup';
 import axios from 'axios';
 import { getChats } from '../../actions/chatsActions';
 import {AnimatePresence, motion,usePresence} from "framer-motion"
+import Loader from '../../components/Loader';
 const baseUrl = import.meta.env.VITE_BASE_URL
 export default function Chats2({toggleChat,directNewGroup}) {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
   const [search,setSearch] = useState()
   const userId = JSON.parse(localStorage.getItem('user')).user._id
   const {selectedChat} = useSelector(state=>state.chats)
-  const {users} = useSelector((state)=>state.users)
+  const {users,loading,error} = useSelector((state)=>state.users)
   const [newGroup,setNewGroup] = useState(directNewGroup)
   const toggleGroup = ()=>{
     setNewGroup(directNewGroup)
@@ -46,7 +47,7 @@ export default function Chats2({toggleChat,directNewGroup}) {
                 <input type="text" placeholder='Search Contacts' value={search} onChange={(e)=>setSearch(e.target.value)} className='w-11/12 my-2 rounded-md pl-12 h-8 outline-none'/>
             </div>
         </div>
-        {users.length?<div className='h-[calc(100vh-10rem)] overflow-auto'>
+        {loading?<Loader/>:users.length?<div className='h-[calc(100vh-10rem)] overflow-auto'>
         <div className='flex items-center w-full h-16 p-3 hover:bg-[#8d99ae40] cursor-pointer' onClick={()=>setNewGroup(1)}>
           <div className='border-solid border-[1px] rounded-full mr-2 p-2'>
             <img src="./img/groups.svg" alt="" className='h-8 w-8'/>

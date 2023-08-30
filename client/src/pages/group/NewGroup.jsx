@@ -4,6 +4,7 @@ import { searchUser } from '../../actions/usersActions';
 import ConfirmGroup from './ConfirmGroup';
 import { AnimatePresence, motion } from 'framer-motion';
 import { json } from 'react-router-dom';
+import Loader from '../../components/Loader';
 
 export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
 
@@ -11,7 +12,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
   const [search,setSearch] = useState()
   const userId = JSON.parse(localStorage.getItem('user')).user._id
   const {selectedChat} = useSelector(state=>state.chats)
-  const {users} = useSelector((state)=>state.users)
+  const {users,loading} = useSelector((state)=>state.users)
   const [confirmGroup,setConfirmGroup] = useState(false)
   const [groupMembers,setGroupMembers] = useState([])
   const removeGroupMembers = (member)=>{
@@ -85,7 +86,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
         {groupMembers.length?<div className='w-full'>
             <div className='h-[1px] xs:max-sm:h-0 bg-slate-600 mx-9 sm:max-2xl:mb-4'></div>
           </div>:""}
-        {users.length?<div className={'overflow-auto '}>
+        {loading?<Loader/>:users.length?<div className={'overflow-auto '}>
         <div>
           {users&&users.filter(user=>userId!=user._id).map((user)=>(
             <div onClick={()=>handleSetGroupMemb(user)} key={user._id}>
@@ -105,7 +106,7 @@ export default function NewGroup({toggleGroup,directNewGroup,toggleChat}) {
           }
         </div>
         </div>:<span className='text-center block mt-8'>No results found for '{search}'</span>}
-      {groupMembers.length?<div className=' bg-[#355070]'>
+      {groupMembers.length?<div className=' bg-[#355070] absolute bottom-0 w-full'>
         <div className='h-24 w-full flex items-center justify-center '>
           <span className='p-4 rounded-full bg-[#003049bd] cursor-pointer' onClick={handleConfirmGroup}>
             <img src="/img/next.svg" alt=""  className='h-6 '/>

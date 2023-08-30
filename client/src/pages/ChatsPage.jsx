@@ -12,6 +12,7 @@ export default function ChatsPage() {
   const user = localStorage.getItem("user")
   useEffect(() => {
     if (error && error.response.statusText == "Unauthorized" || localStorage.getItem("user")==null) {
+      localStorage.removeItem("user")
       navigate("/login");
     }
     dispatch(getChats());

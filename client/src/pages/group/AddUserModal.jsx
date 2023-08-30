@@ -78,7 +78,7 @@ export default function ({ open, setOpen}) {
             <div className="w-full flex justify-center bg-[#27374D]">
               <button className="inline-block mb-4">
                 <img
-                  src="./img/search.png"
+                  src="./img/search.svg"
                   alt=""
                   className="absolute h-4 w-4 ml-2"
                 />

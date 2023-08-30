@@ -61,7 +61,7 @@ export default function Chats({chats,loading,error}) {
   return (
     <>
     <AnimatePresence>
-      {loading&&<Loader/>}
+      
       {!newChat?(<motion.div id="chats" key={"chat"} className={`bg-[#0f3a50] sm:max-xl:w-[40%] w-[30%] ${!selectedChat?'xs:max-sm:w-screen':'xs:max-sm:hidden'}  h-screen border-r-[1px] border-solid border-gray-500`} initial={{x:0}} exit={{x:0,position:"absolute"}} transition={{ease:"easeIn",type:"tween",duration:'.3'}}>
         <div className="h-[3.8rem] bg-[#355070] flex items-center justify-between sticky top-0">
           <div id="avatar">
@@ -86,7 +86,7 @@ export default function Chats({chats,loading,error}) {
             </div>
           </div>
         </div>
-       {chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
+       {loading?<Loader/>:chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
             <div  className={`flex items-center  justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] focus:bg-[#8d99ae40] cursor-pointer ${selected==chat._id&&"xs:max-sm:bg-none bg-[#8d99ae40]"}`} key={chat._id} onClick={()=>{setSelected(chat._id);dispatch(selectChat(chat._id))}}>
             <div>

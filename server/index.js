@@ -16,6 +16,7 @@ const app = express()
 const server = http.createServer(app);
 dotenv.config()
 const io = new Server(server,{
+  pingTimeout:60000,
   cors:{
     origin:'*'
   },
@@ -59,6 +60,10 @@ io.on('connection', (socket) => {
   })
   socket.on("stop-typing",(room)=>{
     socket.to(room).emit('stop-typing')
+  })
+  socket.off("create",(user)=>{
+    console.log("disconnected");
+    socket.leave(user._id)
   })
 });
 

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../../components/Loader";
 
-export default function Chats({chats,loading}) {
+export default function Chats({chats,loading,error}) {
   const [newChat,setNewChat] = useState(false);
   const [selected,setSelected] = useState(false)
   const {selectedChat} = useSelector(state=>state.chats)
@@ -34,7 +34,7 @@ export default function Chats({chats,loading}) {
   }
 
   const getChatName = (chat)=>{
-    const users = chat.users.filter(user=>user._id!=userId)
+    const users = chat.users.filter(user=>user._id!=userId) 
     return users.length&&users[0].name
   }
   const getChatAvatar = (chat)=>{
@@ -48,6 +48,9 @@ export default function Chats({chats,loading}) {
     }
   }
   useEffect(() => {
+    if (error&&error.response.data.msg=='Unautorized access') {
+      navigate("/login")
+    }
     document.addEventListener("mousedown",func)
     return () => {
       document.removeEventListener("mousedown",func)

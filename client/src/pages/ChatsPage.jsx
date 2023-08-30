@@ -21,7 +21,7 @@ export default function ChatsPage() {
       {user&&
         <div>
           <div className="flex min-h-screen max-w-screen overflow-hidden">
-            <Chats chats={chats} loading={loading}/>
+            <Chats chats={chats} loading={loading} error={error}/>
             <ChatsSection />
           </div>
         </div>

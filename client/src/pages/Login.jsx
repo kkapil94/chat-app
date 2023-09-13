@@ -36,6 +36,12 @@ export default function Login() {
       notify.error("Login failed!")
       console.log(err);}
   }
+  useEffect(()=>{
+    if (user) {
+      
+      navigate("/")
+    }
+  })
   return (
     <>{loading&&<Loader/>}
       <div className="min-h-screen w-screen xs:max-sm:p-2 sm:max-md:p-8 flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91] ">

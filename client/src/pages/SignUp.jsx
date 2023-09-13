@@ -7,15 +7,20 @@ import Loader from "../components/Loader";
 
 export default function SignUp() {
   const baseUrl = import.meta.env.VITE_BASE_URL
-  const formRef = useRef(null);
+  const formRef = useRef();
+  const [pre,setPre] = useState(null)
   const navigate = useNavigate()
   const [loading,setLoading] = useState(false);
   const notify = toast
+  const handleSetFile = (e)=>{
+    setPre(URL.createObjectURL(e.target.files[0]))
+    console.log(pre);
+  }
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    avatar: "",
+    avatar:'',
   });
   const handleChange = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
@@ -68,6 +73,7 @@ export default function SignUp() {
                       type="text"
                       onChange={handleChange}
                       required
+                      min="5"
                       className="w-3/5  md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
@@ -97,22 +103,30 @@ export default function SignUp() {
                       name="password"
                       value={user.password}
                       id="password"
+                      min="8"
                       onChange={handleChange}
                       required
                       className="w-3/5 md:max-lg:w-4/5 xs:max-md:w-full rounded-2xl h-8 bg-transparent border-white border-2 outline-none text-white p-4"
                     />
                   </div>
-                  <div className="xs:max-md:w-4/5">
+                  <div className="xs:max-md:w-4/5 ">
                     <label htmlFor="avatar" className="text-md text-white block">Avatar</label>
+                    <div className="flex items-center mt-2">
+
+                    <div className="inline-block mx-4 ">
+                      <img src={pre?pre:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='h-10 w-10 rounded-full object-cover'/>
+                    </div>
+                    
                     <input
                       name="file"
                       type="file"
                       id="avatar"
                       value={user.avatar}
-                      onChange={handleChange}
+                      onChange={(e)=>{handleChange(e);handleSetFile(e);}}
                       required
                       className="file:bg-transparent w-3/5 md:max-lg:w-4/5 xs:max-md:w-full file:border-2 file:rounded-2xl file:border-white text-white file:text-white"
                       />
+                      </div>
                   </div>
                 </div>
                 <div className="xs:max-md:w-4/5">

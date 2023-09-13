@@ -77,7 +77,7 @@ export default function ConfirmGroup({handleConfirmGroup,groupMembers,back}) {
                                 </div>
                             </span>:
                             <span className='relative'>
-                                <img src={pre} alt="" className='h-48 rounded-full'/>
+                                <img src={pre} alt="" className='h-48 w-48 rounded-full'/>
                                 <input id='avatar' name='file' type="file" className='hidden'   onChange={handleSetFile}/>
                             </span>}
                             </label>

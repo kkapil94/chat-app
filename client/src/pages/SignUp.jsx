@@ -113,7 +113,7 @@ export default function SignUp() {
                     <label htmlFor="avatar" className="text-md text-white block">Avatar</label>
                     <div className="flex items-center mt-2">
 
-                    <div className="inline-block mx-4 ">
+                    <div className="inline-block mr-4 ">
                       <img src={pre?pre:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='h-10 w-10 rounded-full object-cover'/>
                     </div>
                     
@@ -124,7 +124,7 @@ export default function SignUp() {
                       value={user.avatar}
                       onChange={(e)=>{handleChange(e);handleSetFile(e);}}
                       required
-                      className="file:bg-transparent w-3/5 md:max-lg:w-4/5 xs:max-md:w-full file:border-2 file:rounded-2xl file:border-white text-white file:text-white"
+                      className="file:bg-transparent xs:max-md:text-sm w-3/5 md:max-lg:w-4/5 xs:max-md:w-4/5 file:border-2 file:rounded-2xl file:border-white text-white file:text-white"
                       />
                       </div>
                   </div>

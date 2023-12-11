@@ -111,7 +111,7 @@ export default function GroupChat() {
     
   return (
     <>
-    <div className={`flex h-full`}>
+    <div className='flex max-h-full'>
       {selectedChat?<motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}} className={!groupInfo?'h-full w-full':"h-full w-[40vw] xs:max-sm:hidden sm:max-xl:hidden border-solid border-r-[1px] border-gray-500"}>
         <div className='h-[3.8rem] w-full flex items-center justify-between bg-[#355070]'>
           <div className='flex ml-4 space-x-2'>

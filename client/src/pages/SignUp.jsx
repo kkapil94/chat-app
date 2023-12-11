@@ -48,10 +48,10 @@ export default function SignUp() {
   };
   return (
     <>{loading&&<Loader/>}
-      <div className="min-h-screen w-screen xs:max-sm:p-2 sm:max-md:p-8 flex items-center justify-center bg-gradient-to-r from-[#8360c3] to-[#2ebf91]">
+      <div className="min-h-screen w-screen xs:max-sm:p-2 sm:max-md:p-8 flex items-center justify-center bg-gray-900">
         <div className="flex xs:max-md:flex-col min-h-[80vh] xs:max-sm:w-full xs:max-md:w-11/12 w-4/5 items-center justify-center border-2 border-gray-400 rounded-3xl">
-          <div className="w-1/2 xs:max-md:w-full xs:max-md:mb-8 h-full flex  items-center xs:max-md:mt-8">
-            <img src="/img/hero.svg" className="max-w-full h-4/5 object-cover"/>
+          <div className="w-1/2 xs:max-md:w-full xs:max-md:mb-8 h-full flex justify-center items-center xs:max-md:mt-8">
+            <img src="/img/whats.png" className="w-80 object-cover"/>
           </div>
           <div className="w-1/2 xs:max-md:w-full backdrop:blur-3xl flex flex-col justify-center space-y-10 h-full  xs:max-md:mb-8 xs:max-lg:p-0 pl-12">
             <h1 className="text-4xl xs:max-md:text-2xl md:max-lg:text-3xl text-white xs:max-md:text-center mb-8 ">Create Your Account</h1>
@@ -132,7 +132,7 @@ export default function SignUp() {
                 <div className="xs:max-md:w-4/5">
                   <button
                     type="submit"
-                    className="text-[#4aa0a1] h-8 bg-white md:max-lg:w-4/5 xs:max-md:w-full  w-3/5 rounded-2xl block mb-1"
+                    className="text-green-500 font-semibold h-8 bg-white md:max-lg:w-4/5 xs:max-md:w-full  w-3/5 rounded-2xl block mb-1"
                   >
                     SignUp
                   </button>

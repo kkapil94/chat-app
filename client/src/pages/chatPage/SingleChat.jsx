@@ -171,8 +171,9 @@ export default function SingleChat() {
                     className="h-10 w-10 rounded-full m-1 object-contain"
                   />
                 </div>
-                <div className="flex items-center">
+                <div className="flex flex-col justify-center">
                   <span className="text-slate-300">{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
+                  {notTyping?<span className="text-slate-300 text-xs">typing...</span>:<div></div>}
                 </div>
               </div>
               <div className="relative">
@@ -225,7 +226,7 @@ export default function SingleChat() {
             <div className="h-[calc(100vh-7.6rem)] ">
               <Message messages={msg}/>
             </div>}
-            {notTyping&&"loading..."}
+            {/* {notTyping&&"loading..."} */}
             <div className="sticky top-full w-full">
               <div className="h-[3.8rem] bg-[#355070] w-full">
                 <div className="h-full w-full flex items-center justify-center space-x-10 xs:max-md:space-x-2">

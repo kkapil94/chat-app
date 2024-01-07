@@ -47,7 +47,7 @@ app.use(errorHandler)
 io.on('connection', (socket) => {
   socket.on("create",(user)=>{
     socket.join(user._id)
-    socket.emit("connected")
+    socket.emit("connected",socket.id)
   })
   socket.on("join-chat",(room)=>{
     socket.join(room);
@@ -64,6 +64,9 @@ io.on('connection', (socket) => {
   socket.off("create",(user)=>{
     console.log("disconnected");
     socket.leave(user._id)
+  })
+  socket.on("user-call",({to,offer})=>{
+      io.to(to).emit("incoming-call",{from:socket.id, offer})
   })
 });
 

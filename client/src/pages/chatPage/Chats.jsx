@@ -48,7 +48,7 @@ export default function Chats({chats,loading,error}) {
     }
   }
   useEffect(() => {
-    if (error&&error.response.data.msg=='Unautorized access') {
+    if (error?.response?.data?.msg=='Unautorized access') {
       navigate("/login")
     }
     document.addEventListener("mousedown",func)
@@ -86,7 +86,7 @@ export default function Chats({chats,loading,error}) {
             </div>
           </div>
         </div>
-       {loading?<Loader/>:chats.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
+       {loading?<Loader/>:chats?.length ?<div className="h-[calc(100vh-3.8rem)] overflow-auto">
           {chats&&chats.map((chat)=>(
             <div  className={`flex items-center  justify-start max-w-full h-[4.5rem] hover:bg-[#8d99ae40] focus:bg-[#8d99ae40] cursor-pointer ${selected==chat._id&&"xs:max-sm:bg-none bg-[#8d99ae40]"}`} key={chat._id} onClick={()=>{setSelected(chat._id);dispatch(selectChat(chat._id))}}>
             <div>

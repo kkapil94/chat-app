@@ -2,17 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatInfo from "../group/ChatInfo";
 import { toast } from "react-toastify";
-import { getChats, selectChat } from "../../actions/chatsActions";
+import { getChats, getStream, selectChat } from "../../actions/chatsActions";
 import axios from "axios";
 import Message from "../messages/Message";
 import {socket} from '../../socket.js'
 import {motion} from "framer-motion"
+import peer from "../../services/peer.js";
 
 export default function SingleChat() {
   var ioChat
   const baseUrl = import.meta.env.VITE_BASE_URL
   const [menu, setMenu] = useState(false);
   const [content, setContent] = useState('');
+  const [socketId,setSocketId] = useState(null);
   const [msg,setMsg] = useState([])
   const [connected,setConnected] = useState(0)
   const dispatch = useDispatch();
@@ -95,6 +97,15 @@ export default function SingleChat() {
     return users.length&&users[0].avatar
   }
 
+  const handleVideoCall = async()=>{
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio:true,video:true
+    })
+    const offer = await peer.getOffer();
+    socket.emit("user-call",{to:socketId,offer})
+    dispatch(getStream(stream))
+  }
+
   const removeMember = async (groupId, membId) => {
     setMenu(0);
     try {
@@ -119,7 +130,7 @@ export default function SingleChat() {
 
   useEffect(()=>{
     socket.emit('create',user.user);
-    socket.on("connected",()=>setConnected(1))
+    socket.on("connected",(id)=>{setSocketId(id);setConnected(1)})
     socket.on("typing",()=>setNotTyping(1))
     document.addEventListener("mousedown", func);
     return () => {
@@ -143,10 +154,6 @@ export default function SingleChat() {
       }
     });
   });
-
-
-  
-
 
   return (
     <>
@@ -176,7 +183,12 @@ export default function SingleChat() {
                   {notTyping?<span className="text-slate-300 text-xs">typing...</span>:<div></div>}
                 </div>
               </div>
-              <div className="relative">
+              <div className="relative flex items-center">
+                <div>
+                  <button onClick={()=>handleVideoCall()}>
+                    <img src="img/video_call.svg" alt="" />
+                  </button>
+                </div>
                 <div
                   className={
                     menu

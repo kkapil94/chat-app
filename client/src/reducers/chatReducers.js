@@ -1,6 +1,7 @@
 let initialState = {
     chats:[],
-    selectedChat:null
+    selectedChat:null,
+    stream:null
 }
 
 export const chatReducers = (state=initialState,action) => {
@@ -44,6 +45,16 @@ export const chatReducers = (state=initialState,action) => {
                 ...state,
                 loading:false,
                 error:action.payload
+            }
+        case "GET_STREAM":
+            return {
+                ...state,
+                stream:action.payload
+            }
+        case "END_STREAM":
+            return {
+                ...state,
+                stream:null
             }
         default:
             return state

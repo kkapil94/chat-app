@@ -43,3 +43,11 @@ export const selectChat = (id)=>async(dispatch)=>{
         })
     }
 }
+
+export const getStream = (stream)=>(dispatch)=>{
+    dispatch({type:"GET_STREAM",payload:stream})
+}
+
+export const endStream = ()=>(dispatch)=>{
+    dispatch({type:"END_STREAM"})
+}

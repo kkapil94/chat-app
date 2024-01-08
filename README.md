@@ -25,7 +25,7 @@ Install dependencies for client
   npm install
 ```
 
-Run the cient side
+Run the client side
 
 ```bash
   npm run dev

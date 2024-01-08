@@ -14,6 +14,7 @@ export default function SingleChat() {
   const baseUrl = import.meta.env.VITE_BASE_URL
   const [menu, setMenu] = useState(false);
   const [content, setContent] = useState('');
+  const stream = useSelector((state) => state.chats.stream);
   const [socketId,setSocketId] = useState(null);
   const [msg,setMsg] = useState([])
   const [connected,setConnected] = useState(0)
@@ -106,6 +107,24 @@ export default function SingleChat() {
     dispatch(getStream(stream))
   }
 
+  const handleIncomingCall = async({from,offer})=>{
+    setSocketId(from)
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio:true,video:true
+    })
+    dispatch(getStream(stream))
+    const ans = await peer.getAnswer(offer);
+    socket.emit("call-accepted",{to:from,ans})
+    for(const track of stream.getTracks()){
+      peer.peer.addTrack(track,stream)
+    }
+  }
+
+  const handleCallAccepted = async({from,ans})=>{
+    await peer.setLocalDescription(ans);
+
+  }
+
   const removeMember = async (groupId, membId) => {
     setMenu(0);
     try {
@@ -129,9 +148,17 @@ export default function SingleChat() {
   };
 
   useEffect(()=>{
+    peer.peer.addEventListener('track', async ev=>{
+      const remoteStream = ev.streams
+    })
+  })
+
+  useEffect(()=>{
     socket.emit('create',user.user);
     socket.on("connected",(id)=>{setSocketId(id);setConnected(1)})
     socket.on("typing",()=>setNotTyping(1))
+    socket.on("incoming-call",handleIncomingCall)
+    socket.on("call-accepted",handleCallAccepted)
     document.addEventListener("mousedown", func);
     return () => {
       document.removeEventListener("mousedown", func);

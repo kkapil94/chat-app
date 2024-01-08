@@ -11,7 +11,7 @@ export default function VideoCall({ stream }) {
   return (
     <>
       <div className="">
-        <ReactPlayer playing height="100vh" width="100vw"  url={stream} />
+        <ReactPlayer playing height="100vh" width="100vw" muted url={stream} />
         <button onClick={()=>endCall()}>end call</button>
       </div>
     </>

@@ -49,6 +49,7 @@ export default function Chats({chats,loading,error}) {
   }
   useEffect(() => {
     if (error?.response?.data?.msg=='Unautorized access') {
+      localStorage.removeItem("user")
       navigate("/login")
     }
     document.addEventListener("mousedown",func)

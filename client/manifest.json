@@ -1,0 +1,35 @@
+{
+    "short_name": "Whatsapp Clone",
+    "name": "Whatsapp Clone PWA",
+    "icons": [
+        {
+            "src": "/img/whats.png",
+            "type": "image/png",
+            "sizes": "4169x4169"
+        },
+        {
+            "src": "/img/wpLogo.png",
+            "type": "image/png",
+            "sizes": "4000x4000"
+        },
+        {
+            "src": "/img/send.png",
+            "type": "image/png",
+            "sizes": "24x24"
+        },
+        {
+            "src": "/img/search.svg",
+            "type": "image/svg+xml",
+            "sizes": "any"
+        },
+        {
+            "src": "/img/next.svg",
+            "type": "image/svg+xml",
+            "sizes": "svg"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#111827"
+}

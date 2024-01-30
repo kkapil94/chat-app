@@ -2,12 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/img/whats.png" />
+    <meta name="description" content="modern PWA whatsapp clone" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="/img/whats.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat App</title>
-    </head>
+    <title>Whatsapp</title>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./serviceWorker.js")
+            .then((reg) => {
+              console.log("Service worker registered.", reg.scope);
+            })
+            .catch((err) => {
+              console.log("Service worker registration failed.", err);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -2,26 +2,31 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatInfo from "../group/ChatInfo";
 import { toast } from "react-toastify";
-import { getChats, getStream, selectChat } from "../../actions/chatsActions";
+import {
+  getChats,
+  getRemoteStream,
+  getStream,
+  selectChat,
+} from "../../actions/chatsActions";
 import axios from "axios";
 import Message from "../messages/Message";
-import {socket} from '../../socket.js'
-import {motion} from "framer-motion"
+import { socket } from "../../socket.js";
+import { motion } from "framer-motion";
 import peer from "../../services/peer.js";
 
 export default function SingleChat() {
-  var ioChat
-  const baseUrl = import.meta.env.VITE_BASE_URL
+  var ioChat;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const [menu, setMenu] = useState(false);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const stream = useSelector((state) => state.chats.stream);
-  const [socketId,setSocketId] = useState(null);
-  const [msg,setMsg] = useState([])
-  const [connected,setConnected] = useState(0)
+  const [socketId, setSocketId] = useState(null);
+  const [msg, setMsg] = useState([]);
+  const [connected, setConnected] = useState(0);
   const dispatch = useDispatch();
   const [chatInfo, setChatInfo] = useState(false);
-  const [typing,setTyping] = useState(false)
-  const [notTyping,setNotTyping] = useState(false)
+  const [typing, setTyping] = useState(false);
+  const [notTyping, setNotTyping] = useState(false);
   const selectedChat = useSelector((state) => state.chats.selectedChat);
   const user = JSON.parse(localStorage.getItem("user"));
   const menuRef = useRef();
@@ -33,11 +38,11 @@ export default function SingleChat() {
 
   const sendMsg = async () => {
     try {
-      if (content.trim()=='') {
-        toast.info("Please type something to send")
-        return 
+      if (content.trim() == "") {
+        toast.info("Please type something to send");
+        return;
       }
-      socket.emit('stop-typing',selectedChat._id)
+      socket.emit("stop-typing", selectedChat._id);
       const { data } = await axios.post(
         `${baseUrl}/api/v1/msg/send`,
         { content: content, chatId: selectedChat._id },
@@ -49,81 +54,88 @@ export default function SingleChat() {
       );
       if (data.success) {
         setContent("");
-        fetchMsg()
-        socket.emit("send-msg",data.data,selectedChat._id);
+        fetchMsg();
+        socket.emit("send-msg", data.data, selectedChat._id);
       }
     } catch (err) {
       return new Error(err.message);
     }
   };
 
-  const fetchMsg = async()=>{
+  const fetchMsg = async () => {
     try {
-      const {data} = await axios.get(`${baseUrl}/api/v1/msg/${selectedChat._id}`,{
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      socket.emit('join-chat',selectedChat._id)
+      const { data } = await axios.get(
+        `${baseUrl}/api/v1/msg/${selectedChat._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       setMsg(data);
     } catch (error) {
-      return  new Error(error.meassage)
+      return new Error(error.meassage);
     }
-  }
+  };
 
-  const typingHandler = (e)=>{
-    setContent(e.target.value)
+  const typingHandler = (e) => {
+    setContent(e.target.value);
     let timeTaken = 3000;
     if (!typing) {
-      setTyping(1)
-      socket.emit("typing",selectedChat._id);
+      setTyping(1);
+      socket.emit("typing", selectedChat._id);
     }
-    const lastTyping =new Date().getTime();
-      setTimeout(() => {
-        const newTime = new Date().getTime()
-        const timeDiff = newTime-lastTyping
-        if (timeDiff>=timeTaken&&typing) {
-          socket.emit('stop-typing',selectedChat._id)
-          setTyping(0)
-        }
-      }, timeTaken);
-    }
+    const lastTyping = new Date().getTime();
+    setTimeout(() => {
+      const newTime = new Date().getTime();
+      const timeDiff = newTime - lastTyping;
+      if (timeDiff >= timeTaken && typing) {
+        socket.emit("stop-typing", selectedChat._id);
+        setTyping(0);
+      }
+    }, timeTaken);
+  };
 
-  const getChatName = (chat)=>{
-    const users = chat.users.filter(memb=>memb._id!=user.user._id)
-    return users.length&&users[0].name
-  }
-  const getChatAvatar = (chat)=>{
-    const users = chat.users.filter(memb=>memb._id!=user.user._id)
-    return users.length&&users[0].avatar
-  }
+  const getChatName = (chat) => {
+    const users = chat.users.filter((memb) => memb._id != user.user._id);
+    return users.length && users[0].name;
+  };
+  const getChatAvatar = (chat) => {
+    const users = chat.users.filter((memb) => memb._id != user.user._id);
+    return users.length && users[0].avatar;
+  };
 
-  const handleVideoCall = async()=>{
+  const handleVideoCall = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio:true,video:true
-    })
+      audio: true,
+      video: true,
+    });
     const offer = await peer.getOffer();
-    socket.emit("user-call",{to:socketId,offer})
-    dispatch(getStream(stream))
-  }
+    socket.emit("user-call", { to: socketId, offer });
+    dispatch(getStream(stream));
+  };
 
-  const handleIncomingCall = async({from,offer})=>{
-    setSocketId(from)
+  const handleIncomingCall = async ({ from, offer }) => {
+    setSocketId(from);
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio:true,video:true
-    })
-    dispatch(getStream(stream))
+      audio: true,
+      video: true,
+    });
+    dispatch(getStream(stream));
     const ans = await peer.getAnswer(offer);
-    socket.emit("call-accepted",{to:from,ans})
-    for(const track of stream.getTracks()){
-      peer.peer.addTrack(track,stream)
+    socket.emit("call-accepted", { to: from, ans });
+  };
+
+  const sendStream = async () => {
+    for (const track of stream.getTracks()) {
+      peer.peer.addTrack(track, stream);
     }
-  }
+  };
 
-  const handleCallAccepted = async({from,ans})=>{
-    await peer.setLocalDescription(ans);
-
-  }
+  const handleCallAccepted = async ({ from, ans }) => {
+    peer.setLocalDescription(ans);
+    sendStream();
+  };
 
   const removeMember = async (groupId, membId) => {
     setMenu(0);
@@ -147,32 +159,66 @@ export default function SingleChat() {
     }
   };
 
-  useEffect(()=>{
-    peer.peer.addEventListener('track', async ev=>{
-      const remoteStream = ev.streams
-    })
-  })
+  const handleNegoNeeded = async () => {
+    const offer = await peer.getOffer();
+    socket.emit("peer:nego:needed", { to: socketId, offer });
+  };
 
-  useEffect(()=>{
-    socket.emit('create',user.user);
-    socket.on("connected",(id)=>{setSocketId(id);setConnected(1)})
-    socket.on("typing",()=>setNotTyping(1))
-    socket.on("incoming-call",handleIncomingCall)
-    socket.on("call-accepted",handleCallAccepted)
+  useEffect(() => {
+    peer.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+    return () => {
+      peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+    };
+  }, [stream, handleNegoNeeded]);
+
+  useEffect(() => {
+    peer.peer.addEventListener("track", async (ev) => {
+      const remoteStream = ev.streams;
+      dispatch(getRemoteStream(remoteStream[0]));
+    });
+  }, []);
+
+  const handleNegoIncoming = async ({ from, offer }) => {
+    const ans = await peer.getAnswer(offer);
+    socket.emit("peer:nego:done", { to: from, ans });
+  };
+  const handleNegoFianl = async ({ from, ans }) => {
+    await peer.setLocalDescription(ans);
+  };
+  useEffect(() => {
+    socket.emit("join-chat", selectedChat?._id);
+    socket.on("joined", (id) => {
+      setSocketId(id);
+      setConnected(1);
+    });
+    socket.on("typing", () => setNotTyping(1));
+    socket.on("incoming-call", handleIncomingCall);
+    socket.on("call-accepted", handleCallAccepted);
+    socket.on("peer:nego:needed", handleNegoIncoming);
+    socket.on("peer:nego:final", handleNegoFianl);
     document.addEventListener("mousedown", func);
     return () => {
       document.removeEventListener("mousedown", func);
+      socket.off("incoming-call", handleIncomingCall);
+      socket.off("call-accepted", handleCallAccepted);
+      socket.off("peer:nego:needed", handleNegoIncoming);
+      socket.off("peer:nego:final", handleNegoFianl);
     };
-  },[])
-  
-  
+  }, [
+    handleCallAccepted,
+    handleIncomingCall,
+    handleNegoFianl,
+    handleNegoIncoming,
+    socketId,
+  ]);
+
   useEffect(() => {
-    fetchMsg()
-    ioChat = selectedChat
-  },[selectedChat]);
-  
+    fetchMsg();
+    ioChat = selectedChat;
+  }, [selectedChat]);
+
   useEffect(() => {
-    socket.on("stop-typing",()=>setNotTyping(0))
+    socket.on("stop-typing", () => setNotTyping(0));
     socket.on("receive-msg", (reMsg) => {
       if (!ioChat || reMsg.chat._id !== ioChat._id) {
         return;
@@ -184,7 +230,12 @@ export default function SingleChat() {
 
   return (
     <>
-      <motion.div initial={{scale:.9,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"tween"}}  className="flex h-full">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "tween" }}
+        className="flex h-full"
+      >
         {selectedChat ? (
           <div
             className={
@@ -195,8 +246,14 @@ export default function SingleChat() {
           >
             <div className="h-[3.8rem] w-full flex items-center justify-between bg-[#355070]">
               <div className="flex ml-4 space-x-2">
-                <div className='bg-[#355070] flex items-center  sm:max-2xl:hidden'>
-                  <button onClick={()=>{dispatch(selectChat())}}><img src="./img/back.svg" className='h-6' /></button>
+                <div className="bg-[#355070] flex items-center  sm:max-2xl:hidden">
+                  <button
+                    onClick={() => {
+                      dispatch(selectChat());
+                    }}
+                  >
+                    <img src="./img/back.svg" className="h-6" />
+                  </button>
                 </div>
                 <div>
                   <img
@@ -206,13 +263,21 @@ export default function SingleChat() {
                   />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <span className="text-slate-300">{selectedChat.isGroupChat?selectedChat.chatName:getChatName(selectedChat)}</span>
-                  {notTyping?<span className="text-slate-300 text-xs">typing...</span>:<div></div>}
+                  <span className="text-slate-300">
+                    {selectedChat.isGroupChat
+                      ? selectedChat.chatName
+                      : getChatName(selectedChat)}
+                  </span>
+                  {notTyping ? (
+                    <span className="text-slate-300 text-xs">typing...</span>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
               </div>
               <div className="relative flex items-center">
                 <div>
-                  <button onClick={()=>handleVideoCall()}>
+                  <button onClick={() => handleVideoCall()}>
                     <img src="img/video_call.svg" alt="" />
                   </button>
                 </div>
@@ -257,15 +322,18 @@ export default function SingleChat() {
                     >
                       Delete Chat
                     </li>
+                    <li>
+                      <button onClick={sendStream}>Sebd</button>
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
-            {msg&&
-            <div className="h-[calc(100vh-7.6rem)] ">
-              <Message messages={msg}/>
-            </div>}
-            {/* {notTyping&&"loading..."} */}
+            {msg && (
+              <div className="h-[calc(100vh-7.6rem)] ">
+                <Message messages={msg} />
+              </div>
+            )}
             <div className="sticky top-full w-full">
               <div className="h-[3.8rem] bg-[#355070] w-full">
                 <div className="h-full w-full flex items-center justify-center space-x-10 xs:max-md:space-x-2">
@@ -276,10 +344,10 @@ export default function SingleChat() {
                       value={content}
                       onChange={typingHandler}
                       className="w-full rounded-md h-3/5 p-4 bg-[#526d82] outline-none text-[#ededed]"
-                      onKeyDown={(e)=>{
-                        if (e.key=="Enter"&&content) {
-                          sendMsg()
-                        };
+                      onKeyDown={(e) => {
+                        if (e.key == "Enter" && content) {
+                          sendMsg();
+                        }
                       }}
                     />
                   </div>

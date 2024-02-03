@@ -4,15 +4,15 @@ import { useDispatch } from "react-redux";
 import { endStream } from "../../actions/chatsActions";
 
 export default function VideoCall({ stream }) {
-  const dispatch = useDispatch()
-  const endCall = ()=>{
-    dispatch(endStream())
-  }
+  const dispatch = useDispatch();
+  const endCall = () => {
+    dispatch(endStream());
+  };
   return (
     <>
       <div className="">
-        <ReactPlayer playing height="100vh" width="100vw" muted url={stream} />
-        <button onClick={()=>endCall()}>end call</button>
+        <ReactPlayer playing height={100} width={100} muted url={stream} />
+        <button onClick={() => endCall()}>end call</button>
       </div>
     </>
   );

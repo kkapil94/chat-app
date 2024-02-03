@@ -1,78 +1,80 @@
-import express from "express"
-import userRoute from "./routes/userRoute.js"
-import chatRoute from "./routes/chatRoute.js"
-import msgRoute from "./routes/msgRoute.js"
-import {connect}from "./utils/mongodb.js"
-import {errorHandler} from "./middleware/errorHandler.js"
-import singleUpload from "./middleware/multer.js"
-import dotenv from "dotenv"
-import { isValidated } from "./middleware/isValidated.js"
-import {v2 as cloudinary} from "cloudinary"
-import { isAdmin } from "./middleware/isGroupAdmin.js"
-import cors from "cors"
-import http from "http"
-import {Server} from "socket.io"
-const app = express()
+import express from "express";
+import userRoute from "./routes/userRoute.js";
+import chatRoute from "./routes/chatRoute.js";
+import msgRoute from "./routes/msgRoute.js";
+import { connect } from "./utils/mongodb.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import singleUpload from "./middleware/multer.js";
+import dotenv from "dotenv";
+import { isValidated } from "./middleware/isValidated.js";
+import { v2 as cloudinary } from "cloudinary";
+import { isAdmin } from "./middleware/isGroupAdmin.js";
+import cors from "cors";
+import http from "http";
+import { Server } from "socket.io";
+const app = express();
 const server = http.createServer(app);
-dotenv.config()
-const io = new Server(server,{
-  pingTimeout:60000,
-  cors:{
-    origin:'*'
+dotenv.config();
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "*",
   },
 });
 
-
-
-cloudinary.config({ 
-  cloud_name: "dbssa7j9g", 
-  api_key: process.env.API_KEY, 
+cloudinary.config({
+  cloud_name: "dbssa7j9g",
+  api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
-  secure: true
+  secure: true,
 });
 
-connect()
+connect();
 
-app.use(cors())
-app.use(express.json())
-app.use("/api/v1/auth",userRoute)
-app.use("/api/v1/chat",chatRoute)
-app.use("/api/v1/msg",msgRoute)
-app.use(singleUpload)
-app.use(isValidated)
-app.use(isAdmin)
-app.use(errorHandler)
+app.use(cors());
+app.use(express.json());
+app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/chat", chatRoute);
+app.use("/api/v1/msg", msgRoute);
+app.use(singleUpload);
+app.use(isValidated);
+app.use(isAdmin);
+app.use(errorHandler);
 
-
-io.on('connection', (socket) => {
-  socket.on("create",(user)=>{
-    socket.join(user._id)
-    socket.emit("connected",socket.id)
-  })
-  socket.on("join-chat",(room)=>{
+io.on("connection", (socket) => {
+  socket.on("join-chat", (room) => {
+    io.to(room).emit("joined", socket.id);
     socket.join(room);
-  })
-  socket.on("send-msg",(data,room)=>{
-    socket.to(room).emit("receive-msg",data)
-  })
-  socket.on("typing",(room)=>{
-    socket.to(room).emit('typing')
-  })
-  socket.on("stop-typing",(room)=>{
-    socket.to(room).emit('stop-typing')
-  })
-  socket.off("create",(user)=>{
+    io.to(socket.id).emit;
+  });
+  socket.on("send-msg", (data, room) => {
+    socket.to(room).emit("receive-msg", data);
+  });
+  socket.on("typing", (room) => {
+    socket.to(room).emit("typing");
+  });
+  socket.on("stop-typing", (room) => {
+    socket.to(room).emit("stop-typing");
+  });
+  socket.off("create", (user) => {
     console.log("disconnected");
-    socket.leave(user._id)
-  })
-  socket.on("user-call",({to,offer})=>{
-      io.to(to).emit("incoming-call",{from:socket.id, offer})
-  })
-  socket.on("call-accepted",({to,ans})=>{
-    io.to(to).emit("call-accepted",{from:socket.id,ans})
-  })
+    socket.leave(user._id);
+  });
+  socket.on("user-call", ({ to, offer }) => {
+    io.to(to).emit("incoming-call", { from: socket.id, offer });
+  });
+  socket.on("call-accepted", ({ to, ans }) => {
+    console.log("call accepted");
+    io.to(to).emit("call-accepted", { from: socket.id, ans });
+  });
+  socket.on("peer:nego:needed", ({ to, offer }) => {
+    io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
+  });
+  socket.on("peer:nego:done", ({ to, ans }) => {
+    io.to(to).emit("peer:nego:final", { from: socket.id, ans });
+  });
 });
 
-server.listen( process.env.PORT || 4000,()=>{
-    console.log("server connected to PORT:",process.env.PORT || 4000 )
-})
+server.listen(process.env.PORT || 4000, () => {
+  console.log("server connected to PORT:", process.env.PORT || 4000);
+});

@@ -4,13 +4,14 @@ import ChatsSection from "./chatPage/ChatsSection";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearErrors, getChats } from "../actions/chatsActions";
-import VideoCall from "./videoCall/videoCall";
+import VideoCall from "./videoCall/VideoCall";
 
 export default function ChatsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const stream = useSelector((state) => state.chats.stream);
   const remoteStream = useSelector((state) => state.chats.remoteStream);
+  console.log(remoteStream);
   const { error, chats, loading } = useSelector((state) => state.chats);
   const user = localStorage.getItem("user");
   useEffect(() => {
